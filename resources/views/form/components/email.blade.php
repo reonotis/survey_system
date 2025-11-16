@@ -1,0 +1,19 @@
+@php
+    $details = json_decode($form_item->details ?? '{}', true);
+    $confirm_flg = $details['confirm_flg'] ?? 1;
+@endphp
+
+<div class="support-msg">
+    {!! nl2br($form_item->annotation_text) !!}
+</div>
+
+<div>
+    <x-input-text type="email" name="email" class="w-full" :error="$errors->has('email')" :value="old('email')" placeholder="sample@example.jp"/>
+
+    @if($confirm_flg == 1)
+        <x-input-text type="email" name="email_confirm" class="w-full mt-1" :error="$errors->has('email_confirm')" :value="old('email_confirm')" placeholder="sample@example.jp（確認用）"/>
+    @endif
+
+    <x-input-error :messages="$errors->get('email')" class="mt-1"/>
+    <x-input-error :messages="$errors->get('email_confirm')" class="mt-1"/>
+</div>

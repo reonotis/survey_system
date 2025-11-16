@@ -1,0 +1,115 @@
+<?php
+
+namespace App\Service;
+
+use App\Models\FormSetting;
+use App\Models\FormItem;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+
+class MessageSettingService
+{
+    /**
+     * @param string $route_name
+     * @return FormSetting|null
+     */
+    public function getSurveyByRouteName(string $route_name): ?FormSetting
+    {
+        return FormSetting::where('route_name', $route_name)->with('formItems')->first();
+    }
+
+    public function getFormListQuery(): Builder
+    {
+        $select = [
+            'id',
+            'form_name',
+            'title',
+            'start_date',
+            'end_date',
+            'publication_status',
+            'billing_month',
+            'billing_status',
+            'created_at',
+        ];
+
+        $query = FormSetting::select($select);
+
+        return $query;
+    }
+
+    /**
+     * @param array $param
+     * @param string $host_name
+     * @return FormSetting
+     */
+    public function create(array $param, string $host_name): FormSetting
+    {
+        return FormSetting::create([
+            'host_name' => $host_name,
+            'form_name' => $param['form_name'],
+            'title' => $param['title'],
+            'route_name' => 'route_name',
+            'admin_email' => 'admin@test.com',
+            'start_date' => $param['start_date'] ?? null,
+            'end_date' => $param['end_date'] ?? null,
+            'max_applications' => $param['max_applications'] ?? null,
+            'image_directory' => $param['image_directory'] ?? null,
+            'css_filename' => $param['css_filename'] ?? null,
+            'banner_filename' => $param['banner_filename'] ?? null,
+            'publication_status' => $param['publication_status'],
+        ]);
+    }
+
+    /**
+     * @param array $param
+     * @return FormItem
+     */
+    public function createFormItem(array $param): FormItem
+    {
+        return FormItem::create($param);
+    }
+
+    /**
+     * 登録可能な項目の一覧を返す。
+     * @param Collection $formItems
+     * @return array
+     */
+    public function getSelectableItemList(Collection $formItems): array
+    {
+        // 現在登録されている各 item_type の件数を集計
+        $current_counts_type = $formItems
+            ->pluck('item_type')
+            ->countBy()
+            ->toArray();
+
+        // 全ての項目候補と上限値を取得
+        $all_form_item_list = FormItem::ITEM_TYPE_LIST;
+        $upper_limit_item_type = FormItem::ITEM_TYPE_UPPER_LIMIT;
+
+        // 上限に達していない型のみを残す
+        $available = [];
+        foreach ($all_form_item_list as $type => $label) {
+            $limit = $upper_limit_item_type[$type] ?? null;  // null → 無制限
+            $current_count = $current_counts_type[$type] ?? 0;
+
+            // 無制限、または未達なら選択可
+            if ($limit === null || $current_count < $limit) {
+                $available[$type] = $label;
+            }
+        }
+
+        return $available;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
