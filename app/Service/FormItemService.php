@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Models\FormItem;
 use App\Models\FormSetting;
-use App\Models\Survey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -67,6 +66,7 @@ class FormItemService
             FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($param),
             FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($param),
             FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($param['gender_list']),
+            FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($param),
             FormItem::ITEM_TYPE_CHECKBOX => $this->makeUpdateParamForCheckbox($param),
             FormItem::ITEM_TYPE_TERMS => $this->makeUpdateParamForTerms($param),
             default => [],
@@ -119,7 +119,7 @@ class FormItemService
     private function makeUpdateParamForGender(array $gender_list): array
     {
         $gender_list_array = [];
-        foreach($gender_list as $gender) {
+        foreach ($gender_list as $gender) {
             $gender_list_array[] = $gender;
         }
 
@@ -134,11 +134,27 @@ class FormItemService
      * @param array $param
      * @return array
      */
+    private function makeUpdateParamForAddress(array $param): array
+    {
+        return [
+            'details' => json_encode([
+                'post_code_use_type' => $param['post_code_use_type'],
+                'address_separate_type' => $param['address_separate_type'],
+            ]),
+        ];
+    }
+
+    /**
+     * @param array $param
+     * @return array
+     */
     private function makeUpdateParamForCheckbox(array $param): array
     {
         $raw = $param['checkbox_list'] ?? '';
         $lines = preg_split("/\r\n|\r|\n/", $raw);
-        $options = array_values(array_filter(array_map('trim', $lines), function ($v) { return $v !== ''; }));
+        $options = array_values(array_filter(array_map('trim', $lines), function ($v) {
+            return $v !== '';
+        }));
 
         return [
             'item_title' => $param['item_title'],

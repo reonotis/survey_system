@@ -50,6 +50,7 @@ class UpdateFormItemRequest extends FormRequest
             FormItem::ITEM_TYPE_EMAIL => $this->makeRulesForEmail(),
             FormItem::ITEM_TYPE_TEL => $this->makeRulesForTel(),
             FormItem::ITEM_TYPE_GENDER => $this->makeRulesForGender(),
+            FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress(),
             FormItem::ITEM_TYPE_CHECKBOX => $this->makeRulesForCheckbox(),
             FormItem::ITEM_TYPE_TERMS => $this->makeRulesForTerms(),
             default => [],
@@ -98,6 +99,18 @@ class UpdateFormItemRequest extends FormRequest
         return [
             'gender_list' => ['required', 'array'],
             'gender_list.*' => ['required', 'integer', 'in:1,2,3,4'],
+        ];
+    }
+
+    /**
+     * 住所の更新条件を作成する
+     * @return array[]
+     */
+    private function makeRulesForAddress(): array
+    {
+        return [
+            'post_code_use_type' => ['required', 'in:0,1'],
+            'address_separate_type' => ['required', 'in:0,1'],
         ];
     }
 

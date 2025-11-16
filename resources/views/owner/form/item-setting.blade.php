@@ -80,6 +80,9 @@
                                         @case(App\Models\FormItem::ITEM_TYPE_GENDER)
                                             @include('owner.form.components.gender')
                                             @break
+                                        @case(App\Models\FormItem::ITEM_TYPE_ADDRESS)
+                                            @include('owner.form.components.address')
+                                            @break
                                         @case(App\Models\FormItem::ITEM_TYPE_CHECKBOX)
                                             @include('owner.form.components.checkbox')
                                             @break

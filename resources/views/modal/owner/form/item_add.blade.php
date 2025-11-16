@@ -63,12 +63,16 @@
                         @include('owner.form.components.tel')
                     </div>
                 </div>
-
-
                 <div class="item-row" id="gender_details_row" style="display: none;">
                     <div class="item-title">性別詳細</div>
                     <div class="item-contents flex-start-center">
                         @include('owner.form.components.gender')
+                    </div>
+                </div>
+                <div class="item-row" id="address_details_row" style="display: none;">
+                    <div class="item-title">住所詳細</div>
+                    <div class="item-contents flex-start-center">
+                        @include('owner.form.components.address')
                     </div>
                 </div>
 

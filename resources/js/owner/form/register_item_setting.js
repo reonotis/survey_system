@@ -26,4 +26,10 @@ $(document).ready(function() {
         { selector: '#item_add_modal input[name="new_item_type"]', anyOf: ['5'] }
     ], { logic: 'AND', initialEval: true });
 
+    setupConditionalToggle('#address_details_row', [
+        { selector: '#item_add_modal input[name="new_item_type"]', anyOf: ['6'] }
+    ], { logic: 'AND', initialEval: true });
+
+
+
 });
