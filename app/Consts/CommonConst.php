@@ -21,14 +21,14 @@ class CommonConst
     ];
 
     // 住所
-    public const POST_CODE_DISABLED = 0;
-    public const POST_CODE_ENABLED = 1;
+    public const POST_CODE_ENABLED = 0;
+    public const POST_CODE_DISABLED = 1;
     public const POST_CODE_USE_LIST = [
+        self::POST_CODE_ENABLED => '郵便番号を入力させない',
         self::POST_CODE_DISABLED => '郵便番号を入力させる',
-        self::POST_CODE_ENABLED => '郵便番号を入力させないい',
     ];
-    public const ADDRESS_SEPARATE = 0;
-    public const ADDRESS_NON_SEPARATE = 1;
+    public const ADDRESS_SEPARATE = 1;
+    public const ADDRESS_NON_SEPARATE = 2;
     public const ADDRESS_SEPARATE_LIST = [
         self::ADDRESS_SEPARATE => '住所の項目を分ける',
         self::ADDRESS_NON_SEPARATE => '住所の項目を分けない',

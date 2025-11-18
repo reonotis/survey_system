@@ -70,7 +70,10 @@ class RegisterRequest extends FormRequest
     private function makeAttributesByItemType(FormItem $form_item): array
     {
         return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_NAME, FormItem::ITEM_TYPE_KANA => $this->makeAttributesForName($form_item),
+            FormItem::ITEM_TYPE_NAME,
+            FormItem::ITEM_TYPE_KANA,
+            FormItem::ITEM_TYPE_ADDRESS,
+            => $this->makeAttributesForName($form_item),
             default => $this->makeAttributesDefault($form_item),
         };
     }
@@ -110,6 +113,7 @@ class RegisterRequest extends FormRequest
             FormItem::ITEM_TYPE_KANA => $this->makeRulesForKana($form_item),
             FormItem::ITEM_TYPE_EMAIL => $this->makeRulesForEmail($form_item),
             FormItem::ITEM_TYPE_TEL => $this->makeRulesForTel($form_item),
+            FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress($form_item),
             default => [],
         };
     }
@@ -212,6 +216,33 @@ class RegisterRequest extends FormRequest
         return [
             'tel' => $validates,
         ];
+    }
+
+    /**
+     * @return array[]
+     */
+    private function makeRulesForAddress($form_item): array
+    {
+        $details = json_decode($form_item->details ?? '{}', true);
+        $post_code_use_type = $details['post_code_use_type'] ?? \App\Consts\CommonConst::POST_CODE_DISABLED;
+        $address_separate_type = $details['address_separate_type'] ?? 1;
+
+        $roles = [];
+        if ($form_item->field_required) {
+            if ($post_code_use_type == \App\Consts\CommonConst::POST_CODE_DISABLED) {
+                $roles['zip21'][] = 'required';
+                $roles['zip22'][] = 'required';
+            }
+            if ($address_separate_type == \App\Consts\CommonConst::ADDRESS_SEPARATE) {
+                $roles['pref21'][] = 'required';
+                $roles['address21'][] = 'required';
+                $roles['street21'][] = 'required';
+            } else {
+                $roles['address'][] = 'required';
+            }
+        }
+
+        return $roles;
     }
 
 }

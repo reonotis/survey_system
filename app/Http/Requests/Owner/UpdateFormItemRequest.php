@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Owner;
 
 use App\Models\FormItem;
+use App\Consts\CommonConst;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * @property int|string $item_type
@@ -109,8 +111,16 @@ class UpdateFormItemRequest extends FormRequest
     private function makeRulesForAddress(): array
     {
         return [
-            'post_code_use_type' => ['required', 'in:0,1'],
-            'address_separate_type' => ['required', 'in:0,1'],
+            'post_code_use_type' => [
+                'required',
+                'integer',
+                Rule::in(array_keys(CommonConst::POST_CODE_USE_LIST)),
+            ],
+            'address_separate_type' => [
+                'required',
+                'integer',
+                Rule::in(array_keys(CommonConst::ADDRESS_SEPARATE_LIST)),
+            ],
         ];
     }
 

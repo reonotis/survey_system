@@ -29,7 +29,15 @@ class FormConst
         FormItem::ITEM_TYPE_EMAIL => [
             'email' => 'メールアドレス',
             'email_confirm' => '確認用メールアドレス',
-        ]
+        ],
+        FormItem::ITEM_TYPE_ADDRESS => [
+            'zip21' => '郵便番号上3桁',
+            'zip22' => '郵便番号下4桁',
+            'pref21' => '都道府県',
+            'address21' => '市区町村',
+            'street21' => '住所',
+            'address' => '住所',
+        ],
     ];
 
 }
