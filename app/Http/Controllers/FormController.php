@@ -52,7 +52,6 @@ class FormController extends Controller
      */
     public function register(string $route_name, RegisterRequest $request): RedirectResponse
     {
-        dd(11111);
         $form_setting = $this->form_service->getSurveyByRouteName($route_name);
         // リレーションされている情報を取得しておく
         $form_setting->load('mailSetting', 'formItems', 'message');

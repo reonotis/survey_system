@@ -73,8 +73,9 @@ class RegisterRequest extends FormRequest
         return match ($form_item->item_type) {
             FormItem::ITEM_TYPE_NAME,
             FormItem::ITEM_TYPE_KANA,
+            FormItem::ITEM_TYPE_EMAIL,
             FormItem::ITEM_TYPE_ADDRESS,
-            => $this->makeAttributesForName($form_item),
+                => $this->makeAttributesForName($form_item),
             default => $this->makeAttributesDefault($form_item),
         };
     }
@@ -193,7 +194,8 @@ class RegisterRequest extends FormRequest
         $details = json_decode($form_item->details ?? '{}', true);
         $confirm_flg = $details['confirm_flg'] ?? 1;
         if ($confirm_flg == 1) {
-            $rules['email_confirm'] = ['same:email'];
+            $validates[] = 'same:email';
+            $rules['email_confirm'] = $validates;
         }
 
         return $rules;
@@ -263,7 +265,7 @@ class RegisterRequest extends FormRequest
     private function makeRulesForGender(FormItem $form_item): array
     {
         $details = json_decode($form_item->details ?? '{}', true);
-        $name_type = $details['gender_list'] ;
+        $name_type = $details['gender_list'];
 
         $roles = [];
 
