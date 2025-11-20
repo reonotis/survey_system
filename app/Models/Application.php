@@ -31,8 +31,13 @@ class Application extends Model
         'form_setting_id',
         'name',
         'name_last',
+        'kana',
+        'kana_last',
         'email',
-        'tel',
+        'email',
+        'gender',
+        'post_code',
+        'address',
     ];
 
     /**

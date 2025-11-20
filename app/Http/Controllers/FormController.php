@@ -52,6 +52,7 @@ class FormController extends Controller
      */
     public function register(string $route_name, RegisterRequest $request): RedirectResponse
     {
+        dd(11111);
         $form_setting = $this->form_service->getSurveyByRouteName($route_name);
         // リレーションされている情報を取得しておく
         $form_setting->load('mailSetting', 'formItems', 'message');
@@ -85,13 +86,12 @@ class FormController extends Controller
         ]);
     }
 
-
     /**
      * 申込み可能な期間か確認する
      * @param FormSetting $form_setting
      * @return bool
      */
-    private function checkFormAvailablePeriod(FormSetting $form_setting)
+    private function checkFormAvailablePeriod(FormSetting $form_setting): bool
     {
         $now = Carbon::now();
 

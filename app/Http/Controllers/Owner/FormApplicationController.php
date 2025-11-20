@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Consts\CommonConst;
 use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Service\ApplicationsService;
@@ -65,6 +66,14 @@ class FormApplicationController extends Controller
             ->addColumn('tel', function ($application) {
                 return $application->tel;
             })
+            ->addColumn('gender', function ($application) {
+                return CommonConst::GENDER_LIST[$application->gender]?? '';
+            })
+
+            ->addColumn('address', function ($application) {
+                return $application->post_code . $application->address;
+            })
+
             ->make(true);
     }
 
@@ -128,16 +137,18 @@ class FormApplicationController extends Controller
     }
 
     /**
-     * @param int $itemType
+     * @param int $item_type
      * @return string|null
      */
-    private function resolveColumnKey(int $itemType): ?string
+    private function resolveColumnKey(int $item_type): ?string
     {
-        return match ($itemType) {
+        return match ($item_type) {
             FormItem::ITEM_TYPE_NAME => 'full_name',
             FormItem::ITEM_TYPE_KANA => 'full_kana',
             FormItem::ITEM_TYPE_EMAIL => 'email',
             FormItem::ITEM_TYPE_TEL => 'tel',
+            FormItem::ITEM_TYPE_GENDER => 'gender',
+            FormItem::ITEM_TYPE_ADDRESS => 'address',
             default => null,
         };
     }

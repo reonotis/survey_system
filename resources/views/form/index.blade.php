@@ -7,10 +7,12 @@
 
         <div class="form-title">{{ $form_setting->title }}</div>
 
+        @dump($errors)
 
         <form method="post" action="">
+            @csrf
+
             @foreach($form_setting->formItems as $form_item)
-                @csrf
 
                 <div class="item-row">
                     <div class="item-title @if($form_item->field_required) required @endif" >

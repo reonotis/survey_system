@@ -20,12 +20,20 @@ class CommonConst
         self::NAME_NON_SEPARATE => '姓名を分けない',
     ];
 
+    // ヨミ
+    public const KANA_SEPARATE = 1;
+    public const KANA_NON_SEPARATE = 2;
+    public const KANA_SEPARATE_LIST = [
+        self::KANA_SEPARATE => 'セイ メイを分ける',
+        self::KANA_NON_SEPARATE => 'セイ メイを分けない',
+    ];
+
     // 住所
-    public const POST_CODE_ENABLED = 0;
-    public const POST_CODE_DISABLED = 1;
+    public const POST_CODE_DISABLED = 0;
+    public const POST_CODE_ENABLED = 1;
     public const POST_CODE_USE_LIST = [
-        self::POST_CODE_ENABLED => '郵便番号を入力させない',
-        self::POST_CODE_DISABLED => '郵便番号を入力させる',
+        self::POST_CODE_DISABLED => '郵便番号を入力させない',
+        self::POST_CODE_ENABLED => '郵便番号を入力させる',
     ];
     public const ADDRESS_SEPARATE = 1;
     public const ADDRESS_NON_SEPARATE = 2;

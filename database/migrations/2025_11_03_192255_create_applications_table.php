@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('kana_last', '50')->nullable()->comment('ナマエ');
             $table->string('email', '50')->nullable()->comment('メールアドレス');
             $table->string('tel', '20')->nullable()->comment('電話番号');
+            $table->tinyInteger('gender')->nullable()->comment('性別');
+            $table->string('post_code')->nullable()->comment('郵便番号');
+            $table->string('address')->nullable()->comment('住所');
             $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'))->comment('作成日時');
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->comment('更新日時');
             $table->softDeletes()->comment('削除日時');

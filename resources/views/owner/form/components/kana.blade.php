@@ -9,13 +9,10 @@
         【セイとメイを別々にするか】
     </div>
     <div class="form-item-detail-content">
-        <label>
-            <input type="radio" name="name_type" value="1" @if($name_type == 1) checked="checked" @endif>
-            セイメイを分ける
-        </label>
-        <label>
-            <input type="radio" name="name_type" value="2" @if($name_type == 2) checked="checked" @endif>
-            セイメイを分けない
-        </label>
+        <x-input-radio
+            name="name_type"
+            :options="\App\Consts\CommonConst::KANA_SEPARATE_LIST"
+            :checked="$name_type"
+        />
     </div>
 </div>

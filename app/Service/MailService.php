@@ -77,6 +77,10 @@ class MailService
      */
     private function checkNotificationMail(FormSetting $form_setting): bool
     {
+        if (is_null($form_setting->mailSetting)) {
+            return false;
+        }
+
         // 通知メールを送るか確認
         if ($form_setting->mailSetting->notification_mail_flg === CommonConst::USE_TYPE_DISABLED) {
             return false;
@@ -98,6 +102,10 @@ class MailService
      */
     private function checkAutoReplyMail(FormSetting $form_setting, array $request_data): bool
     {
+        if (is_null($form_setting->mailSetting)) {
+            return false;
+        }
+
         // 自動返信メールを送信するか確認
         if ($form_setting->mailSetting->auto_reply_mail_flg === CommonConst::USE_TYPE_DISABLED) {
             return false;

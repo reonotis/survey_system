@@ -9,7 +9,7 @@ class FormConst
     public const DEFAULT_ATTRIBUTE_TITLE = [
         FormItem::ITEM_TYPE_EMAIL => 'email',
         FormItem::ITEM_TYPE_TEL => 'tel',
-        FormItem::ITEM_TYPE_GENDER => 'sex',
+        FormItem::ITEM_TYPE_GENDER => 'gender',
         FormItem::ITEM_TYPE_TERMS => 'terms',
     ];
 

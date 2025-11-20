@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $item_type
  * @property string $item_title
+ * @property json $details
+ * @property bool $field_required
  */
 class FormItem extends Model
 {

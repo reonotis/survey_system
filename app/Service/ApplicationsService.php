@@ -2,13 +2,11 @@
 
 namespace App\Service;
 
-use App\Consts\CommonConst;
 use App\Models\Application;
 use App\Models\FormSetting;
 use App\Models\FormItem;
 use App\Traits\FormParamChangerTrait;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 
 class ApplicationsService
 {
@@ -17,14 +15,13 @@ class ApplicationsService
     /**
      * @param FormSetting $form_setting
      * @param array $request_data
-     * @return void
+     * @return Application
      */
-    public function register(FormSetting $form_setting, array $request_data)
+    public function register(FormSetting $form_setting, array $request_data): Application
     {
         $param = [
             'form_setting_id' => $form_setting->id,
         ];
-
 
         foreach ($form_setting->formItems as $form_item) {
             $param = array_merge($param, $this->makeParamByItemType($form_item, $request_data));
@@ -44,11 +41,20 @@ class ApplicationsService
             FormItem::ITEM_TYPE_NAME => $this->makeParamForName(json_decode($form_item->details, true), $request_data),
             FormItem::ITEM_TYPE_KANA => $this->makeParamForKana(json_decode($form_item->details, true), $request_data),
             FormItem::ITEM_TYPE_EMAIL => $this->makeParamForEmail($request_data),
+            FormItem::ITEM_TYPE_TEL => $this->makeParamForTel($request_data),
+            FormItem::ITEM_TYPE_GENDER => $this->makeParamForGender($request_data),
+            FormItem::ITEM_TYPE_ADDRESS => $this->makeParamForAddress(json_decode($form_item->details, true), $request_data),
+
             default => [],
         };
     }
 
-
+    /**
+     *
+     * @param int $form_setting_id
+     * @param array $request_data
+     * @return Builder
+     */
     public function getFormListQuery(int $form_setting_id, array $request_data): Builder
     {
         $select = [
@@ -59,6 +65,9 @@ class ApplicationsService
             'kana_last',
             'email',
             'tel',
+            'gender',
+            'post_code',
+            'address',
             'created_at',
         ];
 
@@ -67,7 +76,7 @@ class ApplicationsService
 
         if (!isset($request_data['order'])) {
             $query = $query->orderBy('created_at', 'desc');
-        };
+        }
 
         return $query;
     }

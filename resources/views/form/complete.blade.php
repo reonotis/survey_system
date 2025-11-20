@@ -7,7 +7,11 @@
 
         <div class="form-title">{{ $form_setting->title }}</div>
 
-        {!! nl2br($message->complete_message)?? '申し込みが完了しました' !!}
+        @if($message)
+            {!! nl2br($message->complete_message)?? '申し込みが完了しました' !!}
+        @else
+            申し込みが完了しました
+        @endif
 
     </div>
 </x-form-layout>

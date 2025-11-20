@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Form;
 
+use App\Consts\CommonConst;
 use App\Consts\FormConst;
 use App\Models\FormItem;
 use App\Models\FormSetting;
@@ -113,6 +114,7 @@ class RegisterRequest extends FormRequest
             FormItem::ITEM_TYPE_KANA => $this->makeRulesForKana($form_item),
             FormItem::ITEM_TYPE_EMAIL => $this->makeRulesForEmail($form_item),
             FormItem::ITEM_TYPE_TEL => $this->makeRulesForTel($form_item),
+            FormItem::ITEM_TYPE_GENDER => $this->makeRulesForGender($form_item),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress($form_item),
             default => [],
         };
@@ -122,7 +124,7 @@ class RegisterRequest extends FormRequest
      * お名前のバリデーション
      * @return array[]
      */
-    private function makeRulesForName($form_item): array
+    private function makeRulesForName(FormItem $form_item): array
     {
         $details = json_decode($form_item->details ?? '{}', true);
         $name_type = $details['name_type'] ?? 1;
@@ -146,9 +148,10 @@ class RegisterRequest extends FormRequest
 
     /**
      * ヨミのバリデーション
+     * @param FormItem $form_item
      * @return array[]
      */
-    private function makeRulesForKana($form_item): array
+    private function makeRulesForKana(FormItem $form_item): array
     {
         $details = json_decode($form_item->details ?? '{}', true);
         $name_type = $details['name_type'] ?? 1;
@@ -172,9 +175,10 @@ class RegisterRequest extends FormRequest
 
     /**
      * メールアドレスのバリデーション
+     * @param FormItem $form_item
      * @return array[]
      */
-    private function makeRulesForEmail($form_item): array
+    private function makeRulesForEmail(FormItem $form_item): array
     {
         $validates = [];
         $validates[] = ($form_item->field_required) ? 'required' : 'nullable';
@@ -197,9 +201,10 @@ class RegisterRequest extends FormRequest
 
     /**
      * 電話番号のバリデーション
+     * @param FormItem $form_item
      * @return array[]
      */
-    private function makeRulesForTel($form_item): array
+    private function makeRulesForTel(FormItem $form_item): array
     {
         $details = json_decode($form_item->details ?? '{}', true);
         $hyphen_flg = $details['hyphen_flg'] ?? 1;
@@ -219,21 +224,26 @@ class RegisterRequest extends FormRequest
     }
 
     /**
+     * 住所のバリデーション
+     * @param FormItem $form_item
      * @return array[]
      */
-    private function makeRulesForAddress($form_item): array
+    private function makeRulesForAddress(FormItem $form_item): array
     {
         $details = json_decode($form_item->details ?? '{}', true);
-        $post_code_use_type = $details['post_code_use_type'] ?? \App\Consts\CommonConst::POST_CODE_DISABLED;
+        $post_code_use_type = $details['post_code_use_type'] ?? CommonConst::POST_CODE_DISABLED;
         $address_separate_type = $details['address_separate_type'] ?? 1;
 
-        $roles = [];
+        $roles = [
+        ];
+
         if ($form_item->field_required) {
-            if ($post_code_use_type == \App\Consts\CommonConst::POST_CODE_DISABLED) {
+            if ($post_code_use_type == CommonConst::POST_CODE_ENABLED) {
                 $roles['zip21'][] = 'required';
                 $roles['zip22'][] = 'required';
             }
-            if ($address_separate_type == \App\Consts\CommonConst::ADDRESS_SEPARATE) {
+
+            if ($address_separate_type == CommonConst::ADDRESS_SEPARATE) {
                 $roles['pref21'][] = 'required';
                 $roles['address21'][] = 'required';
                 $roles['street21'][] = 'required';
@@ -245,4 +255,25 @@ class RegisterRequest extends FormRequest
         return $roles;
     }
 
+    /**
+     * 性別のバリデーション
+     * @param FormItem $form_item
+     * @return array
+     */
+    private function makeRulesForGender(FormItem $form_item): array
+    {
+        $details = json_decode($form_item->details ?? '{}', true);
+        $name_type = $details['gender_list'] ;
+
+        $roles = [];
+
+        if ($form_item->field_required) {
+            $roles['gender'][] = 'required';
+        }
+
+        $roles['gender'][] = 'in:' . implode(',', $name_type);
+
+        return $roles;
+    }
 }
+

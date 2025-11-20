@@ -25,14 +25,16 @@
                 <div>
                     <input
                         type="radio"
-                        name="gender_list"
-                        id="gender_list_{{ $value }}"
+                        name="gender"
+                        id="gender_{{ $value }}"
                         value="{{ $value }}"
                         @if($selected_value == $value) checked="checked" @endif
                     >
-                    <label for="gender_list_{{ $value }}">{{ $label }}</label>
+                    <label for="gender_{{ $value }}">{{ $label }}</label>
                 </div>
             @endforeach
         </div>
+
+        <x-input-error :messages="$errors->get('gender')" class="mt-1"/>
     </div>
 </div>

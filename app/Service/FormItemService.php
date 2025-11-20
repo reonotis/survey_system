@@ -65,7 +65,7 @@ class FormItemService
             FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForNames($param),
             FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($param),
             FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($param),
-            FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($param['gender_list']),
+            FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($param['gender_list']?? []),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($param),
             FormItem::ITEM_TYPE_CHECKBOX => $this->makeUpdateParamForCheckbox($param),
             FormItem::ITEM_TYPE_TERMS => $this->makeUpdateParamForTerms($param),
