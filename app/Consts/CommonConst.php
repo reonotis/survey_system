@@ -28,6 +28,22 @@ class CommonConst
         self::KANA_NON_SEPARATE => 'セイ メイを分けない',
     ];
 
+    // メールアドレス
+    public const EMAIL_CONFIRM_ENABLED = 1;
+    public const EMAIL_CONFIRM_DISABLED = 2;
+    public const EMAIL_CONFIRM_LIST = [
+        self::EMAIL_CONFIRM_ENABLED => '確認用の項目を設ける',
+        self::EMAIL_CONFIRM_DISABLED => '確認用の項目を設けない',
+    ];
+
+    // 電話番号
+    public const TEL_HYPHEN_USE = 1;
+    public const TEL_HYPHEN_UN_USE = 2;
+    public const TEL_HYPHEN_LIST = [
+        self::TEL_HYPHEN_USE => 'ハイフンを入力させる',
+        self::TEL_HYPHEN_UN_USE => 'ハイフンを入力させない',
+    ];
+
     // 住所
     public const POST_CODE_DISABLED = 0;
     public const POST_CODE_ENABLED = 1;

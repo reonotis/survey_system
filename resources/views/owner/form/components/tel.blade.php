@@ -9,13 +9,10 @@
         【ハイフンを入力させるか】
     </div>
     <div class="form-item-detail-content">
-        <label>
-            <input type="radio" name="hyphen_flg" value="1" @if($hyphen_flg == 1) checked="checked" @endif>
-            ハイフンを入力させる
-        </label>
-        <label>
-            <input type="radio" name="hyphen_flg" value="2" @if($hyphen_flg == 2) checked="checked" @endif>
-            ハイフンを入力させない
-        </label>
+        <x-input-radio
+            name="hyphen_flg"
+            :options="\App\Consts\CommonConst::TEL_HYPHEN_LIST"
+            :checked="$hyphen_flg"
+        />
     </div>
 </div>

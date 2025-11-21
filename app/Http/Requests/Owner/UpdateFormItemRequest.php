@@ -48,7 +48,7 @@ class UpdateFormItemRequest extends FormRequest
     {
         return match($item_type) {
             FormItem::ITEM_TYPE_NAME => $this->makeRulesForName(),
-            FormItem::ITEM_TYPE_KANA => $this->makeRulesForName(),
+            FormItem::ITEM_TYPE_KANA => $this->makeRulesForKana(),
             FormItem::ITEM_TYPE_EMAIL => $this->makeRulesForEmail(),
             FormItem::ITEM_TYPE_TEL => $this->makeRulesForTel(),
             FormItem::ITEM_TYPE_GENDER => $this->makeRulesForGender(),
@@ -71,7 +71,18 @@ class UpdateFormItemRequest extends FormRequest
     }
 
     /**
-     * ヨミの更新条件を作成する
+     * 名前の更新条件を作成する
+     * @return array[]
+     */
+    private function makeRulesForKana(): array
+    {
+        return [
+            'name_type_kana' => ['required', 'integer', Rule::in(array_keys(CommonConst::KANA_SEPARATE_LIST)),],
+        ];
+    }
+
+    /**
+     * メールアドレスの更新条件を作成する
      * @return array[]
      */
     private function makeRulesForEmail(): array

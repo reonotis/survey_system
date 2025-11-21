@@ -61,8 +61,8 @@ class FormItemService
     private function makeUpdateParam(int $type, array $param): array
     {
         return match ($type) {
-            FormItem::ITEM_TYPE_NAME => $this->makeUpdateParamForNames($param),
-            FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForNames($param),
+            FormItem::ITEM_TYPE_NAME => $this->makeUpdateParamForName($param),
+            FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForKana($param),
             FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($param),
             FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($param),
             FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($param['gender_list']?? []),
@@ -77,11 +77,24 @@ class FormItemService
      * @param array $param
      * @return array
      */
-    private function makeUpdateParamForNames(array $param): array
+    private function makeUpdateParamForName(array $param): array
     {
         return [
             'details' => json_encode([
                 'name_type' => $param['name_type']
+            ]),
+        ];
+    }
+
+    /**
+     * @param array $param
+     * @return array
+     */
+    private function makeUpdateParamForKana(array $param): array
+    {
+        return [
+            'details' => json_encode([
+                'name_type_kana' => $param['name_type_kana']
             ]),
         ];
     }

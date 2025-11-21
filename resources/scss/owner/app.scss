@@ -192,7 +192,7 @@ div.dt-container {
     }
 }
 
-
+// チェックボックス
 .checkbox-content {
     padding: 0 .25rem;
     display: flex;
@@ -233,6 +233,80 @@ div.dt-container {
     .checkbox-item {
         cursor: pointer;
         padding: .25rem .5rem .25rem .25rem;
+    }
+}
+
+
+// ラジオボタン
+/* animations */
+@keyframes radio-select {
+    0% {
+        transform: scale(0, 0);
+    }
+    65% {
+        transform: scale(1.1, 1.1);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+/* styles */
+$size: 20px;
+.custom-radio {
+    > input {
+        display: none;
+    }
+
+    > input:checked + label .outside .inside {
+        animation: radio-select 0.1s linear;
+        transform: scale(1, 1);
+
+        .no-transforms & {
+            width: ($size - 10px);
+            height: ($size - 10px);
+        }
+    }
+
+    .radio-label {
+        display: block;
+        position: relative;
+        padding: .25rem .5rem .25rem 23px;
+        cursor: pointer;
+
+        .outside {
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -($size / 2);
+            width: $size;
+            height: $size;
+            border: 1px solid #bf819b;
+            border-radius: 50%;
+            box-sizing: border-box;
+            background: #F3F3F3;
+
+            .inside {
+                position: absolute;
+                display: inline-block;
+                border-radius: 50%;
+                width: ($size - 10px);
+                height: ($size - 10px);
+                background: #bf819b;
+                left: 4.2px;
+                top: 4.2px;
+                transform: scale(0, 0);
+
+                .no-transforms & {
+                    left: auto;
+                    top: auto;
+                    width: 0;
+                    height: 0;
+                }
+            }
+        }
+
     }
 }
 
