@@ -65,3 +65,20 @@ body{
     }
 }
 
+
+.btn {
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    transition-duration: 150ms;
+    font-weight: 500;
+    background-color: #ddd;
+    color: rgb(0, 0, 0);
+    white-space: nowrap;
+    border-radius: 0.375rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #888;
+    }
+}

@@ -39,13 +39,13 @@ class FormItem extends Model
         self::ITEM_TYPE_TEL => '電話番号',
         self::ITEM_TYPE_GENDER => '性別',
         self::ITEM_TYPE_ADDRESS => '住所',
-        self::ITEM_TYPE_TEXT => 'テキスト（短文）',
-        self::ITEM_TYPE_TEXTAREA => 'テキスト（長文）',
-        self::ITEM_TYPE_CHECKBOX => 'チェックボックス',
-        self::ITEM_TYPE_RADIO => 'ラジオボタン',
-        self::ITEM_TYPE_SELECT_BOX => 'セレクトボックス',
-        self::ITEM_TYPE_TERMS => '利用規約',
-        self::ITEM_TYPE_PRECAUTIONS => '注意事項',
+//        self::ITEM_TYPE_TEXT => 'テキスト（短文）',
+//        self::ITEM_TYPE_TEXTAREA => 'テキスト（長文）',
+//        self::ITEM_TYPE_CHECKBOX => 'チェックボックス',
+//        self::ITEM_TYPE_RADIO => 'ラジオボタン',
+//        self::ITEM_TYPE_SELECT_BOX => 'セレクトボックス',
+//        self::ITEM_TYPE_TERMS => '利用規約',
+//        self::ITEM_TYPE_PRECAUTIONS => '注意事項',
     ];
 
     // 登録できる項目の上限値

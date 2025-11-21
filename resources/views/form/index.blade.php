@@ -7,8 +7,6 @@
 
         <div class="form-title">{{ $form_setting->title }}</div>
 
-        @dump($errors)
-
         <form method="post" action="">
             @csrf
 

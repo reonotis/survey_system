@@ -25,16 +25,20 @@
 
         <div class="mx-auto py-8">
 
-            <div class="flex-center-center mb-4">
-                <button type="button" id="item_add_btn" class="btn" >項目追加</button>
-            </div>
+            @if($selectable_item_list)
+                <div class="flex-center-center mb-4">
+                    <button type="button" id="item_add_btn" class="btn" >項目追加</button>
+                </div>
+            @endif
 
             <table class="list-tbl" style="width: 100%;">
                 <thead>
                     <tr>
-                        <th style="width: 50px;">↓↑</th>
+                        <th style="width: 50px;" class="sort-title">
+                            <span>↑</span><span>↓</span>
+                        </th>
                         <th style="width: 100px;">タイプ</th>
-                        <th style="width: 60px;">必須</th>
+                        <th style="width: 50px;">必須</th>
                         <th style="width: 300px;">項目名</th>
                         <th style="flex: 1;">詳細設定</th>
                         <th style="flex: 1;">注釈文</th>
@@ -58,7 +62,16 @@
                                     {{ App\Models\FormItem::ITEM_TYPE_LIST[$form_item->item_type] }}
                                 </td>
                                 <td class="text-center">
-                                    <input type="checkbox" name="field_required" value="1" @checked($form_item->field_required)>
+
+                                    <div class="flex-center-center">
+                                        <x-input-checkbox
+                                            name="field_required"
+                                            id="required"
+                                            value="1"
+                                            :checked="$form_item->field_required"
+                                        />
+                                    </div>
+
                                 </td>
                                 <td class="text-center">
                                     <input type="text" name="item_title" value="{{ $form_item->item_title }}" class="input-box w-full" >
@@ -98,7 +111,7 @@
                                 <td>
                                     <textarea name="annotation_text" class="input-box w-full h-20">{{ $form_item->annotation_text }}</textarea>
                                 </td>
-                                <td><input type="submit" value="更新"></td>
+                                <td class="text-center"><input type="submit" class="btn min" value="更新"></td>
                             </form>
                             <td>
                                 <form action="{{ route('owner_form_delete_form_item', ['form_setting' => $form_setting->id, 'form_item' => $form_item->id]) }}" method="POST">

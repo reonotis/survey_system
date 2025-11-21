@@ -27,8 +27,13 @@
 
                 <div class="item-row">
                     <div class="item-title">必須項目</div>
-                    <div class="item-contents flex-start-center">
-                        <input type="checkbox" name="required" value="1">必須項目にする
+                    <div class="item-contents">
+                        <x-input-checkbox
+                            name="required"
+                            label="必須項目にする"
+                            id="new_required"
+                            value="1"
+                        />
                     </div>
                 </div>
 

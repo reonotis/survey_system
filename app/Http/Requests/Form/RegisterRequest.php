@@ -216,7 +216,7 @@ class RegisterRequest extends FormRequest
             $validates[] = 'required';
         }
 
-        if ($hyphen_flg == 1) { // ハイフンが必要か
+        if ($hyphen_flg == 1) { // TODO ハイフンが必要か
 
         }
 
