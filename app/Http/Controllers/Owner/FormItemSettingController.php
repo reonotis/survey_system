@@ -108,7 +108,13 @@ class FormItemSettingController extends Controller
      */
     public function deleteFormItem(FormSetting $form_setting, FormItem $form_item): RedirectResponse
     {
-        $form_item->delete();
-        return redirect()->back();
+        try {
+            $form_item->delete();
+
+            return redirect()->back()->with('success', ['項目を削除しました']);
+        } catch (\Exception $error) {
+            \Log::error($error->getMessage());
+            return redirect()->back()->with('error', ['項目の削除に失敗しました']);
+        }
     }
 }

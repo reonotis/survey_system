@@ -96,7 +96,7 @@ class FormApplicationController extends Controller
         // 登録
         $this->display_form_item_service->insert($record);
 
-        return redirect()->back()->with('success', '更新しました。');
+        return redirect()->back()->with('success', ['更新しました。']);
     }
 
     /**
