@@ -41,10 +41,15 @@ class FormItemSettingController extends Controller
      */
     public function registerFormItem(FormSetting $form_setting, Request $request): RedirectResponse
     {
-        $form_item_service = app(FormItemService::class);
-        $form_item_service->create($form_setting, $request->all());
+        try {
+            $form_item_service = app(FormItemService::class);
+            $form_item_service->create($form_setting, $request->all());
 
-        return redirect()->back();
+            return redirect()->back()->with('success', ['登録しました']);
+        } catch (\Exception $error) {
+            \Log::error($error->getMessage());
+            return redirect()->back()->with('error', ['失敗しました']);
+        }
     }
 
     /**
@@ -85,9 +90,15 @@ class FormItemSettingController extends Controller
      */
     public function updateFormItem(FormSetting $form_setting, FormItem $form_item, UpdateFormItemRequest $request): RedirectResponse
     {
-        $form_item_service = app(FormItemService::class);
-        $form_item_service->update($form_item, $form_item->item_type, $request->validated());
-        return redirect()->back();
+        try {
+            $form_item_service = app(FormItemService::class);
+            $form_item_service->update($form_item, $form_item->item_type, $request->validated());
+
+            return redirect()->back()->with('success', ['更新しました']);
+        } catch (\Exception $error) {
+            \Log::error($error->getMessage());
+            return redirect()->back()->with('error', ['更新に失敗しました']);
+        }
     }
 
     /**

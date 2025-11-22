@@ -22,7 +22,7 @@
     </head>
 
     <body class="font-sans antialiased">
-        <div class="min-h-screen">
+        <div class="min-h-screen" style="position: relative;">
 
             <header >
                 <div class="custom-container">
@@ -55,6 +55,8 @@
                     </div>
                 </div>
             @endisset
+
+            @include('components.session-message')
 
             <!-- Page Content -->
             <main>
