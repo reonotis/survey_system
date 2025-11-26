@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
+/**
+ *
+ */
 class FormApplicationController extends Controller
 {
     /** @var DisplayFormItemService $display_form_item_service */
@@ -23,6 +26,7 @@ class FormApplicationController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->display_form_item_service = app(DisplayFormItemService::class);
     }
 

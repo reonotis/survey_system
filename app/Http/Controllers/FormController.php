@@ -21,6 +21,7 @@ class FormController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->form_service = app(FormSettingService::class);
         $this->mail_service = app(MailService::class);
     }

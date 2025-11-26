@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,6 +29,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Session\Middleware\StartSession::class,
         ]);
+
+        // 全リクエストに適用
+        $middleware->append(\App\Http\Middleware\BrandMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
