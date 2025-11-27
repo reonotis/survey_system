@@ -34,7 +34,7 @@ trait FormParamChangerTrait
      */
     private function makeParamForKana(array $details, array $request_data): array
     {
-        if ((int)$details['name_type'] === CommonConst::KANA_SEPARATE) {
+        if ((int)$details['name_type_kana'] === CommonConst::KANA_SEPARATE) {
             return [
                 'kana' => $request_data['sei_kana'] ?? null,
                 'kana_last' => $request_data['mei_kana'] ?? null,
