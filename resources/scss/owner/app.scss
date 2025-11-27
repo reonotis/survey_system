@@ -392,10 +392,11 @@ $size: 20px;
 * その他
 ************************/
 .contents-box {
-    margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
     background: white;
     border-radius: .5rem;
-    box-shadow: 0 0 10px 0 #ababab;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border: solid 1px #ccc;
 
     & > .contents-box-header {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Owner\Auth\OwnerAuthController;
+use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\FormApplicationController;
 use App\Http\Controllers\Owner\FormBasicSettingController;
 use App\Http\Controllers\Owner\FormItemSettingController;
@@ -13,6 +14,8 @@ use App\Http\Controllers\Owner\FormSettingController;
 
 Route::prefix('owner')->group(function () {
     // 認証ルート
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('owner_register');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('owner_register');
     Route::get('/login', [OwnerAuthController::class, 'showLoginForm'])->name('owner_login');
     Route::post('/login', [OwnerAuthController::class, 'login']);
 
@@ -28,6 +31,8 @@ Route::prefix('owner')->group(function () {
         Route::prefix('form_setting')->group(function () {
             Route::get('/list', [FormSettingController::class, 'index'])->name('owner_form_index'); // 応募フォーム一覧
             Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('owner_form_get_form_list');
+            Route::get('/create', [FormSettingController::class, 'create'])->name('owner_form_create');
+            Route::post('/register', [FormSettingController::class, 'store'])->name('owner_form_register');
 
             // 応募者一覧
             Route::get('/{form_setting}/application-list', [FormApplicationController::class, 'show'])->name('owner_form_application_list');

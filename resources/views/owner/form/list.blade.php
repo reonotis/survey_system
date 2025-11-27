@@ -28,6 +28,9 @@
                 <button type="button" class="btn">検索</button>
             </div>
         </div>
+        <div class="flex-between-center mb-4">
+            <a href="{{ route('owner_form_create') }}" class="btn">新規応募フォーム作成</a>
+        </div>
 
         <div class="mb-8">
             <table class="list-tbl" id="form_list_tbl" data-url="{{ route('owner_form_get_form_list') }}" data-show-url="{{ route('owner_form_application_list', ['form_setting' => '__ID__']) }}" ></table>

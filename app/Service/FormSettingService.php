@@ -18,7 +18,11 @@ class FormSettingService
         return FormSetting::where('route_name', $route_name)->with('formItems')->first();
     }
 
-    public function getFormListQuery(): Builder
+    /**
+     * @param int|null $owner_id
+     * @return Builder
+     */
+    public function getFormListQuery(int $owner_id = null): Builder
     {
         $select = [
             'id',
@@ -27,12 +31,14 @@ class FormSettingService
             'start_date',
             'end_date',
             'publication_status',
-            'billing_month',
-            'billing_status',
             'created_at',
         ];
 
         $query = FormSetting::select($select);
+
+        if ($owner_id) {
+            $query->where('created_by_owner', $owner_id);
+        }
 
         return $query;
     }
@@ -48,7 +54,7 @@ class FormSettingService
             'host_name' => $host_name,
             'form_name' => $param['form_name'],
             'title' => $param['title'],
-            'route_name' => 'route_name',
+            'route_name' => $param['route_name'] ?? bin2hex(random_bytes(16)),
             'admin_email' => 'admin@test.com',
             'start_date' => $param['start_date'] ?? null,
             'end_date' => $param['end_date'] ?? null,
@@ -56,7 +62,9 @@ class FormSettingService
             'image_directory' => $param['image_directory'] ?? null,
             'css_filename' => $param['css_filename'] ?? null,
             'banner_filename' => $param['banner_filename'] ?? null,
-            'publication_status' => $param['publication_status'],
+            'publication_status' => $param['publication_status'] ?? 0,
+            'created_by_admin' => $param['created_by_admin'] ?? null,
+            'created_by_owner' => $param['created_by_owner'] ?? null,
         ]);
     }
 

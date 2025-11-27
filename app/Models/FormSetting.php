@@ -38,6 +38,8 @@ class FormSetting extends Model
         2 => '入金確認済み',
     ];
 
+    protected $table = 'form_settings';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -55,6 +57,8 @@ class FormSetting extends Model
         'image_directory',
         'css_filename',
         'banner_filename',
+        'created_by_admin',
+        'created_by_owner',
     ];
 
     /**

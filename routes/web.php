@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 // 申込フォーム
 Route::get('/form/{route_name}', [FormController::class, 'index'])->name('form_index');

@@ -26,9 +26,9 @@ return new class extends Migration
             $table->string('css_filename')->nullable()->comment('CSSファイル名');
             $table->string('banner_filename')->nullable()->comment('バナーファイル名');
             $table->tinyInteger('publication_status')->default(0)->comment('公開状態');
-            $table->string('billing_month')->default('')->comment('請求月');
-            $table->tinyInteger('billing_status')->default(0)->comment('請求状態');
             $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'))->comment('作成日時');
+            $table->unsignedInteger('created_by_admin')->nullable()->comment('作成者');
+            $table->unsignedInteger('created_by_owner')->nullable()->comment('作成者');
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->comment('更新日時');
             $table->softDeletes()->comment('削除日時');
         });

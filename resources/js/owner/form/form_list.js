@@ -26,16 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: '期間',
                 orderable: false,
             }, {
-                data: 'publication_status_text',
-                name: 'publication_status',
+                data: 'count',
+                name: 'count',
                 title: '応募数',
-            }, {
-                data: 'publication_status_text',
-                name: 'publication_status',
-                title: '状態',
-                render: function(data, type, row) {
-                    return '0';
-                }
             }, {
                 data: 'id',
                 title: '管理',
