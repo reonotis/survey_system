@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers\Owner;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\OwnerController;
 use App\Http\Requests\Owner\FormSettingRegisterRequest;
-use App\Models\FormItem;
-use App\Models\FormSetting;
 use App\Service\FormSettingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
-class FormSettingController extends Controller
+class FormSettingController extends OwnerController
 {
+    /**
+     *
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * @return View
      */

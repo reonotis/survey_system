@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // すべてのビューでis_client_domainを共有（ミドルウェア実行後に値を取得）
+        view()->composer('*', function ($view) {
+            $view->with('is_client_domain', config('app.is_client_domain'));
+        });
     }
 }

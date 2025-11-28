@@ -7,15 +7,23 @@ use App\Http\Controllers\Owner\Auth\OwnerAuthController;
 use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\FormApplicationController;
 use App\Http\Controllers\Owner\FormBasicSettingController;
+use App\Http\Controllers\Owner\FormDesignSettingController;
 use App\Http\Controllers\Owner\FormItemSettingController;
-use App\Http\Controllers\Owner\FormMessageSettingController;
 use App\Http\Controllers\Owner\FormMailSettingController;
+use App\Http\Controllers\Owner\FormMessageSettingController;
 use App\Http\Controllers\Owner\FormSettingController;
+use App\Http\Controllers\Owner\FormWinningSettingController;
 
 Route::prefix('owner')->group(function () {
+
+    // クライアントには提供しない機能のルーティング
+    Route::middleware('not_client')->group(function () {
+        // オーナーユーザー登録
+        Route::get('/register', [RegisteredUserController::class, 'create'])->name('owner_register');
+        Route::post('/register', [RegisteredUserController::class, 'store'])->name('owner_register');
+    });
+
     // 認証ルート
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('owner_register');
-    Route::post('/register', [RegisteredUserController::class, 'store'])->name('owner_register');
     Route::get('/login', [OwnerAuthController::class, 'showLoginForm'])->name('owner_login');
     Route::post('/login', [OwnerAuthController::class, 'login']);
 
@@ -58,8 +66,10 @@ Route::prefix('owner')->group(function () {
             Route::post('/{form_setting}/mail-setting', [FormMailSettingController::class, 'update'])->name('owner_form_mail_setting_update');
 
             // 当選設定
+            Route::get('/{form_setting}/winning-setting', [FormWinningSettingController::class, 'index'])->name('owner_form_winning_setting');
 
             // デザイン設定
+            Route::get('/{form_setting}/design-setting', [FormDesignSettingController::class, 'index'])->name('owner_form_design_setting');
         });
 
         // ownerユーザー

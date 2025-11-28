@@ -21,6 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.custom' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
             'auth.api' => \App\Http\Middleware\ApiAuthenticate::class,
+            'client_only' => \App\Http\Middleware\ClientOnlyMiddleware::class,
+            'not_client' => \App\Http\Middleware\NotClientMiddleware::class,
         ]);
 
         // APIルートにもセッションベースの認証を可能にするため、必要なミドルウェアを追加

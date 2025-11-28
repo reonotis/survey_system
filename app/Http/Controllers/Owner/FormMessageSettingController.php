@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\OwnerController;
 use App\Models\FormSetting;
 use App\Service\FormMessageSettingService;
 use App\Service\FormSettingService;
@@ -11,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class FormMessageSettingController extends Controller
+class FormMessageSettingController extends OwnerController
 {
     /**
      * @param FormSetting $form_setting

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Owner;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\OwnerController;
 use App\Models\FormSetting;
 use App\Service\FormItemService;
 use App\Service\FormSettingService;
@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Carbon\Carbon;
 
-class FormBasicSettingController extends Controller
+class FormBasicSettingController extends OwnerController
 {
     /**
      * @param FormSetting $form_setting

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\OwnerController;
 use App\Http\Requests\Owner\UpdateFormItemRequest;
 use App\Models\FormSetting;
 use App\Models\FormItem;
@@ -15,7 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class FormMailSettingController extends Controller
+class FormMailSettingController extends OwnerController
 {
     /**
      * @param FormSetting $form_setting

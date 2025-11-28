@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\WelcomeController;
 
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+// クライアントには提供しない機能のルーティング
+Route::middleware('not_client')->group(function () {
+    Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+});
 
 // 申込フォーム
 Route::get('/form/{route_name}', [FormController::class, 'index'])->name('form_index');

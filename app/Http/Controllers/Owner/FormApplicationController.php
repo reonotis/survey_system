@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Owner;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\OwnerController;
 use App\Consts\CommonConst;
 use App\Models\FormItem;
 use App\Models\FormSetting;
@@ -16,7 +16,7 @@ use Yajra\DataTables\Facades\DataTables;
 /**
  *
  */
-class FormApplicationController extends Controller
+class FormApplicationController extends OwnerController
 {
     /** @var DisplayFormItemService $display_form_item_service */
     private DisplayFormItemService $display_form_item_service;
