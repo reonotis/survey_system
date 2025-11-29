@@ -20,7 +20,7 @@ class RedirectIfNotAuthenticated
             $login_route = match($guard) {
                 'admin' => 'admin_login',
                 'owner' => 'owner_login',
-                'web' => 'user_login',
+                'user' => 'user_login',
                 default => 'login',
             };
 

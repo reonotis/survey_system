@@ -19,10 +19,10 @@ class FormSettingService
     }
 
     /**
-     * @param int|null $owner_id
+     * @param int|null $user_id
      * @return Builder
      */
-    public function getFormListQuery(int $owner_id = null): Builder
+    public function getFormListQuery(int $user_id = null): Builder
     {
         $select = [
             'id',
@@ -36,8 +36,8 @@ class FormSettingService
 
         $query = FormSetting::select($select);
 
-        if ($owner_id) {
-            $query->where('created_by_owner', $owner_id);
+        if ($user_id) {
+            $query->where('created_by_user', $user_id);
         }
 
         return $query;
@@ -64,7 +64,7 @@ class FormSettingService
             'banner_filename' => $param['banner_filename'] ?? null,
             'publication_status' => $param['publication_status'] ?? 0,
             'created_by_admin' => $param['created_by_admin'] ?? null,
-            'created_by_owner' => $param['created_by_owner'] ?? null,
+            'created_by_user' => $param['created_by_user'] ?? null,
         ]);
     }
 

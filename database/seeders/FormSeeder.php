@@ -25,7 +25,7 @@ class FormSeeder extends Seeder
             'image_directory' => 'forms/sample-form/images',
             'css_filename' => 'form-style.css',
             'banner_filename' => 'form-banner.jpg',
-            'created_by_owner' => 1,
+            'created_by_user' => 1,
         ]);
     }
 }

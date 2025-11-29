@@ -1,0 +1,73 @@
+<x-user-app-layout>
+
+    @push('scripts')
+        @vite('resources/js/user/form/mail_setting.js')
+    @endpush
+
+    {{-- 画面名 --}}
+    <x-slot name="page_name">
+        {{ $form_setting->title }} - 基本設定
+    </x-slot>
+
+    {{-- ぱんくず --}}
+    <x-slot name="breadcrumbs">
+        <ol class="custom-container">
+            <li><a href="{{ route('user_dashboard') }}" class="anchor-link">ダッシュボード</a></li>
+            <li><a href="{{ route('user_form_index') }}" class="anchor-link">応募フォーム一覧</a></li>
+            <li><a href="{{ route('user_form_application_list', ['form_setting' => $form_setting->id]) }}"
+                   class="anchor-link">{{ $form_setting->title }}</a></li>
+            <li><a href="" class="anchor-link">基本設定</a></li>
+        </ol>
+    </x-slot>
+
+
+    <div class="custom-container py-4">
+        @include('layouts.user.form.navigation', ['number' => \App\Consts\UserConst::NAV_MANU_BASIC_SETTING])
+
+        <div class="mx-auto py-8" style="width: 800px;">
+
+            <form method="POST" action="">
+                @csrf
+
+                <div class="item-row">
+                    <div class="item-title">フォームタイトル</div>
+                    <div class="item-contents flex-start-center">
+                        <x-input-text name="title" class="w-full"
+                                      :error="$errors->has('title')"
+                                      :value="old('title', $form_setting->title)"
+                                      placeholder="title"/>
+                    </div>
+                </div>
+
+                <div class="item-row">
+                    <div class="item-title">申込期間</div>
+                    <div class="item-contents flex-start-center">
+                        <div class="flex-start-center gap-2">
+                            <x-input-text type="datetime-local" name="start_date"
+                                          :error="$errors->has('start_date')"
+                                          :value="old('start_date', $form_setting->start_date)"
+                                          placeholder="start_date"/>
+                            ～
+                            <x-input-text type="datetime-local" name="end_date"
+                                          :error="$errors->has('end_date')"
+                                          :value="old('end_date', $form_setting->end_date)"
+                                          placeholder="end_date"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-row">
+                    <div class="item-title">状態</div>
+                    <div class="item-contents flex-start-center">
+                    </div>
+                </div>
+
+                <div class="item-row flex-center-center">
+                    <input type="submit" class="btn" value="更新"/>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</x-user-app-layout>

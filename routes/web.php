@@ -19,4 +19,3 @@ Route::get('/form/{route_name}/complete', [FormController::class, 'complete'])->
 // 各認証タイプのルートを読み込み
 require __DIR__.'/user.php';
 require __DIR__.'/admin.php';
-require __DIR__.'/owner.php';

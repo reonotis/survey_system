@@ -28,7 +28,7 @@ return new class extends Migration
             $table->tinyInteger('publication_status')->default(0)->comment('公開状態');
             $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'))->comment('作成日時');
             $table->unsignedInteger('created_by_admin')->nullable()->comment('作成者');
-            $table->unsignedInteger('created_by_owner')->nullable()->comment('作成者');
+            $table->unsignedInteger('created_by_user')->nullable()->comment('作成者');
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->comment('更新日時');
             $table->softDeletes()->comment('削除日時');
         });

@@ -58,7 +58,7 @@ class FormSetting extends Model
         'css_filename',
         'banner_filename',
         'created_by_admin',
-        'created_by_owner',
+        'created_by_user',
     ];
 
     /**

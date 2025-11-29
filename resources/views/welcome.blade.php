@@ -176,7 +176,7 @@
     </div>
 
     <div class="cta">
-        <a href="{{ route('owner_register') }}">今すぐ無料で始める</a>
+        <a href="{{ route('user_register') }}">今すぐ無料で始める</a>
     </div>
 </div>
 

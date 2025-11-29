@@ -11,7 +11,7 @@ class BrandService
 {
     // 運用費用を頂いているサービス提供中のドメイン
     private static array $service_domain_list = [
-         'localhost', // ローカル環境で確認する場合に、この localhost をコメントアウトしてください
+//         'localhost', // ローカル環境で確認する場合に、この localhost をコメントアウトしてください
         // ニューバランス等
     ];
 

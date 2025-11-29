@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -16,6 +18,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'ユーザー',
             'email' => 'user@test.jp',
+            'host' => 'localhost',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
