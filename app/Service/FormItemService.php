@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Consts\CommonConst;
 use App\Models\FormItem;
 use App\Models\FormSetting;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,12 +16,18 @@ class FormItemService
 
     public function create(FormSetting $form_setting, array $param)
     {
+        // sortの値を決定（insert_indexが指定されている場合はinsert_index+1を使用、そうでなければ最大値+1）
+        // insert_indexは0ベースのインデックス、sortは1ベースの値
+        $sort = isset($param['insert_index'])
+            ? $param['insert_index'] + 1
+            : ($form_setting->formItems->max('sort') + 1);
+
         // 全ての項目で更新するカラム
         $base_param = [
             'form_setting_id' => $form_setting->id,
             'item_type' => $param['new_item_type'],
             'item_title' => $param['item_title'],
-            'sort' => $form_setting->formItems->max('sort') + 1,
+            'sort' => $sort,
             'field_required' => isset($param['required']) ? 1 : 0,
             'annotation_text' => $param['annotation_text'] ?? '',
         ];
@@ -53,6 +60,27 @@ class FormItemService
         return $form_item->update($update_param);
     }
 
+    public function updateByFormItem(FormItem $form_item, string $target_key, $target_value)
+    {
+        $param = [$target_key => $target_value];
+        $param = $this->makeUpdateParamReact($form_item, $target_key, $target_value);
+
+        // 更新処理
+        return $form_item->update($param);
+    }
+
+    /**
+     * @param int $type
+     * @param array $param
+     * @return array
+     */
+    private function makeUpdateParamReact(FormItem $form_item, string $target_key, $target_value): array
+    {
+        return match ($form_item->item_type) {
+            FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($form_item, $target_key, $target_value),
+            default => [],
+        };
+    }
     /**
      * @param int $type
      * @param array $param
@@ -65,7 +93,7 @@ class FormItemService
             FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForKana($param),
             FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($param),
             FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($param),
-            FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($param['gender_list']?? []),
+            FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($param['gender_list'] ?? []),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($param),
             FormItem::ITEM_TYPE_CHECKBOX => $this->makeUpdateParamForCheckbox($param),
             FormItem::ITEM_TYPE_TERMS => $this->makeUpdateParamForTerms($param),
@@ -81,7 +109,7 @@ class FormItemService
     {
         return [
             'details' => json_encode([
-                'name_type' => $param['name_type']
+                'name_type' => $param['name_type'] ?? CommonConst::NAME_SEPARATE,
             ]),
         ];
     }
@@ -94,21 +122,31 @@ class FormItemService
     {
         return [
             'details' => json_encode([
-                'name_type_kana' => $param['name_type_kana']
+                'name_type_kana' => $param['name_type_kana'] ?? CommonConst::KANA_SEPARATE,
             ]),
         ];
     }
 
     /**
-     * @param array $param
+     * @param FormItem $form_item
+     * @param string $target_key
+     * @param $target_value
      * @return array
      */
-    private function makeUpdateParamForEmail(array $param): array
+    private function makeUpdateParamForEmail(FormItem $form_item, string $target_key, $target_value): array
     {
+        // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
+        if ($target_key === 'confirm_flg') {
+            $details = json_decode($form_item->details ?? '{}', true);
+            $details[$target_key] = $target_value;
+
+            return [
+                'details' => $details,
+            ];
+        }
+
         return [
-            'details' => json_encode([
-                'confirm_flg' => $param['confirm_flg']
-            ]),
+            $target_key => $target_value
         ];
     }
 
@@ -120,13 +158,13 @@ class FormItemService
     {
         return [
             'details' => json_encode([
-                'hyphen_flg' => $param['hyphen_flg']
+                'hyphen_flg' => $param['hyphen_flg'] ?? CommonConst::TEL_HYPHEN_USE,
             ]),
         ];
     }
 
     /**
-     * @param array $param
+     * @param array $gender_list
      * @return array
      */
     private function makeUpdateParamForGender(array $gender_list): array
@@ -151,8 +189,8 @@ class FormItemService
     {
         return [
             'details' => json_encode([
-                'post_code_use_type' => $param['post_code_use_type'],
-                'address_separate_type' => $param['address_separate_type'],
+                'post_code_use_type' => $param['post_code_use_type'] ?? CommonConst::POST_CODE_DISABLED,
+                'address_separate_type' => $param['address_separate_type'] ?? CommonConst::ADDRESS_SEPARATE,
             ]),
         ];
     }

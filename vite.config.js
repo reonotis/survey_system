@@ -1,21 +1,28 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
     plugins: [
+        react({
+            babel: {
+                plugins: [],
+            },
+        }),
         laravel({
             input: [
                 'resources/css/app.css',
                 'resources/js/admin/app.js',
                 'resources/js/admin/form_list.js',
                 'resources/js/form/app.js',
-                'resources/js/owner/app.js',
-                'resources/js/owner/form/form_application.js',
-                'resources/js/owner/form/form_list.js',
-                'resources/js/owner/form/item_setting.js',
-                'resources/js/owner/form/register_item_setting.js',
-                'resources/js/owner/form/mail_setting.js',
-                'resources/js/owner/form/message_setting.js',
+                'resources/js/user/app.js',
+                'resources/js/user/form/form_application.js',
+                'resources/js/user/form/form_list.js',
+                'resources/js/user/form/item_setting.js',
+                'resources/js/user/form/register_item_setting.js',
+                'resources/js/user/form/mail_setting.js',
+                'resources/js/user/form/message_setting.js',
+                'resources/js/user/form/item_setting_react/ItemSettingReact.jsx',
             ],
             refresh: [
                 'resources/views/**',

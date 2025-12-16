@@ -55,6 +55,7 @@ Route::prefix('user')->group(function () {
             Route::get('/{form_setting}/item-setting', [FormItemSettingController::class, 'index'])->name('user_form_item_setting');
             Route::post('/{form_setting}/register-form-item', [FormItemSettingController::class, 'registerFormItem'])->name('user_form_register_form_item');
             Route::post('/{form_setting}/update-form-item/{form_item}', [FormItemSettingController::class, 'updateFormItem'])->name('user_form_update_form_item');
+            Route::post('/{form_setting}/update-form-item-react/{form_item}', [FormItemSettingController::class, 'updateFormItemReact'])->name('user_form_update_form_item_react');
             Route::delete('/{form_setting}/delete-form-item/{form_item}', [FormItemSettingController::class, 'deleteFormItem'])->name('user_form_delete_form_item');
 
             // メッセージ設定

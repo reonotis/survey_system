@@ -1,7 +1,12 @@
 <x-user-app-layout>
 
     @push('scripts')
-        @vite('resources/js/user/form/item_setting.js')
+        @viteReactRefresh
+        @vite([
+            'resources/js/user/form/item_setting.js',
+            'resources/scss/user/form/item_setting.scss',
+            'resources/js/user/form/item_setting_react/ItemSettingReact.jsx'
+        ])
     @endpush
 
     {{-- 画面名 --}}
@@ -78,15 +83,6 @@
                                 </td>
                                 <td>
                                     @switch($form_item->item_type)
-                                        @case(App\Models\FormItem::ITEM_TYPE_NAME)
-                                            @include('user.form.components.name')
-                                            @break
-                                        @case(App\Models\FormItem::ITEM_TYPE_KANA)
-                                            @include('user.form.components.kana')
-                                            @break
-                                        @case(App\Models\FormItem::ITEM_TYPE_EMAIL)
-                                            @include('user.form.components.email')
-                                            @break
                                         @case(App\Models\FormItem::ITEM_TYPE_TEL)
                                             @include('user.form.components.tel')
                                             @break
@@ -109,7 +105,7 @@
                                     @endswitch
                                 </td>
                                 <td>
-                                    <textarea name="annotation_text" class="input-box w-full h-20">{{ $form_item->annotation_text }}</textarea>
+                                    <textarea name="annotation_text" class="input-box w-full ">{{ $form_item->annotation_text }}</textarea>
                                 </td>
                                 <td class="text-center"><input type="submit" class="btn min" value="更新"></td>
                             </form>
@@ -133,6 +129,43 @@
             </table>
 
             <div id="update_item_order_form" data-item-order-url="{{ route('user_api_forms_update_item_order', ['form_setting' => $form_setting->id]) }}"></div>
+
+            {{-- Reactコンポーネント用のコンテナ --}}
+            <div id="react-item-setting-container"></div>
+            @php
+                $form_items_array = $form_items->map(function($item) use ($form_setting) {
+                    $details = json_decode($item->details ?? '{}', true);
+                    return [
+                        'id' => $item->id,
+                        'item_type' => $item->item_type,
+                        'item_title' => $item->item_title,
+                        'field_required' => (bool)$item->field_required,
+                        'sort' => $item->sort,
+                        'annotation_text' => $item->annotation_text,
+                        'details' => $details,
+                        // React から更新 API を呼ぶための URL
+                        'update_url' => route('user_form_update_form_item_react', ['form_setting' => $form_setting->id, 'form_item' => $item->id]),
+                    ];
+                })->values()->toArray();
+            @endphp
+            <script>
+                window.selectableItems = @json($selectable_item_list ?? []);
+                window.formItemsList = @json($form_items_array);
+                window.itemTypeList = @json(App\Models\FormItem::ITEM_TYPE_LIST);
+                window.commonConsts = {
+                    NAME_SEPARATE_LIST: @json(\App\Consts\CommonConst::NAME_SEPARATE_LIST),
+                    KANA_SEPARATE_LIST: @json(\App\Consts\CommonConst::KANA_SEPARATE_LIST),
+                    EMAIL_CONFIRM_LIST: @json(\App\Consts\CommonConst::EMAIL_CONFIRM_LIST),
+                    TEL_HYPHEN_LIST: @json(\App\Consts\CommonConst::TEL_HYPHEN_LIST),
+                    POST_CODE_USE_LIST: @json(\App\Consts\CommonConst::POST_CODE_USE_LIST),
+                    ADDRESS_SEPARATE_LIST: @json(\App\Consts\CommonConst::ADDRESS_SEPARATE_LIST),
+                    GENDER_LIST: @json(\App\Consts\CommonConst::GENDER_LIST),
+                };
+                window.formSettingId = {{ $form_setting->id }};
+                window.registerFormItemUrl = @json(route('user_api_register_form_item', ['form_setting' => $form_setting->id]));
+                window.updateItemOrderUrl = @json(route('user_api_forms_update_item_order', ['form_setting' => $form_setting->id]));
+                window.csrfToken = @json(csrf_token());
+            </script>
         </div>
     </div>
 
