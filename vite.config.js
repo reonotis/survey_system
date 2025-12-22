@@ -18,11 +18,11 @@ export default defineConfig({
                 'resources/js/user/app.js',
                 'resources/js/user/form/form_application.js',
                 'resources/js/user/form/form_list.js',
-                'resources/js/user/form/item_setting.js',
                 'resources/js/user/form/register_item_setting.js',
                 'resources/js/user/form/mail_setting.js',
                 'resources/js/user/form/message_setting.js',
                 'resources/js/user/form/item_setting_react/ItemSettingReact.jsx',
+                'resources/scss/user/form/item_setting.scss',
             ],
             refresh: [
                 'resources/views/**',

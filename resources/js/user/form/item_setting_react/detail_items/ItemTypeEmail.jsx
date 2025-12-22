@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { saveItem, getItemById, getCommonConsts } from './itemSettingData';
+import { saveItem, getItemById, getCommonConsts } from '../itemSettingData';
 
 /**
  * 基本的な項目設定（itemTitle、fieldRequired、annotationText）
@@ -39,7 +39,6 @@ function ItemTypeEmail({itemTypeList, itemType, selectedId}) {
                     setConfirmFlg(String(selectedItem.confirm_flg));
                 }
             }
-            console.log(selectedItem)
             setCommonConsts(getCommonConsts());
         };
 

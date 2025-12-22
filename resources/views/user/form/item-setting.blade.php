@@ -3,7 +3,6 @@
     @push('scripts')
         @viteReactRefresh
         @vite([
-            'resources/js/user/form/item_setting.js',
             'resources/scss/user/form/item_setting.scss',
             'resources/js/user/form/item_setting_react/ItemSettingReact.jsx'
         ])
@@ -30,145 +29,44 @@
 
         <div class="mx-auto py-8">
 
-            @if($selectable_item_list)
-                <div class="flex-center-center mb-4">
-                    <button type="button" id="item_add_btn" class="btn" >項目追加</button>
-                </div>
-            @endif
-
-            <table class="list-tbl" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th style="width: 50px;" class="sort-title">
-                            <span>↑</span><span>↓</span>
-                        </th>
-                        <th style="width: 100px;">タイプ</th>
-                        <th style="width: 50px;">必須</th>
-                        <th style="width: 300px;">項目名</th>
-                        <th style="flex: 1;">詳細設定</th>
-                        <th style="flex: 1;">注釈文</th>
-                        <th style="width: 60px;">更新</th>
-                        <th style="width: 60px;">削除</th>
-                    </tr>
-                </thead>
-                <tbody id="form-items-sortable">
-                    @foreach($form_items as $form_item)
-                        <tr>
-                            <td>
-                                <div class="flex-center-center">
-                                    <span class="sort-handle"></span>
-                                </div>
-                                <input type="hidden" name="item_id[]" value="{{ $form_item->id }}">
-                            </td>
-                            <form method="POST" action="{{ route('user_form_update_form_item', ['form_setting' => $form_setting->id, 'form_item' => $form_item->id]) }}">
-                                @csrf
-                                <td>
-                                    <input type="hidden" name="item_type" value="{{ $form_item->item_type }}">
-                                    {{ App\Models\FormItem::ITEM_TYPE_LIST[$form_item->item_type] }}
-                                </td>
-                                <td class="text-center">
-
-                                    <div class="flex-center-center">
-                                        <x-input-checkbox
-                                            name="field_required"
-                                            id="required"
-                                            value="1"
-                                            :checked="$form_item->field_required"
-                                        />
-                                    </div>
-
-                                </td>
-                                <td class="text-center">
-                                    <input type="text" name="item_title" value="{{ $form_item->item_title }}" class="input-box w-full" >
-                                </td>
-                                <td>
-                                    @switch($form_item->item_type)
-                                        @case(App\Models\FormItem::ITEM_TYPE_TEL)
-                                            @include('user.form.components.tel')
-                                            @break
-                                        @case(App\Models\FormItem::ITEM_TYPE_GENDER)
-                                            @include('user.form.components.gender')
-                                            @break
-                                        @case(App\Models\FormItem::ITEM_TYPE_ADDRESS)
-                                            @include('user.form.components.address')
-                                            @break
-                                        @case(App\Models\FormItem::ITEM_TYPE_CHECKBOX)
-                                            @include('user.form.components.checkbox')
-                                            @break
-                                        @case(App\Models\FormItem::ITEM_TYPE_TERMS)
-                                            @include('user.form.components.terms')
-                                            @break
-                                        @default
-                                            {{ $form_item->item_type }}
-                                            @dump($errors)
-                                            @break
-                                    @endswitch
-                                </td>
-                                <td>
-                                    <textarea name="annotation_text" class="input-box w-full ">{{ $form_item->annotation_text }}</textarea>
-                                </td>
-                                <td class="text-center"><input type="submit" class="btn min" value="更新"></td>
-                            </form>
-                            <td>
-                                <form action="{{ route('user_form_delete_form_item', ['form_setting' => $form_setting->id, 'form_item' => $form_item->id]) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <div class="flex-center-center">
-                                        <button type="submit" class="delete-btn">
-                                            <img src="{{ asset('icon/delete.svg') }}" alt="削除"
-                                                class="delete-icon mx-auto"
-                                                style="cursor: pointer; width: 30px; height: 30px;"
-                                                onclick="return confirm('削除しますか？')">
-                                    </button>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <div id="update_item_order_form" data-item-order-url="{{ route('user_api_forms_update_item_order', ['form_setting' => $form_setting->id]) }}"></div>
+            <div class="flex-center-center mb-4 gap-4">
+                <button type="button" class="btn" >全ての項目を削除</button>
+                <button type="button" class="btn" >編集内容をリセット</button>
+            </div>
 
             {{-- Reactコンポーネント用のコンテナ --}}
             <div id="react-item-setting-container"></div>
-            @php
-                $form_items_array = $form_items->map(function($item) use ($form_setting) {
-                    $details = json_decode($item->details ?? '{}', true);
-                    return [
-                        'id' => $item->id,
-                        'item_type' => $item->item_type,
-                        'item_title' => $item->item_title,
-                        'field_required' => (bool)$item->field_required,
-                        'sort' => $item->sort,
-                        'annotation_text' => $item->annotation_text,
-                        'details' => $details,
-                        // React から更新 API を呼ぶための URL
-                        'update_url' => route('user_form_update_form_item_react', ['form_setting' => $form_setting->id, 'form_item' => $item->id]),
-                    ];
-                })->values()->toArray();
-            @endphp
+
+            <div class="flex-center-center mt-4 gap-4">
+                <form method="POST" action="{{ route('user_form_save_form_items', ['form_setting' => $form_setting->id]) }}">
+                    @csrf
+                    <input type="submit" class="btn" value="編集した内容で更新する">
+                </form>
+            </div>
+
             <script>
-                window.selectableItems = @json($selectable_item_list ?? []);
-                window.formItemsList = @json($form_items_array);
-                window.itemTypeList = @json(App\Models\FormItem::ITEM_TYPE_LIST);
-                window.commonConsts = {
+
+                window.allFormItemList = @json($all_form_item_list);
+                window.draftFormItems = @json($draft_form_items);
+                window.upperLimitItemType = @json($upper_limit_item_type);
+                window.itemTypeList = @json(\App\Models\FormItem::ITEM_TYPE_LIST);
+
+                window.formSettingId = {{ $form_setting->id }};
+                window.csrfToken = @json(csrf_token());
+
+                window.commonConst = {
                     NAME_SEPARATE_LIST: @json(\App\Consts\CommonConst::NAME_SEPARATE_LIST),
                     KANA_SEPARATE_LIST: @json(\App\Consts\CommonConst::KANA_SEPARATE_LIST),
                     EMAIL_CONFIRM_LIST: @json(\App\Consts\CommonConst::EMAIL_CONFIRM_LIST),
-                    TEL_HYPHEN_LIST: @json(\App\Consts\CommonConst::TEL_HYPHEN_LIST),
-                    POST_CODE_USE_LIST: @json(\App\Consts\CommonConst::POST_CODE_USE_LIST),
-                    ADDRESS_SEPARATE_LIST: @json(\App\Consts\CommonConst::ADDRESS_SEPARATE_LIST),
-                    GENDER_LIST: @json(\App\Consts\CommonConst::GENDER_LIST),
                 };
-                window.formSettingId = {{ $form_setting->id }};
-                window.registerFormItemUrl = @json(route('user_api_register_form_item', ['form_setting' => $form_setting->id]));
-                window.updateItemOrderUrl = @json(route('user_api_forms_update_item_order', ['form_setting' => $form_setting->id]));
-                window.csrfToken = @json(csrf_token());
+
+                window.draftAddItemUrl = @json(route('user_form_draft_add_item', ['form_setting' => $form_setting->id]));
+                window.draftSortChangeUrl = @json(route('user_form_draft_sort_change', ['form_setting' => $form_setting->id]));
+                window.draftItemSaveUrl = @json(route('user_form_draft_item_save', ['form_setting' => $form_setting->id]));
+                window.draftItemDeleteUrl = @json(route('user_form_draft_item_delete', ['form_setting' => $form_setting->id]));
+
             </script>
         </div>
     </div>
 
-    {{-- 項目追加時のモーダル --}}
-    @include('modal.user.form.item_add')
 </x-user-app-layout>

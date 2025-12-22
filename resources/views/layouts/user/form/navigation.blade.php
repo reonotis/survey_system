@@ -5,6 +5,9 @@
         <a href="{{ route('user_form_application_list', ['form_setting' =>  $form_setting->id]) }}"
            class="@if($number === \App\Consts\UserConst::NAV_MANU_APPLICATION_LIST) active @endif">応募者一覧</a>
 
+        <a href="{{ route('user_form_analytics', ['form_setting' =>  $form_setting->id]) }}"
+           class="@if($number === \App\Consts\UserConst::NAV_MANU_ANALYTICS) active @endif">応募分析</a>
+
         <a href="{{ route('user_form_basic_setting', ['form_setting' =>  $form_setting->id]) }}"
            class="@if($number === \App\Consts\UserConst::NAV_MANU_BASIC_SETTING) active @endif">基本設定</a>
 
@@ -24,7 +27,10 @@
            class="@if($number === \App\Consts\UserConst::NAV_MANU_DESIGN_SETTING) active @endif">デザイン設定</a>
     </div>
 
-    <a href="{{ route('form_index', ['route_name' => $form_setting->route_name]) }}" class="btn" target="_blank">申込フォームを確認する</a>
+    <div class="">
+        <a href="{{ route('form_index', ['route_name' => $form_setting->route_name]) }}" class="btn" target="_blank">申込フォームの画面を確認する</a>
+        <a href="{{ route('form_index', ['route_name' => $form_setting->route_name]) }}" class="btn" target="_blank">実際の申込フォームに移動する</a>
+    </div>
 </div>
 
 

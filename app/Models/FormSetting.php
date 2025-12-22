@@ -16,8 +16,10 @@ use Illuminate\Support\Collection;
  * @property string $title
  * @property string $route_name
  * @property string $admin_email
+ * @property int $is_draft_item
  *
  * @property Collection<int, FormItem> $formItems
+ * @property Collection<int, FormItemDraft> $draftFormItems
  * @property ?MessageSetting $message
  * @property ?MailSetting $mailSetting
  */
@@ -57,6 +59,7 @@ class FormSetting extends Model
         'image_directory',
         'css_filename',
         'banner_filename',
+        'is_draft_item',
         'created_by_admin',
         'created_by_user',
     ];
@@ -81,6 +84,14 @@ class FormSetting extends Model
     public function formItems(): HasMany
     {
         return $this->hasMany(FormItem::class)->orderBy('sort');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function draftFormItems(): HasMany
+    {
+        return $this->hasMany(FormItemDraft::class)->orderBy('sort');
     }
 
     /**

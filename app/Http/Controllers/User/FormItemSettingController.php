@@ -8,6 +8,7 @@ use App\Http\Requests\Owner\UpdateFormItemReactRequest;
 use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Service\FormItemService;
+use App\Service\FormMailSettingService;
 use App\Service\FormSettingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -22,64 +23,46 @@ class FormItemSettingController extends UserController
      */
     public function index(FormSetting $form_setting): View
     {
-        // 設定されている項目を取得
-        $form_items = $form_setting->formItems;
+        // 編集中のデータを取得
+        if ($form_setting->is_draft_item == 0) {
 
-        $form_service = app(FormSettingService::class);
-        $selectable_item_list = $form_service->getSelectableItemList($form_items);
+            // 公開中の項目データを取得
+            $form_items = $form_setting->formItems;
+
+            if ($form_items->isNotEmpty()) {
+                // 既存のデータを編集中のテーブルに保存する
+                $form_item_service = app(FormItemService::class);
+                $records = [];
+                foreach ($form_items as $form_item) {
+                    $record = [
+                        'form_setting_id' => $form_setting->id,
+                        'form_item_id' => $form_item->id,
+                        'item_type' => $form_item->item_type,
+                        'field_required' => $form_item->field_required,
+                        'item_title' => $form_item->item_title,
+                        'value_list' => $form_item->value_list,
+                        'details' => $form_item->details,
+                        'annotation_text' => $form_item->annotation_text,
+                        'sort' => $form_item->sort,
+                    ];
+                    $records[] = $record;
+                }
+                $form_item_service->insertDraft($records);
+
+            }
+
+            $form_setting->is_draft_item = 1;
+            $form_setting->save();
+        }
+
+        $draft_form_items = $form_setting->draftFormItems;
 
         return view('user.form.item-setting', [
             'form_setting' => $form_setting,
-            'form_items' => $form_items,
-            'selectable_item_list' => $selectable_item_list,
+            'draft_form_items' => $draft_form_items,
+            'all_form_item_list' => FormItem::ITEM_TYPE_LIST, // 項目名の一覧
+            'upper_limit_item_type' => FormItem::ITEM_TYPE_UPPER_LIMIT, // 登録できる項目の上限値
         ]);
-    }
-
-    /**
-     * @param FormSetting $form_setting
-     * @param Request $request TODO
-     * @return JsonResponse
-     */
-    public function registerFormItem(FormSetting $form_setting, Request $request): JsonResponse
-    {
-        try {
-            $insert_sort_no = $request->insert_index + 1;
-            $form_setting->load('formItems');
-
-            // 既存のレコードのソートを更新する
-            $items_to_update = $form_setting->formItems->where('sort', '>=', $insert_sort_no);
-
-            // 降順で更新することで、同じ値になることを防ぐ
-            foreach ($items_to_update as $item) {
-                $item->update(['sort' => $item->sort + 1]);
-            }
-
-            $form_item_service = app(FormItemService::class);
-            $new_form_item = $form_item_service->create($form_setting, $request->all());
-
-            // 新しく作成された項目をリロードして、関連データも含める
-            $new_form_item->refresh();
-
-            return response()->json([
-                'message' => '登録しました',
-                'success' => true,
-                'form_item' => [
-                    'id' => $new_form_item->id,
-                    'item_type' => $new_form_item->item_type,
-                    'item_title' => $new_form_item->item_title,
-                    'sort' => $new_form_item->sort,
-                    'field_required' => $new_form_item->field_required,
-                    'details' => $new_form_item->details,
-                    'value_list' => $new_form_item->value_list,
-                    'annotation_text' => $new_form_item->annotation_text,
-                ],
-            ]);
-        } catch (\Exception $error) {
-            return response()->json([
-                'message' => $error->getMessage(),
-                'success' => false,
-            ]);
-        }
     }
 
     /**
@@ -114,116 +97,162 @@ class FormItemSettingController extends UserController
 
     /**
      * @param FormSetting $form_setting
-     * @param FormItem $form_item
-     * @param UpdateFormItemRequest $request
-     * @return RedirectResponse|JsonResponse
+     * @return JsonResponse
      */
-    public function updateFormItem(FormSetting $form_setting, FormItem $form_item, UpdateFormItemRequest $request): RedirectResponse|JsonResponse
+    public function draftAddItem(FormSetting $form_setting, Request $request): JsonResponse
     {
         try {
+            $item_type = $request->item_type;
+
             $form_item_service = app(FormItemService::class);
-            $form_item_service->update($form_item, $form_item->item_type, $request->validated());
+            $form_item_draft = $form_item_service->addDraft(
+                 $form_setting->id,
+                (int)$request->item_type,
+            );
 
-            // React などからの AJAX 要求の場合は JSON を返す
-            if ($request->ajax() || $request->wantsJson()) {
-                $form_item->refresh();
-                $details = json_decode($form_item->details ?? '{}', true);
+            return response()->json([
+                'message' => $item_type . 'を追加しました',
+                'success' => true,
+                'form_item_draft' => $form_item_draft,
+            ]);
 
-                return response()->json([
-                    'message'   => '更新しました',
-                    'success'   => true,
-                    'form_item' => [
-                        'id'              => $form_item->id,
-                        'item_type'       => $form_item->item_type,
-                        'item_title'      => $form_item->item_title,
-                        'sort'            => $form_item->sort,
-                        'field_required'  => (bool)$form_item->field_required,
-                        'details'         => $details,
-                        'value_list'      => $form_item->value_list,
-                        'annotation_text' => $form_item->annotation_text,
-                    ],
-                ]);
-            }
-
-            return redirect()->back()->with('success', ['更新しました']);
         } catch (\Exception $error) {
             \Log::error($error->getMessage());
 
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'message' => $error->getMessage(),
-                    'success' => false,
-                ], 500);
-            }
-
-            return redirect()->back()->with('error', ['更新に失敗しました']);
+            return response()->json([
+                'message' => $error->getMessage(),
+                'success' => false,
+            ], 500);
         }
     }
 
-    /**
-     * @param FormSetting $form_setting
-     * @param FormItem $form_item
-     * @param UpdateFormItemReactRequest $request
-     * @return RedirectResponse|JsonResponse
-     */
-    public function updateFormItemReact(FormSetting $form_setting, FormItem $form_item, UpdateFormItemReactRequest $request): RedirectResponse|JsonResponse
+    public function draftSortChange(FormSetting $form_setting, Request $request): JsonResponse
     {
         try {
             $form_item_service = app(FormItemService::class);
 
-            \Log::info($request->target_key . '   ' . $request->target_value);
-            $form_item_service->updateByFormItem($form_item,  $request->target_key, $request->target_value);
-
-            // React などからの AJAX 要求の場合は JSON を返す
-            if ($request->ajax() || $request->wantsJson()) {
-                $form_item->refresh();
-                $details = json_decode($form_item->details ?? '{}', true);
-
-                return response()->json([
-                    'message'   => '更新しました',
-                    'success'   => true,
-                    'form_item' => [
-                        'id'              => $form_item->id,
-                        'item_type'       => $form_item->item_type,
-                        'item_title'      => $form_item->item_title,
-                        'sort'            => $form_item->sort,
-                        'field_required'  => (bool)$form_item->field_required,
-                        'details'         => $details,
-                        'value_list'      => $form_item->value_list,
-                        'annotation_text' => $form_item->annotation_text,
-                    ],
-                ]);
+            $sort = 1;
+            foreach ($request->item_ids as $form_item_drafts_id) {
+                $form_item_service->sortChangeDraft((int)$form_item_drafts_id, $sort);
+                $sort++;
             }
 
-            return redirect()->back()->with('success', ['更新しました']);
+            return response()->json([
+                'message' => '並び替え完了',
+                'success' => true,
+            ]);
         } catch (\Exception $error) {
             \Log::error($error->getMessage());
 
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'message' => $error->getMessage(),
-                    'success' => false,
-                ], 500);
+            return response()->json([
+                'message' => $error->getMessage(),
+                'success' => false,
+            ], 500);
+        }
+    }
+
+    public function draftItemSave(FormSetting $form_setting, Request $request): JsonResponse
+    {
+        try {
+            $form_item_service = app(FormItemService::class);
+            $form_item_service->updateByFormItem($request->item_id, $request->key, $request->value);
+
+            return response()->json([
+                'message' => '更新完了',
+                'success' => true,
+            ]);
+        } catch (\Exception $error) {
+            \Log::error($error->getMessage());
+
+            return response()->json([
+                'message' => $error->getMessage(),
+                'success' => false,
+            ], 500);
+        }
+    }
+
+    public function draftItemDelete(FormSetting $form_setting, Request $request): JsonResponse
+    {
+        try {
+            \Log::error($request->all());
+
+            $form_item_service = app(FormItemService::class);
+            $form_item_service->deleteDraftItem((int)$request->item_id);
+
+            return response()->json([
+                'message' => '並び替え',
+                'success' => true,
+            ]);
+        } catch (\Exception $error) {
+            \Log::error($error->getMessage());
+
+            return response()->json([
+                'message' => $error->getMessage(),
+                'success' => false,
+            ], 500);
+        }
+    }
+
+
+    public function saveFormItems(FormSetting $form_setting)
+    {
+        $form_item_service = app(FormItemService::class);
+        try {
+            // 編集中の項目を取得
+            $draft_form_items = $form_setting->draftFormItems;
+
+            // 公開済みの項目を取得
+            $form_items = $form_setting->formItems;
+            $updated_ids = [];
+
+            // 編集中の項目をループ
+            foreach ($draft_form_items as $draft_form_item) {
+                // 既存の項目がある場合は更新
+                if ($draft_form_item->form_item_id) {
+                    $param = [
+                        'form_setting_id' => $draft_form_item->form_setting_id,
+                        'item_type' => $draft_form_item->item_type,
+                        'item_title' => $draft_form_item->item_title,
+                        'field_required' => $draft_form_item->field_required,
+                        'details' => $draft_form_item->details,
+                        'annotation_text' => $draft_form_item->annotation_text,
+                        'sort' => $draft_form_item->sort,
+                    ];
+                    $form_item_service->updateFormItemById($draft_form_item->form_item_id, $param);
+
+                    // 更新済み変数に追加しておく
+                    $updated_ids[]  = $draft_form_item->form_item_id;
+                } else {
+                    // 既存の項目が無いので作成
+                    $form_item_service->create([
+                        'form_setting_id' => $draft_form_item->form_setting_id,
+                        'item_type' => $draft_form_item->item_type,
+                        'item_title' => $draft_form_item->item_title,
+                        'field_required' => $draft_form_item->field_required,
+                        'details' => $draft_form_item->details,
+                        'annotation_text' => $draft_form_item->annotation_text,
+                        'sort' => $draft_form_item->sort,
+                    ]);
+                }
             }
 
+            // 更新していないデータは削除する
+            $form_items
+                ->whereNotIn('id', $updated_ids)
+                ->each(function ($form_item) {
+                    $form_item->delete();
+                });
+
+            $form_setting->is_draft_item = 0;
+            $form_setting->save();
+
+            $form_setting->draftFormItems()->delete();
+
+            return redirect()->route('user_form_item_setting',  ['form_setting' => $form_setting->id])->with('success',['更新しました']);
+        } catch (\Exception $error) {
+            \Log::error($error->getMessage());
             return redirect()->back()->with('error', ['更新に失敗しました']);
         }
     }
 
-    /**
-     * @param FormSetting $form_setting
-     * @param FormItem $form_item
-     * @return RedirectResponse
-     */
-    public function deleteFormItem(FormSetting $form_setting, FormItem $form_item): RedirectResponse
-    {
-        try {
-            $form_item->delete();
-
-            return redirect()->back()->with('success', ['項目を削除しました']);
-        } catch (\Exception $error) {
-            \Log::error($error->getMessage());
-            return redirect()->back()->with('error', ['項目の削除に失敗しました']);
-        }
-    }
 }

@@ -47,16 +47,20 @@ Route::prefix('user')->group(function () {
             Route::post('/{form_setting}/get-application-data', [FormApplicationController::class, 'getApplicationData'])->name('user_form_get_application_list');
             Route::post('/{form_setting}/update-display-items', [FormApplicationController::class, 'displayItemsUpdate'])->name('user_form_update_display_items');
 
+            // 応募分析
+            Route::get('/{form_setting}/analytics', [FormApplicationController::class, 'show'])->name('user_form_analytics');
+
             // 基本設定
             Route::get('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'index'])->name('user_form_basic_setting');
             Route::post('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'update'])->name('user_form_basic_setting_update');
 
             // 項目設定
             Route::get('/{form_setting}/item-setting', [FormItemSettingController::class, 'index'])->name('user_form_item_setting');
-            Route::post('/{form_setting}/register-form-item', [FormItemSettingController::class, 'registerFormItem'])->name('user_form_register_form_item');
-            Route::post('/{form_setting}/update-form-item/{form_item}', [FormItemSettingController::class, 'updateFormItem'])->name('user_form_update_form_item');
-            Route::post('/{form_setting}/update-form-item-react/{form_item}', [FormItemSettingController::class, 'updateFormItemReact'])->name('user_form_update_form_item_react');
-            Route::delete('/{form_setting}/delete-form-item/{form_item}', [FormItemSettingController::class, 'deleteFormItem'])->name('user_form_delete_form_item');
+            Route::post('/{form_setting}/draft-add-item', [FormItemSettingController::class, 'draftAddItem'])->name('user_form_draft_add_item');
+            Route::post('/{form_setting}/draft-sort-change', [FormItemSettingController::class, 'draftSortChange'])->name('user_form_draft_sort_change');
+            Route::post('/{form_setting}/draft-item-save', [FormItemSettingController::class, 'draftItemSave'])->name('user_form_draft_item_save');
+            Route::post('/{form_setting}/draft-item-delete', [FormItemSettingController::class, 'draftItemDelete'])->name('user_form_draft_item_delete');
+            Route::post('/{form_setting}/save-form-items', [FormItemSettingController::class, 'saveFormItems'])->name('user_form_save_form_items');
 
             // メッセージ設定
             Route::get('/{form_setting}/message-setting', [FormMessageSettingController::class, 'index'])->name('user_form_message_setting');

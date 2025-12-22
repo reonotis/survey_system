@@ -1,36 +1,37 @@
 import React from 'react';
-import ItemTypeName from './ItemTypeName';
-import ItemTypeKana from './ItemTypeKana';
-import ItemTypeEmail from './ItemTypeEmail';
-import ItemTypeDefault from './ItemTypeDefault';
+import ItemTypeName from './detail_items/ItemTypeName';
+import ItemTypeKana from './detail_items/ItemTypeKana';
 
-function ItemDetailPanel({ selectedItem, itemTypeList }) {
+
+function ItemDetailPanel({ selectedItem, updateItemLocalValue, saveItemValue }) {
     if (!selectedItem) {
         return (
             <div>
                 <h3 className="title-label">詳細設定</h3>
                 <p className="text-sm text-gray-500 text-center py-8">
-                    項目を選択してください
+                    編集する項目を選択してください
                 </p>
             </div>
         );
     }
 
-    const itemType = selectedItem.item_type;
 
     const renderDetailContent = () => {
-        switch (itemType) {
-            case 1: // お名前
-                return <ItemTypeName itemTypeList={itemTypeList} selectedItem={selectedItem}/>;
-            case 2: // ヨミ
-                return <ItemTypeKana itemTypeList={itemTypeList} selectedItem={selectedItem}/>;
-            case 3: // メール
-                return <ItemTypeEmail itemTypeList={itemTypeList} itemType={itemType} selectedId={selectedItem.id}/>;
-            case 4: // 電話
-            case 5: // 性別
-            case 6: // 住所
+        switch (selectedItem.item_type) {
+            case 1:
+                return <ItemTypeName selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
+            case 2:
+                return <ItemTypeKana selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
+            case 3:
+                return 'メール';
+            case 4:
+                return '電話';
+            case 5:
+                return '性別';
+            case 6:
+                return '住所';
             default:
-                return "";
+                return '';
         }
     };
 

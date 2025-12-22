@@ -62,6 +62,13 @@
                     </div>
                 </div>
 
+                <div class="item-row">
+                    <div class="item-title">申込上限</div>
+                    <div class="item-contents flex-start-center">
+                    </div>
+                </div>
+
+
                 <div class="item-row flex-center-center">
                     <input type="submit" class="btn" value="更新"/>
                 </div>

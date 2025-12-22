@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Consts\CommonConst;
 use App\Models\FormItem;
+use App\Models\FormItemDraft;
 use App\Models\FormSetting;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -13,127 +14,138 @@ use Illuminate\Support\Collection;
  */
 class FormItemService
 {
-
-    public function create(FormSetting $form_setting, array $param)
+    public function addDraft(int $form_setting_id, int $item_type)
     {
-        // sortの値を決定（insert_indexが指定されている場合はinsert_index+1を使用、そうでなければ最大値+1）
-        // insert_indexは0ベースのインデックス、sortは1ベースの値
-        $sort = isset($param['insert_index'])
-            ? $param['insert_index'] + 1
-            : ($form_setting->formItems->max('sort') + 1);
+        $details = match ($item_type) {
+            FormItem::ITEM_TYPE_NAME => json_encode(['name_separate_type' => (string)CommonConst::NAME_SEPARATE]),
+            FormItem::ITEM_TYPE_KANA => json_encode(['kana_separate_type' => (string)CommonConst::KANA_SEPARATE]),
+            default => json_encode([]),
+        };
 
-        // 全ての項目で更新するカラム
-        $base_param = [
-            'form_setting_id' => $form_setting->id,
-            'item_type' => $param['new_item_type'],
-            'item_title' => $param['item_title'],
-            'sort' => $sort,
-            'field_required' => isset($param['required']) ? 1 : 0,
-            'annotation_text' => $param['annotation_text'] ?? '',
-        ];
+        return FormItemDraft::create([
+            'form_setting_id' => $form_setting_id,
+            'item_type' => $item_type,
+            'details' => $details,
+        ])->refresh();
+    }
 
-        // 項目ごとに更新可能とするカラム
-        $create_param = array_merge($base_param, $this->makeUpdateParam($param['new_item_type'], $param));
+    public function insertDraft(array $records)
+    {
+        return FormItemDraft::insert($records);
+    }
 
-        return FormItem::create($create_param);
+    public function sortChangeDraft(int $form_item_drafts_id, int $sort): bool
+    {
+        return FormItemDraft::where('id', $form_item_drafts_id)
+                ->update([
+                    'sort' => $sort,
+                ]) > 0;
+    }
+
+    public function create(array $param)
+    {
+        return FormItem::create($param);
     }
 
     /**
-     * @param FormItem $form_item
-     * @param int $form_type
+     * @param int $form_item_id
      * @param array $param
      * @return bool
      */
-    public function update(FormItem $form_item, int $form_type, array $param)
+    public function updateFormItemById(int $form_item_id, array $param)
     {
-        // 全ての項目で更新するカラム
-        $base_param = [
-            'item_title' => $param['item_title'],
-            'field_required' => isset($param['field_required']) ? 1 : 0,
-            'annotation_text' => $param['annotation_text'],
-        ];
+        $form_item = FormItem::find($form_item_id);
 
-        // 項目ごとに更新可能とするカラム
-        $update_param = array_merge($base_param, $this->makeUpdateParam($form_type, $param));
-
-        // 更新処理
-        return $form_item->update($update_param);
-    }
-
-    public function updateByFormItem(FormItem $form_item, string $target_key, $target_value)
-    {
-        $param = [$target_key => $target_value];
-        $param = $this->makeUpdateParamReact($form_item, $target_key, $target_value);
-
-        // 更新処理
         return $form_item->update($param);
     }
 
     /**
-     * @param int $type
-     * @param array $param
-     * @return array
+     * @param int $form_item_id
+     * @param string $target_key
+     * @param $target_value
      */
-    private function makeUpdateParamReact(FormItem $form_item, string $target_key, $target_value): array
+    public function updateByFormItem(int $form_item_id, string $target_key, $target_value)
+    {
+        $form_item_draft = FormItemDraft::find($form_item_id);
+        $param = $this->makeUpdateParamReact($form_item_draft, $target_key, $target_value);
+
+        // 更新処理
+        return $form_item_draft->update($param);
+    }
+
+    /**
+     * @param int $form_item_id
+     */
+    public function deleteDraftItem(int $form_item_id)
+    {
+         return FormItemDraft::where('id', $form_item_id)->delete();
+    }
+
+    /**
+     */
+    private function makeUpdateParamReact(FormItemDraft $form_item, string $target_key, $target_value): array
     {
         return match ($form_item->item_type) {
+            FormItem::ITEM_TYPE_NAME => $this->makeUpdateParamForName($form_item, $target_key, $target_value),
+            FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForKana($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($form_item, $target_key, $target_value),
             default => [],
         };
     }
-    /**
-     * @param int $type
-     * @param array $param
-     * @return array
-     */
-    private function makeUpdateParam(int $type, array $param): array
-    {
-        return match ($type) {
-            FormItem::ITEM_TYPE_NAME => $this->makeUpdateParamForName($param),
-            FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForKana($param),
-            FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($param),
-            FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($param),
-            FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($param['gender_list'] ?? []),
-            FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($param),
-            FormItem::ITEM_TYPE_CHECKBOX => $this->makeUpdateParamForCheckbox($param),
-            FormItem::ITEM_TYPE_TERMS => $this->makeUpdateParamForTerms($param),
-            default => [],
-        };
-    }
 
     /**
-     * @param array $param
-     * @return array
-     */
-    private function makeUpdateParamForName(array $param): array
-    {
-        return [
-            'details' => json_encode([
-                'name_type' => $param['name_type'] ?? CommonConst::NAME_SEPARATE,
-            ]),
-        ];
-    }
-
-    /**
-     * @param array $param
-     * @return array
-     */
-    private function makeUpdateParamForKana(array $param): array
-    {
-        return [
-            'details' => json_encode([
-                'name_type_kana' => $param['name_type_kana'] ?? CommonConst::KANA_SEPARATE,
-            ]),
-        ];
-    }
-
-    /**
-     * @param FormItem $form_item
+     * @param FormItemDraft $form_item
      * @param string $target_key
      * @param $target_value
      * @return array
      */
-    private function makeUpdateParamForEmail(FormItem $form_item, string $target_key, $target_value): array
+    private function makeUpdateParamForName(FormItemDraft $form_item, string $target_key, $target_value): array
+    {
+        // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
+        if ($target_key === 'name_separate_type') {
+            $details = json_decode($form_item->details ?? '{}', true);
+            $details[$target_key] = $target_value;
+
+            return [
+                'details' => $details,
+            ];
+        }
+
+        return [
+            $target_key => $target_value
+        ];
+    }
+
+    /**
+     * @param FormItemDraft $form_item
+     * @param string $target_key
+     * @param $target_value
+     * @return array
+     */
+    private function makeUpdateParamForKana(FormItemDraft $form_item, string $target_key, $target_value): array
+    {
+        // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
+        if ($target_key === 'kana_separate_type') {
+            $details = json_decode($form_item->details ?? '{}', true);
+            $details[$target_key] = $target_value;
+
+            return [
+                'details' => $details,
+            ];
+        }
+
+        return [
+            $target_key => $target_value
+        ];
+    }
+
+    /**
+     * @param FormItemDraft $form_item
+     * @param string $target_key
+     * @param $target_value
+     * @return array
+     */
+    private function makeUpdateParamForEmail(FormItemDraft $form_item, string $target_key, $target_value): array
     {
         // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
         if ($target_key === 'confirm_flg') {
@@ -226,6 +238,18 @@ class FormItemService
                 'consent_name' => $param['consent_name']
             ]),
         ];
+    }
+
+    /**
+     * @param int $form_setting_id
+     * @param array $updated_ids
+     * @return void
+     */
+    public function deleteDraftFormItems(int $form_setting_id, array $updated_ids)
+    {
+        FormItem::where('form_setting_id', $form_setting_id)
+            ->whereNotIn('id', $updated_ids)
+            ->delete();
     }
 }
 

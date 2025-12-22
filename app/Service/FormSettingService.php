@@ -73,10 +73,20 @@ class FormSettingService
      * @param Collection $formItems
      * @return array
      */
-    public function getSelectableItemList(Collection $formItems): array
+    public function getSelectableItemList(FormSetting $form_setting)
     {
+        $form_items = $form_setting->formItems;
+        $draft_form_items = $form_setting->draftFormItems;
+        $merged = $form_items
+            ->merge($draft_form_items)
+            ->sortBy('sort')
+            ->values(); // インデックスを振り直す
+
+        return $merged;
+        dd($form_items,$draft_form_items  , $merged);
+
         // 現在登録されている各 item_type の件数を集計
-        $current_counts_type = $formItems
+        $current_counts_type = $form_items
             ->pluck('item_type')
             ->countBy()
             ->toArray();
