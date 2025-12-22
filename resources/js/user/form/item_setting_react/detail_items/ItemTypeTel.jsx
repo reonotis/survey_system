@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 
 /**
- * お名前項目の「姓と名を別々にするか」設定
+ * 電話番号設定
  */
-function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
+function ItemTypeTel({selectedItem, updateItemLocalValue, saveItemValue}) {
 
     // タイトル
     const [title, setTitle] = useState(selectedItem.item_title ?? '');
@@ -42,10 +42,10 @@ function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
     }, [selectedItem.id]);
 
     // radio変更時は「イベント内で完結」
-    const onChangeNameSeparateType = (value) => {
+    const onChangeHyphenType = (value) => {
         const next = {
             ...details,
-            name_separate_type: value,
+            hyphen_type: value,
         };
 
         setDetails(next);
@@ -104,24 +104,25 @@ function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
             </div>
             <div className="border-b pb-3">
                 <p className="text-sm font-medium text-gray-800">
-                    【姓と名を別々にするか】
+                    【確認用のメールアドレス項目を設ける】
                 </p>
+
                 <div className="flex gap-4 mt-1">
-                    {Object.entries(window.commonConst.NAME_SEPARATE_LIST || {}).map(
+                    {Object.entries(window.commonConst.TEL_HYPHEN_LIST || {}).map(
                         ([value, label]) => (
                             <div key={value} className="custom-radio">
                                 <input
                                     type="radio"
-                                    name="name_separate_type"
-                                    id={`name_separate_type_${value}`}
+                                    name="hyphen_type"
+                                    id={`hyphen_type_${value}`}
                                     value={value}
-                                    checked={String(details.name_separate_type) === String(value)}
-                                    onChange={() => onChangeNameSeparateType(value)}
+                                    checked={String(details.hyphen_type) === String(value)}
+                                    onChange={() => onChangeHyphenType(value)}
                                 />
-                                <label htmlFor={`name_separate_type_${value}`} className="radio-label">
-                                    <span className="outside">
-                                        <span className="inside"></span>
-                                    </span>
+                                <label htmlFor={`hyphen_type_${value}`} className="radio-label">
+                                <span className="outside">
+                                    <span className="inside"></span>
+                                </span>
                                     {label}
                                 </label>
                             </div>
@@ -129,8 +130,10 @@ function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
                     )}
                 </div>
             </div>
+
         </div>
     );
 }
 
-export default ItemTypeName;
+export default ItemTypeTel;
+

@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 
 /**
- * お名前項目の「姓と名を別々にするか」設定
+ * 電話番号設定
  */
-function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
-
+function ItemTypeGender({selectedItem, updateItemLocalValue, saveItemValue}) {
     // タイトル
     const [title, setTitle] = useState(selectedItem.item_title ?? '');
     const updateTitle = (value) => {
@@ -14,7 +13,7 @@ function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
 
     // 必須項目
     const updateFieldRequired = (value) => {
-        const fieldRequiredValue =  value ? 1 : 0
+        const fieldRequiredValue = value ? 1 : 0
         updateItemLocalValue(selectedItem.id, "field_required", fieldRequiredValue);
         saveItemValue(selectedItem.id, 'field_required', fieldRequiredValue)
     }
@@ -30,30 +29,49 @@ function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
     const parseDetails = (v) => {
         if (!v) return {};
         if (typeof v === 'string') {
-            try { return JSON.parse(v); } catch { return {}; }
+            try {
+                return JSON.parse(v);
+            } catch {
+                return {};
+            }
         }
         return v;
     };
 
+    // その他詳細
     const [details, setDetails] = useState(() => parseDetails(selectedItem.details));
 
-    useEffect(() => {
-        setDetails(parseDetails(selectedItem.details));
-    }, [selectedItem.id]);
+    // 選択肢
+    const [selectedGenders, setSelectedGenders] = useState(details.gender_list);
 
-    // radio変更時は「イベント内で完結」
-    const onChangeNameSeparateType = (value) => {
-        const next = {
+    const onChangeGender = (e) => {
+        const value = e.target.value;
+        const checked = e.target.checked;
+
+        setSelectedGenders(prev =>
+            checked
+                ? [...prev, value]
+                : prev.filter(v => v !== value)
+        );
+    };
+
+    useEffect(() => {
+        const nextDetails = {
             ...details,
-            name_separate_type: value,
+            gender_list: selectedGenders,
         };
 
-        setDetails(next);
+        setDetails(nextDetails);
 
-        const json = JSON.stringify(next);
+    }, [selectedGenders]);
+
+    useEffect(() => {
+        const json = JSON.stringify(details);
+
         updateItemLocalValue(selectedItem.id, 'details', json);
         saveItemValue(selectedItem.id, 'details', json);
-    };
+
+    }, [details]);
 
     return (
         <div className="space-y-4">
@@ -104,26 +122,21 @@ function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
             </div>
             <div className="border-b pb-3">
                 <p className="text-sm font-medium text-gray-800">
-                    【姓と名を別々にするか】
+                    【利用する選択肢】
                 </p>
                 <div className="flex gap-4 mt-1">
-                    {Object.entries(window.commonConst.NAME_SEPARATE_LIST || {}).map(
+                    {Object.entries(window.commonConst.GENDER_LIST || {}).map(
                         ([value, label]) => (
-                            <div key={value} className="custom-radio">
-                                <input
-                                    type="radio"
-                                    name="name_separate_type"
-                                    id={`name_separate_type_${value}`}
-                                    value={value}
-                                    checked={String(details.name_separate_type) === String(value)}
-                                    onChange={() => onChangeNameSeparateType(value)}
+                            <div key={value} className="checkbox-content">
+                                <input type="checkbox"
+                                       name="gender[]"
+                                       id={`gender_${value}`}
+                                       className="checkbox"
+                                       value={value}
+                                       checked={selectedGenders.includes(value)}
+                                       onChange={onChangeGender}
                                 />
-                                <label htmlFor={`name_separate_type_${value}`} className="radio-label">
-                                    <span className="outside">
-                                        <span className="inside"></span>
-                                    </span>
-                                    {label}
-                                </label>
+                                <label className="checkbox-item" htmlFor={`gender_${value}`}>{label}</label>
                             </div>
                         ),
                     )}
@@ -133,4 +146,5 @@ function ItemTypeName({selectedItem, updateItemLocalValue, saveItemValue}) {
     );
 }
 
-export default ItemTypeName;
+export default ItemTypeGender;
+

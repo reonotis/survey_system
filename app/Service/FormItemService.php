@@ -14,11 +14,15 @@ use Illuminate\Support\Collection;
  */
 class FormItemService
 {
-    public function addDraft(int $form_setting_id, int $item_type)
+    public function addDraft(int $form_setting_id, int $item_type, int $sort)
     {
+        // 詳細の初期値
         $details = match ($item_type) {
             FormItem::ITEM_TYPE_NAME => json_encode(['name_separate_type' => (string)CommonConst::NAME_SEPARATE]),
             FormItem::ITEM_TYPE_KANA => json_encode(['kana_separate_type' => (string)CommonConst::KANA_SEPARATE]),
+            FormItem::ITEM_TYPE_EMAIL => json_encode(['confirm_type' => (string)CommonConst::EMAIL_CONFIRM_ENABLED]),
+            FormItem::ITEM_TYPE_TEL => json_encode(['hyphen_type' => (string)CommonConst::TEL_HYPHEN_USE]),
+            FormItem::ITEM_TYPE_GENDER => json_encode(['gender_list' => []]),
             default => json_encode([]),
         };
 
@@ -26,6 +30,7 @@ class FormItemService
             'form_setting_id' => $form_setting_id,
             'item_type' => $item_type,
             'details' => $details,
+            'sort' => $sort,
         ])->refresh();
     }
 
@@ -89,6 +94,8 @@ class FormItemService
             FormItem::ITEM_TYPE_NAME => $this->makeUpdateParamForName($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForKana($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($form_item, $target_key, $target_value),
+            FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($form_item, $target_key, $target_value),
+            FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($form_item, $target_key, $target_value),
             default => [],
         };
     }
@@ -166,30 +173,43 @@ class FormItemService
      * @param array $param
      * @return array
      */
-    private function makeUpdateParamForTel(array $param): array
+    private function makeUpdateParamForTel(FormItemDraft $form_item, string $target_key, $target_value): array
     {
+        // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
+        if ($target_key === 'hyphen_type') {
+            $details = json_decode($form_item->details ?? '{}', true);
+            $details[$target_key] = $target_value;
+
+            return [
+                'details' => $details,
+            ];
+        }
+
         return [
-            'details' => json_encode([
-                'hyphen_flg' => $param['hyphen_flg'] ?? CommonConst::TEL_HYPHEN_USE,
-            ]),
+            $target_key => $target_value
         ];
     }
 
     /**
-     * @param array $gender_list
+     * @param FormItemDraft $form_item
+     * @param string $target_key
+     * @param $target_value
      * @return array
      */
-    private function makeUpdateParamForGender(array $gender_list): array
+    private function makeUpdateParamForGender(FormItemDraft $form_item, string $target_key, $target_value): array
     {
-        $gender_list_array = [];
-        foreach ($gender_list as $gender) {
-            $gender_list_array[] = $gender;
+        // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
+        if ($target_key === 'gender_list') {
+            $details = json_decode($form_item->details ?? '{}', true);
+            $details[$target_key] = $target_value;
+
+            return [
+                'details' => $details,
+            ];
         }
 
         return [
-            'details' => json_encode([
-                'gender_list' => $gender_list_array,
-            ]),
+            $target_key => $target_value
         ];
     }
 

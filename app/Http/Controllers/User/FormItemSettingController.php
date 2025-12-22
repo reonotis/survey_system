@@ -102,12 +102,17 @@ class FormItemSettingController extends UserController
     public function draftAddItem(FormSetting $form_setting, Request $request): JsonResponse
     {
         try {
+            $draft_items = $form_setting->draftFormItems;
+            $max_sort = $draft_items->max('sort');
+            $new_sort = $max_sort + 1;
+
             $item_type = $request->item_type;
 
             $form_item_service = app(FormItemService::class);
             $form_item_draft = $form_item_service->addDraft(
                  $form_setting->id,
-                (int)$request->item_type,
+                (int)$item_type,
+                $new_sort
             );
 
             return response()->json([

@@ -77,7 +77,6 @@ export function useDraftFormItems(initialItems = []) {
 
     /** 対象項目の特定カラムの値を変更する */
     const updateItemLocalValue = (itemId, key, value) => {
-        console.log(itemId, key, value)
         setDraftFormItems(prev =>
             prev.map(item =>
                 item.id === itemId

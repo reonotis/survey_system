@@ -32,6 +32,7 @@ function ItemSettingReact() {
                     onSortEnd={handleOrderChange}
                     setEditingItemId={setEditingItemId}
                     itemDelete={itemDelete}
+                    selectedItem={selectedItem}
                 />
             </div>
 

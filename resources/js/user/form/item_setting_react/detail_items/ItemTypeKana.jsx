@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
  */
 function ItemTypeKana({selectedItem, updateItemLocalValue, saveItemValue}) {
 
-    console.log(selectedItem)
     // タイトル
     const [title, setTitle] = useState(selectedItem.item_title ?? '');
     const updateTitle = (value) => {
@@ -75,7 +74,7 @@ function ItemTypeKana({selectedItem, updateItemLocalValue, saveItemValue}) {
                 </p>
             </div>
             <div className="border-b pb-3">
-                <label className="flex items-center">
+                <label className="flex items-center w-fit cursor-pointer">
                     <div className="checkbox-content">
                         <input
                             type="checkbox"
@@ -86,7 +85,7 @@ function ItemTypeKana({selectedItem, updateItemLocalValue, saveItemValue}) {
                             onChange={e => updateFieldRequired(e.target.checked)}
                         />
                     </div>
-                    <span className="text-sm text-gray-700">必須項目</span>
+                    <span className="text-sm text-gray-700 p-1">必須項目</span>
                 </label>
             </div>
             <div className="border-b pb-3">

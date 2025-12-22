@@ -2,8 +2,12 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import ItemName from './view_items/ItemName.jsx';
+import ItemKana from './view_items/ItemKana.jsx';
+import ItemEmail from './view_items/ItemEmail.jsx';
+import ItemTel from './view_items/ItemTel.jsx';
+import ItemGender from './view_items/ItemGender.jsx';
 
-function Item({ item, onClick, itemDelete }) {
+function Item({ item, onClick, itemDelete, isSelected }) {
     const itemTypeList = window.itemTypeList;
 
     const baseItemName = itemTypeList[item.item_type];
@@ -27,13 +31,13 @@ function Item({ item, onClick, itemDelete }) {
             case 1:
                 return <ItemName item={item} />;
             case 2:
-                return 'フリガナ';
+                return <ItemKana item={item} />;
             case 3:
-                return 'メール';
+                return <ItemEmail item={item} />;
             case 4:
-                return '電話';
+                return <ItemTel item={item} />;
             case 5:
-                return '性別';
+                return <ItemGender item={item} />;
             case 6:
                 return '住所';
             default:
@@ -45,10 +49,15 @@ function Item({ item, onClick, itemDelete }) {
         <div
             ref={setNodeRef}
             style={style}
-            className="p-3 border border-gray-300 rounded bg-white cursor-pointer"
+            className={`border rounded bg-white cursor-pointer transition
+                    ${isSelected
+                            ? 'border-blue-500 ring-2 ring-blue-200'
+                            : 'border-gray-300'
+                        }
+            `}
             onClick={onClick}
         >
-            <div className="flex justify-between  w-full border-b-2 border-gray-300 items-center ">
+            <div className="flex justify-between w-full items-center bg-gray-200 px-2">
                 <div className="flex items-center">
                     {/* ハンドル */}
                     <div
@@ -69,7 +78,7 @@ function Item({ item, onClick, itemDelete }) {
                 </div>
                 <button
                     type="button"
-                    className="text-xs text-red-600 hover:text-red-800 hover:underline"
+                    className="text-xs text-red-600 hover:text-red-800 hover:underline mr-2"
                     onClick={(e) => {
                         e.stopPropagation(); // ★ 親の onClick / DnD 防止
 
@@ -83,12 +92,14 @@ function Item({ item, onClick, itemDelete }) {
                 </button>
             </div>
 
-            <div className="mt-1 text-xs text-gray-400 whitespace-pre-line">
-                {item.annotation_text}
-            </div>
+            <div className="p-2">
+                <div className="text-xs text-gray-400 whitespace-pre-line">
+                    {item.annotation_text}
+                </div>
 
-            <div className="mt-2 text-sm text-gray-600">
-                {renderDetailContent()}
+                <div className="mt-1 text-sm text-gray-600">
+                    {renderDetailContent()}
+                </div>
             </div>
         </div>
     );

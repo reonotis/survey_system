@@ -8,7 +8,7 @@ import {
 
 import Item from './Item';
 
-function CurrentItemsList({ draftFormItems, onSortEnd, setEditingItemId, itemDelete }) {
+function CurrentItemsList({ draftFormItems, onSortEnd, setEditingItemId, itemDelete, selectedItem }) {
     const [items, setItems] = useState([]);
 
     // props → state 同期
@@ -52,6 +52,7 @@ function CurrentItemsList({ draftFormItems, onSortEnd, setEditingItemId, itemDel
                                     item={item}
                                     onClick={() => setEditingItemId(item.id)}
                                     itemDelete={itemDelete}
+                                    isSelected={selectedItem?.id === item.id} // ★ここ
                                 />
                             ))
                         ) : (

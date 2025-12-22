@@ -58,6 +58,8 @@
                     NAME_SEPARATE_LIST: @json(\App\Consts\CommonConst::NAME_SEPARATE_LIST),
                     KANA_SEPARATE_LIST: @json(\App\Consts\CommonConst::KANA_SEPARATE_LIST),
                     EMAIL_CONFIRM_LIST: @json(\App\Consts\CommonConst::EMAIL_CONFIRM_LIST),
+                    TEL_HYPHEN_LIST: @json(\App\Consts\CommonConst::TEL_HYPHEN_LIST),
+                    GENDER_LIST: @json(\App\Consts\CommonConst::GENDER_LIST),
                 };
 
                 window.draftAddItemUrl = @json(route('user_form_draft_add_item', ['form_setting' => $form_setting->id]));
