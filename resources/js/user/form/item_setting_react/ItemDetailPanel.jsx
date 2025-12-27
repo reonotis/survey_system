@@ -4,6 +4,7 @@ import ItemTypeKana from './detail_items/ItemTypeKana';
 import ItemTypeEmail from './detail_items/ItemTypeEmail';
 import ItemTypeTel from './detail_items/ItemTypeTel';
 import ItemTypeGender from './detail_items/ItemTypeGender';
+import ItemTypeAddress from './detail_items/ItemTypeAddress';
 
 function ItemDetailPanel({ selectedItem, updateItemLocalValue, saveItemValue }) {
     if (!selectedItem) {
@@ -30,7 +31,7 @@ function ItemDetailPanel({ selectedItem, updateItemLocalValue, saveItemValue }) 
             case 5:
                 return <ItemTypeGender selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 6:
-                return '住所';
+                return <ItemTypeAddress selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             default:
                 return '';
         }

@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
-use App\Http\Requests\Owner\UpdateFormItemRequest;
-use App\Http\Requests\Owner\UpdateFormItemReactRequest;
 use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Service\FormItemService;
-use App\Service\FormMailSettingService;
-use App\Service\FormSettingService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
+
 
 class FormItemSettingController extends UserController
 {
@@ -97,6 +96,7 @@ class FormItemSettingController extends UserController
 
     /**
      * @param FormSetting $form_setting
+     * @param Request $request
      * @return JsonResponse
      */
     public function draftAddItem(FormSetting $form_setting, Request $request): JsonResponse
@@ -121,8 +121,8 @@ class FormItemSettingController extends UserController
                 'form_item_draft' => $form_item_draft,
             ]);
 
-        } catch (\Exception $error) {
-            \Log::error($error->getMessage());
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
 
             return response()->json([
                 'message' => $error->getMessage(),
@@ -146,8 +146,8 @@ class FormItemSettingController extends UserController
                 'message' => '並び替え完了',
                 'success' => true,
             ]);
-        } catch (\Exception $error) {
-            \Log::error($error->getMessage());
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
 
             return response()->json([
                 'message' => $error->getMessage(),
@@ -166,8 +166,8 @@ class FormItemSettingController extends UserController
                 'message' => '更新完了',
                 'success' => true,
             ]);
-        } catch (\Exception $error) {
-            \Log::error($error->getMessage());
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
 
             return response()->json([
                 'message' => $error->getMessage(),
@@ -179,7 +179,7 @@ class FormItemSettingController extends UserController
     public function draftItemDelete(FormSetting $form_setting, Request $request): JsonResponse
     {
         try {
-            \Log::error($request->all());
+            Log::error($request->all());
 
             $form_item_service = app(FormItemService::class);
             $form_item_service->deleteDraftItem((int)$request->item_id);
@@ -188,8 +188,8 @@ class FormItemSettingController extends UserController
                 'message' => '並び替え',
                 'success' => true,
             ]);
-        } catch (\Exception $error) {
-            \Log::error($error->getMessage());
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
 
             return response()->json([
                 'message' => $error->getMessage(),
@@ -198,8 +198,11 @@ class FormItemSettingController extends UserController
         }
     }
 
-
-    public function saveFormItems(FormSetting $form_setting)
+    /**
+     * @param FormSetting $form_setting
+     * @return RedirectResponse
+     */
+    public function saveFormItems(FormSetting $form_setting): RedirectResponse
     {
         $form_item_service = app(FormItemService::class);
         try {
@@ -254,8 +257,8 @@ class FormItemSettingController extends UserController
             $form_setting->draftFormItems()->delete();
 
             return redirect()->route('user_form_item_setting',  ['form_setting' => $form_setting->id])->with('success',['更新しました']);
-        } catch (\Exception $error) {
-            \Log::error($error->getMessage());
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
             return redirect()->back()->with('error', ['更新に失敗しました']);
         }
     }

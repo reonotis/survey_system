@@ -6,6 +6,7 @@ import ItemKana from './view_items/ItemKana.jsx';
 import ItemEmail from './view_items/ItemEmail.jsx';
 import ItemTel from './view_items/ItemTel.jsx';
 import ItemGender from './view_items/ItemGender.jsx';
+import ItemAddress from './view_items/ItemAddress.jsx';
 
 function Item({ item, onClick, itemDelete, isSelected }) {
     const itemTypeList = window.itemTypeList;
@@ -39,7 +40,7 @@ function Item({ item, onClick, itemDelete, isSelected }) {
             case 5:
                 return <ItemGender item={item} />;
             case 6:
-                return '住所';
+                return <ItemAddress item={item} />;
             default:
                 return '詳細が入ります';
         }

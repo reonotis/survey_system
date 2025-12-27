@@ -96,6 +96,7 @@ class FormItemService
             FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($form_item, $target_key, $target_value),
+            FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($form_item, $target_key, $target_value),
             default => [],
         };
     }
@@ -217,13 +218,20 @@ class FormItemService
      * @param array $param
      * @return array
      */
-    private function makeUpdateParamForAddress(array $param): array
+    private function makeUpdateParamForAddress(FormItemDraft $form_item, string $target_key, $target_value): array
     {
+        // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
+        if (in_array($target_key, ['use_post_code_type', 'address_separate_list'])) {
+            $details = json_decode($form_item->details ?? '{}', true);
+            $details[$target_key] = $target_value;
+
+            return [
+                'details' => $details,
+            ];
+        }
+
         return [
-            'details' => json_encode([
-                'post_code_use_type' => $param['post_code_use_type'] ?? CommonConst::POST_CODE_DISABLED,
-                'address_separate_type' => $param['address_separate_type'] ?? CommonConst::ADDRESS_SEPARATE,
-            ]),
+            $target_key => $target_value
         ];
     }
 
