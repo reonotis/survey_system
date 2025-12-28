@@ -1,6 +1,6 @@
 @php
     $details = json_decode($form_item->details ?? '{}', true);
-    $name_type = $details['name_type'] ?? 1;
+    $kana_separate_type = $details['kana_separate_type'] ?? 1;
 @endphp
 
 <div class="support-msg">
@@ -8,7 +8,7 @@
 </div>
 
 <div>
-    @if($name_type == 1)
+    @if($kana_separate_type == 1)
         <div style="display: flex; gap: .5rem;">
             <x-input-text name="sei_kana" class="w-full" :error="$errors->has('sei_kana')" :value="old('sei_kana')" placeholder="タナカ"/>
             <x-input-text name="mei_kana" class="w-full" :error="$errors->has('mei_kana')" :value="old('mei_kana')" placeholder="タロウ"/>

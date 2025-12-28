@@ -35,15 +35,9 @@ class FormItemDraft extends Model
         'sort',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-        ];
-    }
+    protected $casts = [
+        'value_list' => 'array',
+        'details' => 'array',
+    ];
 
 }

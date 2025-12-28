@@ -4,13 +4,16 @@ import React, {useState, useEffect} from 'react';
  * メールアドレス設定
  */
 function ItemTypeEmail({selectedItem, updateItemLocalValue, saveItemValue}) {
-
     // タイトル
     const [title, setTitle] = useState(selectedItem.item_title ?? '');
     const updateTitle = (value) => {
         setTitle(value)
         updateItemLocalValue(selectedItem.id, 'item_title', value);
     }
+
+    useEffect(() => {
+        setTitle(selectedItem.item_title ?? '');
+    }, [selectedItem.id, selectedItem.item_title]);
 
     // 必須項目
     const updateFieldRequired = (value) => {
@@ -25,6 +28,10 @@ function ItemTypeEmail({selectedItem, updateItemLocalValue, saveItemValue}) {
         setAnnotationText(value)
         updateItemLocalValue(selectedItem.id, 'annotation_text', value);
     }
+
+    useEffect(() => {
+        setAnnotationText(selectedItem.annotation_text ?? '');
+    }, [selectedItem.id, selectedItem.annotation_text]);
 
     // その他詳細
     const parseDetails = (v) => {

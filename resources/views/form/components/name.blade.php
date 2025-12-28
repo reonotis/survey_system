@@ -1,6 +1,6 @@
 @php
-    $details = json_decode($form_item->details ?? '{}', true);
-    $name_type = $details['name_type'] ?? 1;
+    $details = $form_item->details;
+    $name_separate_type = $details['name_separate_type'] ?? 1;
 @endphp
 
 <div class="support-msg">
@@ -8,7 +8,7 @@
 </div>
 
 <div>
-    @if($name_type == 1)
+    @if($name_separate_type == 1)
         <div style="display: flex; gap: .5rem;">
             <x-input-text name="sei" class="w-full" :error="$errors->has('sei')" :value="old('sei')"
                           placeholder="田中"/>

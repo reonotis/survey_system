@@ -21,8 +21,6 @@ function AddItem({ item, isSelected, onSelect, onAdd }) {
             // 仮レスポンス処理
             const data = await response.json();
 
-            console.log(data)
-
             // 返却された項目を追加
             onAdd(data.form_item_draft);
         } catch (error) {

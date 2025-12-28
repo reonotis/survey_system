@@ -26,8 +26,8 @@ class FormConst
             'kana' => 'ナマエ',
         ],
         FormItem::ITEM_TYPE_EMAIL => [
-            'email' => 'メールアドレス',
-            'email_confirm' => '確認用メールアドレス',
+            'email.*' => 'メールアドレス',
+            'email_confirm.*' => '確認用メールアドレス',
         ],
         FormItem::ITEM_TYPE_ADDRESS => [
             'zip21' => '郵便番号上3桁',

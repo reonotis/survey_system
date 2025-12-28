@@ -127,15 +127,14 @@ class RegisterRequest extends FormRequest
      */
     private function makeRulesForName(FormItem $form_item): array
     {
-        $details = json_decode($form_item->details ?? '{}', true);
-        $name_type = $details['name_type'] ?? 1;
+        $name_separate_type = $form_item->details['name_separate_type'] ?? CommonConst::NAME_SEPARATE;
 
         $validates = [];
         if ($form_item->field_required) {
             $validates[] = 'required';
         }
 
-        if ($name_type == 1) {
+        if ($name_separate_type == CommonConst::NAME_SEPARATE) {
             return [
                 'sei' => $validates,
                 'mei' => $validates,
@@ -154,15 +153,14 @@ class RegisterRequest extends FormRequest
      */
     private function makeRulesForKana(FormItem $form_item): array
     {
-        $details = json_decode($form_item->details ?? '{}', true);
-        $name_type = $details['name_type'] ?? 1;
+        $kana_separate_type = $form_item->details['name_separate_type'] ?? CommonConst::KANA_SEPARATE;
 
         $validates = [];
         $validates[] = ($form_item->field_required) ? 'required' : 'nullable';
         // 全角カナ（長音記号含む）のみ許可
         $validates[] = 'regex:/\A[ァ-ヶー]+\z/u';
 
-        if ($name_type == 1) {
+        if ($kana_separate_type == CommonConst::KANA_SEPARATE) {
             return [
                 'sei_kana' => $validates,
                 'mei_kana' => $validates,
@@ -181,21 +179,30 @@ class RegisterRequest extends FormRequest
      */
     private function makeRulesForEmail(FormItem $form_item): array
     {
-        $validates = [];
-        $validates[] = ($form_item->field_required) ? 'required' : 'nullable';
-        $validates[] = 'string';
-        $validates[] = 'email';
+        $rules = [];
 
-        $rules = [
-            'email' => $validates,
+        // email 用
+        $email_rules = [
+            $form_item->field_required ? 'required' : 'nullable',
+            'string',
+            'email',
         ];
 
-        // 確認入力が有効な場合、同一確認のルールを追加
-        $details = json_decode($form_item->details ?? '{}', true);
-        $confirm_flg = $details['confirm_flg'] ?? 1;
-        if ($confirm_flg == 1) {
-            $validates[] = 'same:email';
-            $rules['email_confirm'] = $validates;
+        $rules['email.' . $form_item->id] = $email_rules;
+
+        // confirm 設定の判定
+        $confirm_type = $form_item->details['confirm_type'] ?? CommonConst::EMAIL_CONFIRM_DISABLED;
+
+        if ($confirm_type == CommonConst::EMAIL_CONFIRM_ENABLED) {
+
+            $confirm_rules = [
+                $form_item->field_required ? 'required' : 'nullable',
+                'string',
+                'email',
+                'same:email.' . $form_item->id,
+            ];
+
+            $rules['email_confirm.' . $form_item->id] = $confirm_rules;
         }
 
         return $rules;

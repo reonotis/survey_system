@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
+ * @property int $form_setting_id
+ * @property int|null $form_item_id
  * @property int $item_type
- * @property string $item_title
- * @property json $details
  * @property bool $field_required
+ * @property string|null $item_title
+ * @property array|null $value_list
+ * @property array|null $details
+ * @property string|null $annotation_text
+ * @property int $sort
  */
 class FormItem extends Model
 {
@@ -76,15 +81,9 @@ class FormItem extends Model
         'sort',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-        ];
-    }
+    protected $casts = [
+        'value_list' => 'array',
+        'details' => 'array',
+    ];
 
 }

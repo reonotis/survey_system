@@ -7,6 +7,7 @@ use App\Models\FormSetting;
 use App\Service\ApplicationsService;
 use App\Service\FormSettingService;
 use App\Service\MailService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Carbon\Carbon;
@@ -59,14 +60,16 @@ class FormController extends Controller
 
         $request_data = $request->validated();
 
-        // 申込みデータ登録処理
-        app(ApplicationsService::class)->register($form_setting, $request_data);
+        DB::transaction(function () use ($form_setting, $request_data) {
+            // 申込みデータ登録
+            app(ApplicationsService::class)->register($form_setting, $request_data);
 
-        // 通知メール
-        $this->mail_service->sendNotificationMail($form_setting, $request_data);
+            // 通知メール
+            $this->mail_service->sendNotificationMail($form_setting, $request_data);
 
-        // 自動返信メール
-        $this->mail_service->sendAutoReplyMail($form_setting, $request_data);
+            // 自動返信メール
+            $this->mail_service->sendAutoReplyMail($form_setting, $request_data);
+        });
 
         return redirect()->route('form_complete', ['route_name' => $route_name]);
     }

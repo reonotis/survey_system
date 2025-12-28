@@ -18,10 +18,10 @@ class FormItemService
     {
         // 詳細の初期値
         $details = match ($item_type) {
-            FormItem::ITEM_TYPE_NAME => json_encode(['name_separate_type' => (string)CommonConst::NAME_SEPARATE]),
-            FormItem::ITEM_TYPE_KANA => json_encode(['kana_separate_type' => (string)CommonConst::KANA_SEPARATE]),
-            FormItem::ITEM_TYPE_EMAIL => json_encode(['confirm_type' => (string)CommonConst::EMAIL_CONFIRM_ENABLED]),
-            FormItem::ITEM_TYPE_TEL => json_encode(['hyphen_type' => (string)CommonConst::TEL_HYPHEN_USE]),
+            FormItem::ITEM_TYPE_NAME => ['name_separate_type' => CommonConst::NAME_SEPARATE],
+            FormItem::ITEM_TYPE_KANA => json_encode(['kana_separate_type' => CommonConst::KANA_SEPARATE]),
+            FormItem::ITEM_TYPE_EMAIL => json_encode(['confirm_type' => CommonConst::EMAIL_CONFIRM_ENABLED]),
+            FormItem::ITEM_TYPE_TEL => json_encode(['hyphen_type' => CommonConst::TEL_HYPHEN_USE]),
             FormItem::ITEM_TYPE_GENDER => json_encode(['gender_list' => []]),
             default => json_encode([]),
         };
@@ -111,7 +111,7 @@ class FormItemService
     {
         // 特定の項目は、detailsカラムに格納するが、detailsに既に登録されている別の項目に影響を与えないようにする
         if ($target_key === 'name_separate_type') {
-            $details = json_decode($form_item->details ?? '{}', true);
+            $details = $form_item->details;
             $details[$target_key] = $target_value;
 
             return [

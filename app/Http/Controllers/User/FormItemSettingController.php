@@ -39,8 +39,12 @@ class FormItemSettingController extends UserController
                         'item_type' => $form_item->item_type,
                         'field_required' => $form_item->field_required,
                         'item_title' => $form_item->item_title,
-                        'value_list' => $form_item->value_list,
-                        'details' => $form_item->details,
+                        'value_list' => $form_item->value_list
+                            ? json_encode($form_item->value_list)
+                            : null,
+                        'details' => $form_item->details
+                            ? json_encode($form_item->details)
+                            : null,
                         'annotation_text' => $form_item->annotation_text,
                         'sort' => $form_item->sort,
                     ];

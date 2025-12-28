@@ -40,12 +40,12 @@ class ApplicationsService
     private function makeParamByItemType(FormItem $form_item, array $request_data): array
     {
         return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_NAME => $this->makeParamForName(json_decode($form_item->details, true), $request_data),
-            FormItem::ITEM_TYPE_KANA => $this->makeParamForKana(json_decode($form_item->details, true), $request_data),
+            FormItem::ITEM_TYPE_NAME => $this->makeParamForName($form_item->details, $request_data),
+            FormItem::ITEM_TYPE_KANA => $this->makeParamForKana($form_item->details, $request_data),
             FormItem::ITEM_TYPE_EMAIL => $this->makeParamForEmail($request_data),
             FormItem::ITEM_TYPE_TEL => $this->makeParamForTel($request_data),
             FormItem::ITEM_TYPE_GENDER => $this->makeParamForGender($request_data),
-            FormItem::ITEM_TYPE_ADDRESS => $this->makeParamForAddress(json_decode($form_item->details, true), $request_data),
+            FormItem::ITEM_TYPE_ADDRESS => $this->makeParamForAddress($form_item->details, $request_data),
 
             default => [],
         };
