@@ -92,7 +92,7 @@ trait FormParamChangerTrait
     {
         // 郵便番号
         $post_code = null;
-        if ($details['post_code_use_type'] == CommonConst::POST_CODE_DISABLED) {
+        if ($details['use_post_code_type'] == CommonConst::POST_CODE_DISABLED) {
             $zip21 = $request_data['zip21'] ?? '';
             $zip22 = $request_data['zip22'] ?? '';
             $post_code = $zip21 . '-' . $zip22;
@@ -102,7 +102,7 @@ trait FormParamChangerTrait
         if ($details['address_separate_type'] == CommonConst::ADDRESS_NON_SEPARATE) {
             $address = $request_data['address'] ?? '';
         } else {
-            $address = $request_data['pref21'] . ' ' . $request_data[ 'address21'] . ' ' . $request_data['street21'] ?? '';
+            $address = $request_data['pref21'] . ' ' . $request_data['address21'] . ' ' . $request_data['street21'] ?? '';
         }
 
         return [

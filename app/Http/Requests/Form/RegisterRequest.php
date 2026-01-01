@@ -238,7 +238,7 @@ class RegisterRequest extends FormRequest
      */
     private function makeRulesForAddress(FormItem $form_item): array
     {
-        $details = json_decode($form_item->details ?? '{}', true);
+        $details = $form_item->details;
         $post_code_use_type = $details['post_code_use_type'] ?? CommonConst::POST_CODE_DISABLED;
         $address_separate_type = $details['address_separate_type'] ?? 1;
 
@@ -270,7 +270,7 @@ class RegisterRequest extends FormRequest
      */
     private function makeRulesForGender(FormItem $form_item): array
     {
-        $details = json_decode($form_item->details ?? '{}', true);
+        $details = $form_item->details;
         $name_type = $details['gender_list'];
 
         $roles = [];

@@ -33,8 +33,6 @@ class Application extends Model
         'name_last',
         'kana',
         'kana_last',
-        'email',
-        'email',
         'tel',
         'gender',
         'post_code',

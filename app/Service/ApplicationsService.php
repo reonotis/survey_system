@@ -22,9 +22,8 @@ class ApplicationsService
     /**
      * @param FormSetting $form_setting
      * @param array $request_data
-     * @return Application
      */
-    public function register(FormSetting $form_setting, array $request_data): Application
+    public function register(FormSetting $form_setting, array $request_data)
     {
         $param = [
             'form_setting_id' => $form_setting->id,
@@ -34,7 +33,12 @@ class ApplicationsService
             $param = array_merge($param, $this->makeParamByItemType($form_item, $request_data));
         }
 
-        return Application::create($param);
+        // Applicationテーブルへ登録
+        Application::create($param);
+
+        // その他のテーブルへ登録
+
+        return 1;
     }
 
     /**
