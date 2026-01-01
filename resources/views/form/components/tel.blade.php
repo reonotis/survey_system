@@ -1,6 +1,5 @@
 @php
-    $details = json_decode($form_item->details ?? '{}', true);
-    $hyphen_flg = $details['hyphen_flg']?? 1;
+    $hyphen_flg = $form_item->details['hyphen_flg']?? 1;
 
     $placeholder = ($hyphen_flg == 1) ? '090-1234-5678' : '09012345678' ;
 @endphp

@@ -27,32 +27,22 @@ function ItemTypeKana({selectedItem, updateItemLocalValue, saveItemValue}) {
     }
 
     // その他詳細
-    const parseDetails = (v) => {
-        if (!v) return {};
-        if (typeof v === 'string') {
-            try { return JSON.parse(v); } catch { return {}; }
-        }
-        return v;
-    };
-
-    const [details, setDetails] = useState(() => parseDetails(selectedItem.details));
+    const [details, setDetails] = useState(() => selectedItem.details);
 
     useEffect(() => {
-        setDetails(parseDetails(selectedItem.details));
+        setDetails(selectedItem.details);
     }, [selectedItem.id]);
 
     // radio変更時は「イベント内で完結」
     const onChangeNameSeparateType = (value) => {
         const next = {
             ...details,
-            kana_separate_type: value,
+            kana_separate_type: Number(value),
         };
 
         setDetails(next);
-
-        const json = JSON.stringify(next);
-        updateItemLocalValue(selectedItem.id, 'details', json);
-        saveItemValue(selectedItem.id, 'details', json);
+        updateItemLocalValue(selectedItem.id, 'details', next);
+        saveItemValue(selectedItem.id, 'details', next);
     };
 
     return (
@@ -115,7 +105,7 @@ function ItemTypeKana({selectedItem, updateItemLocalValue, saveItemValue}) {
                                     name="kana_separate_type"
                                     id={`kana_separate_type_${value}`}
                                     value={value}
-                                    checked={String(details.kana_separate_type) === String(value)}
+                                    checked={details.kana_separate_type === Number(value)}
                                     onChange={() => onChangeNameSeparateType(value)}
                                 />
                                 <label htmlFor={`kana_separate_type_${value}`} className="radio-label">

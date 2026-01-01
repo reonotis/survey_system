@@ -1,6 +1,5 @@
 @php
-    $details = json_decode($form_item->details ?? '{}', true);
-    $kana_separate_type = $details['kana_separate_type'] ?? 1;
+    $kana_separate_type = $form_item->details['kana_separate_type'] ?? 1;
 @endphp
 
 <div class="support-msg">

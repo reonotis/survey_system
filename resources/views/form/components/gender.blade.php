@@ -1,6 +1,5 @@
 @php
-    $details = json_decode($form_item->details ?? '{}', true);
-    $gender_list = $details['gender_list'] ?? [];
+    $gender_list = $form_item->details['gender_list'] ?? [];
 
     // gender_listに含まれる値だけをGENDER_LISTから抽出
     $available_options = [];

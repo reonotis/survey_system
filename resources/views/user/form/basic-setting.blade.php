@@ -59,12 +59,21 @@
                 <div class="item-row">
                     <div class="item-title">状態</div>
                     <div class="item-contents flex-start-center">
+                        <x-input-radio
+                            name="publication_status"
+                            :options="\App\Models\FormSetting::PUBLICATION_STATUS_LIST"
+                            :checked="$form_setting->publication_status"
+                        />
                     </div>
                 </div>
 
                 <div class="item-row">
                     <div class="item-title">申込上限</div>
                     <div class="item-contents flex-start-center">
+                        <x-input-text type="number" name="max_applications"
+                                      :error="$errors->has('max_applications')"
+                                      :value="old('max_applications', $form_setting->max_applications)"
+                                      />
                     </div>
                 </div>
 

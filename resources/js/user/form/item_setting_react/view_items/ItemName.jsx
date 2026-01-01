@@ -1,7 +1,6 @@
 /**
  */
 function ItemName({ item }) {
-    console.log(item)
     const details = item.details;
     const nameSeparateType = details.name_separate_type;
 

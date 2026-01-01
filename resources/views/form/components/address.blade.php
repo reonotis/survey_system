@@ -1,7 +1,6 @@
 @php
-    $details = json_decode($form_item->details ?? '{}', true);
-    $post_code_use_type = $details['post_code_use_type'] ?? 0;
-    $address_separate_type = $details['address_separate_type'] ?? 0;
+    $post_code_use_type = $form_item->details['use_post_code_type'] ?? 0;
+    $address_separate_type = $form_item->details['address_separate_type'] ?? 0;
 
     if($address_separate_type == App\Consts\CommonConst::ADDRESS_SEPARATE) {
         $on_keyup = "AjaxZip3.zip2addr('zip21','zip22','pref21','address21','street21');";

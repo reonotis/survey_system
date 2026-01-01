@@ -26,31 +26,16 @@ function ItemTypeGender({selectedItem, updateItemLocalValue, saveItemValue}) {
     }
 
     // その他詳細
-    const parseDetails = (v) => {
-        if (!v) return {};
-        if (typeof v === 'string') {
-            try {
-                return JSON.parse(v);
-            } catch {
-                return {};
-            }
-        }
-        return v;
-    };
-
-    // その他詳細
-    const [details, setDetails] = useState(() => parseDetails(selectedItem.details));
-
-    // 選択肢
-    const [selectedGenders, setSelectedGenders] = useState(details.gender_list);
+    const [details, setDetails] = useState(selectedItem.details);
+    const [selectedGenders, setSelectedGenders] = useState(selectedItem.details.gender_list);
 
     const onChangeGender = (e) => {
-        const value = e.target.value;
+        const value = Number(e.target.value);
         const checked = e.target.checked;
 
         setSelectedGenders(prev =>
             checked
-                ? [...prev, value]
+                ? Array.from(new Set([...prev, value])).sort((a, b) => a - b)
                 : prev.filter(v => v !== value)
         );
     };
@@ -62,16 +47,10 @@ function ItemTypeGender({selectedItem, updateItemLocalValue, saveItemValue}) {
         };
 
         setDetails(nextDetails);
-
+        updateItemLocalValue(selectedItem.id, 'details', nextDetails);
+        saveItemValue(selectedItem.id, 'details', nextDetails);
     }, [selectedGenders]);
 
-    useEffect(() => {
-        const json = JSON.stringify(details);
-
-        updateItemLocalValue(selectedItem.id, 'details', json);
-        saveItemValue(selectedItem.id, 'details', json);
-
-    }, [details]);
 
     return (
         <div className="space-y-4">
@@ -126,19 +105,23 @@ function ItemTypeGender({selectedItem, updateItemLocalValue, saveItemValue}) {
                 </p>
                 <div className="flex gap-4 mt-1">
                     {Object.entries(window.commonConst.GENDER_LIST || {}).map(
-                        ([value, label]) => (
-                            <div key={value} className="checkbox-content">
-                                <input type="checkbox"
-                                       name="gender[]"
-                                       id={`gender_${value}`}
-                                       className="checkbox"
-                                       value={value}
-                                       checked={selectedGenders.includes(value)}
-                                       onChange={onChangeGender}
-                                />
-                                <label className="checkbox-item" htmlFor={`gender_${value}`}>{label}</label>
-                            </div>
-                        ),
+                        ([value, label]) => {
+                            const intValue = Number(value);
+
+                            return (
+                                <label key={value} className="checkbox-content cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        name="gender"
+                                        className="checkbox"
+                                        value={intValue}
+                                        checked={selectedGenders.includes(intValue)}
+                                        onChange={onChangeGender}
+                                    />
+                                    <span className="checkbox-item">{label}</span>
+                                </label>
+                            );
+                        }
                     )}
                 </div>
             </div>

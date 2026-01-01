@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\User\Auth\RegisteredUserController;
 use App\Http\Controllers\User\Auth\UserAuthController;
+use App\Http\Controllers\User\FormAnalyticsController;
 use App\Http\Controllers\User\FormApplicationController;
 use App\Http\Controllers\User\FormBasicSettingController;
 use App\Http\Controllers\User\FormDesignSettingController;
@@ -48,7 +49,7 @@ Route::prefix('user')->group(function () {
             Route::post('/{form_setting}/update-display-items', [FormApplicationController::class, 'displayItemsUpdate'])->name('user_form_update_display_items');
 
             // 応募分析
-            Route::get('/{form_setting}/analytics', [FormApplicationController::class, 'show'])->name('user_form_analytics');
+            Route::get('/{form_setting}/analytics', [FormAnalyticsController::class, 'index'])->name('user_form_analytics');
 
             // 基本設定
             Route::get('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'index'])->name('user_form_basic_setting');

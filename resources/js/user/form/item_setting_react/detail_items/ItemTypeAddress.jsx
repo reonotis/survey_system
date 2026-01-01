@@ -49,10 +49,8 @@ function ItemTypeGender({selectedItem, updateItemLocalValue, saveItemValue}) {
         };
 
         setDetails(next);
-
-        const json = JSON.stringify(next);
-        updateItemLocalValue(selectedItem.id, 'details', json);
-        saveItemValue(selectedItem.id, 'details', json);
+        updateItemLocalValue(selectedItem.id, 'details', next);
+        saveItemValue(selectedItem.id, 'details', next);
     };
 
 
@@ -116,8 +114,8 @@ function ItemTypeGender({selectedItem, updateItemLocalValue, saveItemValue}) {
                                     name="use_post_code_type"
                                     id={`use_post_code_type_${value}`}
                                     value={value}
-                                    checked={String(details.use_post_code_type) === String(value)}
-                                    onChange={() => onChangeDetails("use_post_code_type", value)}
+                                    checked={details.use_post_code_type === Number(value)}
+                                    onChange={() => onChangeDetails("use_post_code_type", Number(value))}
                                 />
                                 <label htmlFor={`use_post_code_type_${value}`} className="radio-label">
                                     <span className="outside">
@@ -143,8 +141,8 @@ function ItemTypeGender({selectedItem, updateItemLocalValue, saveItemValue}) {
                                     name="address_separate_type"
                                     id={`address_separate_type_${value}`}
                                     value={value}
-                                    checked={String(details.address_separate_type) === String(value)}
-                                    onChange={() => onChangeDetails("address_separate_type", value)}
+                                    checked={details.address_separate_type === Number(value)}
+                                    onChange={() => onChangeDetails("address_separate_type", Number(value))}
                                 />
                                 <label htmlFor={`address_separate_type_${value}`} className="radio-label">
                                     <span className="outside">

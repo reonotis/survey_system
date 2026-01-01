@@ -27,18 +27,10 @@ function ItemTypeTel({selectedItem, updateItemLocalValue, saveItemValue}) {
     }
 
     // その他詳細
-    const parseDetails = (v) => {
-        if (!v) return {};
-        if (typeof v === 'string') {
-            try { return JSON.parse(v); } catch { return {}; }
-        }
-        return v;
-    };
-
-    const [details, setDetails] = useState(() => parseDetails(selectedItem.details));
+    const [details, setDetails] = useState(selectedItem.details);
 
     useEffect(() => {
-        setDetails(parseDetails(selectedItem.details));
+        setDetails(selectedItem.details);
     }, [selectedItem.id]);
 
     // radio変更時は「イベント内で完結」
@@ -49,10 +41,8 @@ function ItemTypeTel({selectedItem, updateItemLocalValue, saveItemValue}) {
         };
 
         setDetails(next);
-
-        const json = JSON.stringify(next);
-        updateItemLocalValue(selectedItem.id, 'details', json);
-        saveItemValue(selectedItem.id, 'details', json);
+        updateItemLocalValue(selectedItem.id, 'details', next);
+        saveItemValue(selectedItem.id, 'details', next);
     };
 
     return (
@@ -116,8 +106,8 @@ function ItemTypeTel({selectedItem, updateItemLocalValue, saveItemValue}) {
                                     name="hyphen_type"
                                     id={`hyphen_type_${value}`}
                                     value={value}
-                                    checked={String(details.hyphen_type) === String(value)}
-                                    onChange={() => onChangeHyphenType(value)}
+                                    checked={Number(details.hyphen_type) === Number(value)}
+                                    onChange={() => onChangeHyphenType(Number(value))}
                                 />
                                 <label htmlFor={`hyphen_type_${value}`} className="radio-label">
                                 <span className="outside">

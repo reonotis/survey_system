@@ -1,6 +1,5 @@
 @php
-    $details = json_decode($form_item->details ?? '{}', true);
-    $confirm_type = $details['confirm_type'] ?? 1;
+    $confirm_type = $form_item->details['confirm_type'];
 @endphp
 
 <div class="support-msg">

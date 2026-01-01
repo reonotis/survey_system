@@ -215,8 +215,7 @@ class RegisterRequest extends FormRequest
      */
     private function makeRulesForTel(FormItem $form_item): array
     {
-        $details = json_decode($form_item->details ?? '{}', true);
-        $hyphen_flg = $details['hyphen_flg'] ?? 1;
+        $hyphen_flg = $form_item->details['hyphen_flg'] ?? 1;
 
         $validates = [];
         if ($form_item->field_required) {

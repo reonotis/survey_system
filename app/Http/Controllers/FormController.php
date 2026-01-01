@@ -35,13 +35,15 @@ class FormController extends Controller
     public function index(string $route_name): View
     {
         $form_setting = $this->form_service->getSurveyByRouteName($route_name);
-        if (!$this->checkFormAvailablePeriod($form_setting)) {
-            return view('form.outside_period',[
+        $error_type = $this->checkFormAvailablePeriod($form_setting);
+        if ($error_type !== 0) {
+            return view('form.outside_period', [
                 'form_setting' => $form_setting,
+                'error_type' => $error_type,
             ]);
         }
 
-        return view('form.index',[
+        return view('form.index', [
             'form_setting' => $form_setting,
         ]);
     }
@@ -83,7 +85,7 @@ class FormController extends Controller
     {
         $form_setting = $this->form_service->getSurveyByRouteName($route_name);
 
-        return view('form.complete',[
+        return view('form.complete', [
             'form_setting' => $form_setting,
             'message' => $form_setting->message,
         ]);
@@ -92,20 +94,32 @@ class FormController extends Controller
     /**
      * 申込み可能な期間か確認する
      * @param FormSetting $form_setting
-     * @return bool
+     * @return int
      */
-    private function checkFormAvailablePeriod(FormSetting $form_setting): bool
+    private function checkFormAvailablePeriod(FormSetting $form_setting): int
     {
+        // 申込期間外の場合
         $now = Carbon::now();
-
         if ($form_setting->start_date > $now) {
-            return false;
+            return 1;
         }
-
         if ($form_setting->end_date < $now) {
-            return false;
+            return 1;
         }
 
-        return true;
+        // 非公開の場合
+        if ($form_setting->publication_status === FormSetting::PUBLICATION_STATUS_DISABLE) {
+            return 2;
+        }
+
+        // 申込上限に達している場合
+        if ($form_setting->max_applications) {
+            $count = app(ApplicationsService::class)->getApplications($form_setting->id);
+            if ($form_setting->max_applications <= $count) {
+                return 3;
+            }
+        }
+
+        return 0;
     }
 }

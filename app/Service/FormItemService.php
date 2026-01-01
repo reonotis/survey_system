@@ -19,11 +19,12 @@ class FormItemService
         // 詳細の初期値
         $details = match ($item_type) {
             FormItem::ITEM_TYPE_NAME => ['name_separate_type' => CommonConst::NAME_SEPARATE],
-            FormItem::ITEM_TYPE_KANA => json_encode(['kana_separate_type' => CommonConst::KANA_SEPARATE]),
-            FormItem::ITEM_TYPE_EMAIL => json_encode(['confirm_type' => CommonConst::EMAIL_CONFIRM_ENABLED]),
-            FormItem::ITEM_TYPE_TEL => json_encode(['hyphen_type' => CommonConst::TEL_HYPHEN_USE]),
-            FormItem::ITEM_TYPE_GENDER => json_encode(['gender_list' => []]),
-            default => json_encode([]),
+            FormItem::ITEM_TYPE_KANA => ['kana_separate_type' => CommonConst::KANA_SEPARATE],
+            FormItem::ITEM_TYPE_EMAIL => ['confirm_type' => CommonConst::EMAIL_CONFIRM_ENABLED],
+            FormItem::ITEM_TYPE_TEL => ['hyphen_type' => CommonConst::TEL_HYPHEN_USE],
+            FormItem::ITEM_TYPE_GENDER => ['gender_list' => [1, 2]],
+            FormItem::ITEM_TYPE_ADDRESS => ['use_post_code_type' => CommonConst::POST_CODE_DISABLED, 'address_separate_type' => CommonConst::ADDRESS_SEPARATE],
+            default => [],
         };
 
         return FormItemDraft::create([

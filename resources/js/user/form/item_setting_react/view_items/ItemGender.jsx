@@ -1,11 +1,8 @@
 import React from 'react';
 
 function ItemGender({ item }) {
-    // details を安全にパース
-    const details = item.details ? JSON.parse(item.details) : {};
-
-    // 選択されている gender の配列（例: ["2", "1"]）
-    const genderList = details.gender_list || [];
+    // 選択されている gender の配列（例: [2, 1]）
+    const genderList = item.details.gender_list || [];
 
     const genderConst = window.commonConst.GENDER_LIST || {};
 
@@ -18,7 +15,9 @@ function ItemGender({ item }) {
             )}
 
             {Object.entries(genderConst).map(([value, label]) => {
-                if (!genderList.includes(value)) return null;
+
+                const intValue = Number(value); // ★ ここ
+                if (!genderList.includes(intValue)) return null;
 
                 return (
                     <div

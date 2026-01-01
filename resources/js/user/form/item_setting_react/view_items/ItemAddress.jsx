@@ -2,17 +2,13 @@ import React from 'react';
 
 function ItemAddress({ item }) {
     // details を安全にパース
-    const details = item.details ? JSON.parse(item.details) : {};
+    const details = item.details;
     const usePostCodeType = details.use_post_code_type;
     const addressSeparateType = details.address_separate_type;
 
-
-    console.log(addressSeparateType)
-    console.log(usePostCodeType)
-
     return (
         <div className="flex gap-2 flex-col" >
-            {usePostCodeType === "1" && (
+            {usePostCodeType === 1 && (
                 <div className="flex-start-center gap-2">
                     <div className="input-box w-20"><span className="text-gray-400" >100</span></div>
                     <div >-</div>
@@ -21,7 +17,7 @@ function ItemAddress({ item }) {
             )}
 
             {addressSeparateType && (
-                addressSeparateType === "1" ? (
+                addressSeparateType === 1 ? (
                     <div className="flex gap-2 flex-col" >
                         <div className="flex-start-center gap-2">
                             <div className="input-box w-36"><span className="text-gray-400" >東京都</span></div>
