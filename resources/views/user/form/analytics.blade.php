@@ -15,8 +15,8 @@
             <li><a href="{{ route('user_dashboard') }}" class="anchor-link">ダッシュボード</a></li>
             <li><a href="{{ route('user_form_index') }}" class="anchor-link">応募フォーム一覧</a></li>
             <li><a href="{{ route('user_form_application_list', ['form_setting' => $form_setting->id]) }}"
-                   class="anchor-link">{{ $form_setting->title }}</a></li>
-            <li><a href="" class="anchor-link">当選設定</a></li>
+                   class="anchor-link">{{ $form_setting->title }} - 応募者一覧</a></li>
+            <li><a href="" class="anchor-link">応募分析</a></li>
         </ol>
     </x-slot>
 
@@ -26,7 +26,6 @@
 
         <div class="mx-auto py-8" style="width: 800px;">
             この機能は現在作成中です
-
         </div>
     </div>
 

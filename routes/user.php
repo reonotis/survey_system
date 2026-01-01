@@ -13,6 +13,7 @@ use App\Http\Controllers\User\FormMailSettingController;
 use App\Http\Controllers\User\FormMessageSettingController;
 use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
+use App\Http\Controllers\User\PreviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {
@@ -43,14 +44,6 @@ Route::prefix('user')->group(function () {
             Route::get('/create', [FormSettingController::class, 'create'])->name('user_form_create');
             Route::post('/register', [FormSettingController::class, 'store'])->name('user_form_register');
 
-            // 応募者一覧
-            Route::get('/{form_setting}/application-list', [FormApplicationController::class, 'show'])->name('user_form_application_list');
-            Route::post('/{form_setting}/get-application-data', [FormApplicationController::class, 'getApplicationData'])->name('user_form_get_application_list');
-            Route::post('/{form_setting}/update-display-items', [FormApplicationController::class, 'displayItemsUpdate'])->name('user_form_update_display_items');
-
-            // 応募分析
-            Route::get('/{form_setting}/analytics', [FormAnalyticsController::class, 'index'])->name('user_form_analytics');
-
             // 基本設定
             Route::get('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'index'])->name('user_form_basic_setting');
             Route::post('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'update'])->name('user_form_basic_setting_update');
@@ -71,12 +64,29 @@ Route::prefix('user')->group(function () {
             Route::get('/{form_setting}/mail-setting', [FormMailSettingController::class, 'index'])->name('user_form_mail_setting');
             Route::post('/{form_setting}/mail-setting', [FormMailSettingController::class, 'update'])->name('user_form_mail_setting_update');
 
+            // デザイン設定
+            Route::get('/{form_setting}/design-setting', [FormDesignSettingController::class, 'index'])->name('user_form_design_setting');
+
+
+
+
+
+
+            // 応募者一覧
+            Route::get('/{form_setting}/application-list', [FormApplicationController::class, 'show'])->name('user_form_application_list');
+            Route::post('/{form_setting}/get-application-data', [FormApplicationController::class, 'getApplicationData'])->name('user_form_get_application_list');
+            Route::post('/{form_setting}/update-display-items', [FormApplicationController::class, 'displayItemsUpdate'])->name('user_form_update_display_items');
+
+            // 応募分析
+            Route::get('/{form_setting}/analytics', [FormAnalyticsController::class, 'index'])->name('user_form_analytics');
+
             // 当選設定
             Route::get('/{form_setting}/winning-setting', [FormWinningSettingController::class, 'index'])->name('user_form_winning_setting');
 
-            // デザイン設定
-            Route::get('/{form_setting}/design-setting', [FormDesignSettingController::class, 'index'])->name('user_form_design_setting');
-        });
+
+            // プレビュー
+            Route::get('/{form_setting}/preview', [PreviewController::class, 'index'])->name('user_form_preview');
+       });
 
     });
 

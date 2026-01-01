@@ -36,7 +36,11 @@
         @endif
 
         <div class="mb-8">
-            <table class="list-tbl" id="form_list_tbl" data-url="{{ route('user_form_get_form_list') }}" data-show-url="{{ route('user_form_application_list', ['form_setting' => '__ID__']) }}" ></table>
+            <table class="list-tbl" id="form_list_tbl"
+                   data-url="{{ route('user_form_get_form_list') }}"
+                   data-form-setting-url="{{ route('user_form_basic_setting', ['form_setting' => '__ID__']) }}"
+                   data-show-url="{{ route('user_form_application_list', ['form_setting' => '__ID__']) }}"
+            ></table>
         </div>
     </div>
 </x-user-app-layout>

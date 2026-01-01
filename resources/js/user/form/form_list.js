@@ -3,6 +3,7 @@ import { defaultDataTableConfig } from '../../common/datatables.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const table = $('#form_list_tbl');
+    const formSettingURL = table.data('form-setting-url');
     const showUrlTemplate = table.data('show-url');
 
     table.DataTable({
@@ -31,7 +32,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: '応募数',
             }, {
                 data: 'id',
-                title: '管理',
+                title: 'フォーム設定',
+                orderable: false,
+                className: 'dt-center',
+                render: function(data, type, row) {
+                    const url = (formSettingURL || '').replace('__ID__', data);
+                    return '<a href="' + url + '" class="btn min">設定</a>';
+                }
+            }, {
+                data: 'id',
+                title: '分析',
                 orderable: false,
                 className: 'dt-center',
                 render: function(data, type, row) {

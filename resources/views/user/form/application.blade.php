@@ -14,7 +14,7 @@
         <ol class="custom-container">
             <li><a href="{{ route('user_dashboard') }}" class="anchor-link">ダッシュボード</a></li>
             <li><a href="{{ route('user_form_index') }}" class="anchor-link">応募フォーム一覧</a></li>
-            <li><a href="" class="anchor-link">{{ $form_setting->title }}</a></li>
+            <li><a href="" class="anchor-link">{{ $form_setting->title }} - 応募者一覧</a></li>
         </ol>
     </x-slot>
 

@@ -45,7 +45,7 @@ class FormSettingController extends UserController
                 return $start_date . ' ～ ' . $end_date;
             })
             ->addColumn('count', function ($form) {
-                return '-';
+                return '確認中';
             })
             ->make(true);
     }
