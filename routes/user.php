@@ -66,9 +66,7 @@ Route::prefix('user')->group(function () {
 
             // デザイン設定
             Route::get('/{form_setting}/design-setting', [FormDesignSettingController::class, 'index'])->name('user_form_design_setting');
-
-
-
+            Route::post('/{form_setting}/design-setting', [FormDesignSettingController::class, 'update'])->name('user_form_design_setting');
 
 
 

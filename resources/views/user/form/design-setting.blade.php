@@ -24,9 +24,26 @@
     <div class="custom-container py-4">
         @include('layouts.user.form.form-setting-navigation', ['number' => \App\Consts\UserConst::NAV_MANU_DESIGN_SETTING])
 
-        <div class="mx-auto py-8" style="width: 800px;">
-            この機能は現在作成中です
+        <div class="mx-auto py-8" style="width: 900px;">
+            <form method="POST" action="">
+                @csrf
+                <div class="mx-auto py-8" style="width: 800px;">
+                    <div class="item-row">
+                        <div class="item-title">デザインタイプ</div>
+                        <div class="item-contents flex-start-center">
+                            <x-input-radio
+                                name="design_type"
+                                :options="\App\Consts\CommonConst::DESIGN_TYPE_LIST"
+                                :checked="$form_setting->design_type"
+                            />
+                        </div>
+                    </div>
+                </div>
 
+                <div class="item-row flex-center-center">
+                    <input type="submit" class="btn" value="更新"/>
+                </div>
+            </form>
         </div>
     </div>
 

@@ -17,6 +17,7 @@ use Illuminate\Support\Collection;
  * @property string $route_name
  * @property string $admin_email
  * @property int $is_draft_item
+ * @property int $design_type
  *
  * @property Collection<int, FormItem> $formItems
  * @property Collection<int, FormItemDraft> $draftFormItems
@@ -61,6 +62,7 @@ class FormSetting extends Model
         'banner_filename',
         'is_draft_item',
         'publication_status',
+        'design_type',
         'created_by_admin',
         'created_by_user',
     ];

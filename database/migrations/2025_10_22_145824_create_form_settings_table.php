@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('css_filename')->nullable()->comment('CSSファイル名');
             $table->string('banner_filename')->nullable()->comment('バナーファイル名');
             $table->tinyInteger('publication_status')->default(0)->comment('公開状態');
-
+            $table->tinyInteger('design_type')->default(1)->comment('デザインタイプ');
             $table->boolean('is_draft_item')->default(0)->comment('項目を編集中か否か');
 
             $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'))->comment('作成日時');
