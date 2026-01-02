@@ -6,7 +6,7 @@
 
     {{-- 画面名 --}}
     <x-slot name="page_name">
-        {{ $form_setting->title }} - 当選設定
+        {{ $form_setting->title }} - 応募分析
     </x-slot>
 
     {{-- ぱんくず --}}

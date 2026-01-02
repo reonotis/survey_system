@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import ItemName from './view_items/ItemName.jsx';
-import ItemKana from './view_items/ItemKana.jsx';
-import ItemEmail from './view_items/ItemEmail.jsx';
-import ItemTel from './view_items/ItemTel.jsx';
-import ItemGender from './view_items/ItemGender.jsx';
 import ItemAddress from './view_items/ItemAddress.jsx';
+import ItemEmail from './view_items/ItemEmail.jsx';
+import ItemGender from './view_items/ItemGender.jsx';
+import ItemKana from './view_items/ItemKana.jsx';
+import ItemName from './view_items/ItemName.jsx';
+import ItemTel from './view_items/ItemTel.jsx';
+import ItemTerms from './view_items/ItemTerms.jsx';
 
 function Item({ item, onClick, itemDelete, isSelected }) {
     const itemTypeList = window.itemTypeList;
@@ -41,6 +42,8 @@ function Item({ item, onClick, itemDelete, isSelected }) {
                 return <ItemGender item={item} />;
             case 6:
                 return <ItemAddress item={item} />;
+            case 51: // 利用規約
+                return <ItemTerms item={item} />;
             default:
                 return '詳細が入ります';
         }

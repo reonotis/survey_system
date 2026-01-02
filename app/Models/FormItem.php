@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property array|null $value_list
  * @property array|null $details
  * @property string|null $annotation_text
+ * @property string|null $long_text
  * @property int $sort
  */
 class FormItem extends Model
@@ -49,7 +50,7 @@ class FormItem extends Model
 //        self::ITEM_TYPE_CHECKBOX => 'チェックボックス',
 //        self::ITEM_TYPE_RADIO => 'ラジオボタン',
 //        self::ITEM_TYPE_SELECT_BOX => 'セレクトボックス',
-//        self::ITEM_TYPE_TERMS => '利用規約',
+        self::ITEM_TYPE_TERMS => '利用規約',
 //        self::ITEM_TYPE_PRECAUTIONS => '注意事項',
     ];
 
@@ -78,6 +79,7 @@ class FormItem extends Model
         'value_list',
         'details',
         'annotation_text',
+        'long_text',
         'sort',
     ];
 

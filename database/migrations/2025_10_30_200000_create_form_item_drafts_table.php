@@ -22,6 +22,7 @@ return new class extends Migration
             $table->json('value_list')->nullable()->comment('選択項目');
             $table->json('details')->nullable()->comment('詳細');
             $table->text('annotation_text')->nullable()->comment('注釈文');
+            $table->text('long_text')->nullable()->comment('文章');
             $table->tinyInteger('sort')->default(0)->comment('並び順');
             $table->softDeletes()->comment('削除日時');
 

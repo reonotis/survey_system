@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $item_type
  * @property string $item_title
  * @property bool $field_required
+ * @property string|null $long_text
  */
 class FormItemDraft extends Model
 {
@@ -32,6 +33,7 @@ class FormItemDraft extends Model
         'value_list',
         'details',
         'annotation_text',
+        'long_text',
         'sort',
     ];
 

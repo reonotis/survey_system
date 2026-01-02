@@ -24,15 +24,30 @@ class FormItemService
             FormItem::ITEM_TYPE_TEL => ['hyphen_type' => CommonConst::TEL_HYPHEN_USE],
             FormItem::ITEM_TYPE_GENDER => ['gender_list' => [1, 2]],
             FormItem::ITEM_TYPE_ADDRESS => ['use_post_code_type' => CommonConst::POST_CODE_DISABLED, 'address_separate_type' => CommonConst::ADDRESS_SEPARATE],
+            FormItem::ITEM_TYPE_TERMS => ['label_name' => '同意する'],
             default => [],
         };
 
         return FormItemDraft::create([
             'form_setting_id' => $form_setting_id,
             'item_type' => $item_type,
+            'field_required' => in_array($item_type, [FormItem::ITEM_TYPE_TERMS,]),
             'details' => $details,
+            'long_text' => $this->setLongText($item_type),
             'sort' => $sort,
         ])->refresh();
+    }
+
+    /**
+     * @param int $item_type
+     * @return string|null
+     */
+    private function setLongText(int $item_type): ?string
+    {
+        return match ($item_type) {
+            FormItem::ITEM_TYPE_TERMS => '利用規約が入ります',
+            default => null,
+        };
     }
 
     public function insertDraft(array $records)
@@ -98,6 +113,7 @@ class FormItemService
             FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($form_item, $target_key, $target_value),
+            FormItem::ITEM_TYPE_TERMS => $this->makeUpdateParamForTerms($form_item, $target_key, $target_value),
             default => [],
         };
     }
@@ -255,17 +271,15 @@ class FormItemService
     }
 
     /**
-     * @param array $param
+     * @param FormItemDraft $form_item
+     * @param string $target_key
+     * @param $target_value
      * @return array
      */
-    private function makeUpdateParamForTerms(array $param): array
+    private function makeUpdateParamForTerms(FormItemDraft $form_item, string $target_key, $target_value): array
     {
         return [
-            'item_title' => $param['item_title'],
-            'value_list' => json_encode([$param['terms_text']]),
-            'details' => json_encode([
-                'consent_name' => $param['consent_name']
-            ]),
+            $target_key => $target_value
         ];
     }
 

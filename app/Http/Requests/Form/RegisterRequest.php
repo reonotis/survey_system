@@ -117,6 +117,7 @@ class RegisterRequest extends FormRequest
             FormItem::ITEM_TYPE_TEL => $this->makeRulesForTel($form_item),
             FormItem::ITEM_TYPE_GENDER => $this->makeRulesForGender($form_item),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress($form_item),
+            FormItem::ITEM_TYPE_TERMS => $this->makeRulesForTerms($form_item),
             default => [],
         };
     }
@@ -283,5 +284,23 @@ class RegisterRequest extends FormRequest
 
         return $roles;
     }
+
+    /**
+     * 利用規約のバリデーション
+     * @param FormItem $form_item
+     * @return array[]
+     */
+    private function makeRulesForTerms(FormItem $form_item): array
+    {
+        $validates = [];
+        if ($form_item->field_required) {
+            $validates[] = 'required';
+        }
+
+        return [
+            'terms' => $validates,
+        ];
+    }
+
 }
 

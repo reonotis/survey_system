@@ -46,6 +46,7 @@ class FormItemSettingController extends UserController
                             ? json_encode($form_item->details)
                             : null,
                         'annotation_text' => $form_item->annotation_text,
+                        'long_text' => $form_item->long_text,
                         'sort' => $form_item->sort,
                     ];
                     $records[] = $record;
@@ -228,6 +229,7 @@ class FormItemSettingController extends UserController
                         'field_required' => $draft_form_item->field_required,
                         'details' => $draft_form_item->details,
                         'annotation_text' => $draft_form_item->annotation_text,
+                        'long_text' => $draft_form_item->long_text,
                         'sort' => $draft_form_item->sort,
                     ];
                     $form_item_service->updateFormItemById($draft_form_item->form_item_id, $param);
@@ -243,6 +245,7 @@ class FormItemSettingController extends UserController
                         'field_required' => $draft_form_item->field_required,
                         'details' => $draft_form_item->details,
                         'annotation_text' => $draft_form_item->annotation_text,
+                        'long_text' => $draft_form_item->long_text,
                         'sort' => $draft_form_item->sort,
                     ]);
                 }

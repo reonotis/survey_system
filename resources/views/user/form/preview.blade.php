@@ -1,6 +1,13 @@
 <x-form-layout :form_setting="$form_setting">
 
     @push('scripts')
+        @if($form_setting->design_type === 1)
+            @vite('resources/js/form/type_a.js')
+        @elseif($form_setting->design_type === 2)
+            @vite('resources/js/form/type_b.js')
+        @elseif($form_setting->design_type === 3)
+            @vite('resources/js/form/type_c.js')
+        @endif
     @endpush
 
     <div class="custom-container py-8 mx-auto" style="width: 95%;max-width: 600px;">
