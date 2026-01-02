@@ -33,8 +33,11 @@ class FormAnalyticsController extends UserController
      */
     public function index(FormSetting $form_setting): View
     {
+        $application_service = new ApplicationsService();
+
         return view('user.form.analytics', [
             'form_setting' => $form_setting,
+            'total_count' => $application_service->getApplications($form_setting->id),
         ]);
     }
 

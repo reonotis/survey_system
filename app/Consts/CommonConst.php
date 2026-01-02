@@ -81,4 +81,13 @@ class CommonConst
         self::DESIGN_TYPE_C => 'タイプC',
     ];
 
+    // 分析画面、期間内応募選択肢
+    public const ANALYTICS_TYPE_DAY = 1;
+    public const ANALYTICS_TYPE_WEEK = 2;
+    public const ANALYTICS_TYPE_MONTH = 3;
+    public const ANALYTICS_TYPE_LIST = [
+        self::ANALYTICS_TYPE_DAY => '日別',
+        self::ANALYTICS_TYPE_WEEK => '週別',
+        self::ANALYTICS_TYPE_MONTH => '月別',
+    ];
 }
