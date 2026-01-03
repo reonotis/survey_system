@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 
 /**
- * 電話番号設定
+ * 注意事項設定
  */
-function ItemTypeTerms({selectedItem, updateItemLocalValue, saveItemValue}) {
+function ItemTypePrecautions({selectedItem, updateItemLocalValue, saveItemValue}) {
 
     // タイトル
     const [title, setTitle] = useState(selectedItem.item_title ?? '');
@@ -19,32 +19,12 @@ function ItemTypeTerms({selectedItem, updateItemLocalValue, saveItemValue}) {
         updateItemLocalValue(selectedItem.id, 'annotation_text', value);
     }
 
-    // 規約文言
+    // 注意事項文言
     const [longText, setLongText] = useState(selectedItem.long_text ?? '');
     const updateLongText = (value) => {
         setLongText(value)
         updateItemLocalValue(selectedItem.id, 'long_text', value);
     }
-
-    // その他詳細
-    const [details, setDetails] = useState(() => selectedItem.details);
-
-    // 「同意する」のラベル名
-    const [labelName, setLabelName] = useState(details.label_name);
-    const updateLabelName = (value) => {
-        setLabelName(value)
-    }
-    const saveLabelName = (value) => {
-        const next = {
-            ...details,
-            label_name: value,
-        };
-
-        setDetails(next);
-
-        updateItemLocalValue(selectedItem.id, 'details', next);
-        saveItemValue(selectedItem.id, 'details', next);
-    };
 
 
     return (
@@ -78,7 +58,7 @@ function ItemTypeTerms({selectedItem, updateItemLocalValue, saveItemValue}) {
                 />
             </div>
             <div className="border-b pb-3">
-                <p className="text-sm font-medium text-gray-800">規約文言</p>
+                <p className="text-sm font-medium text-gray-800">注意事項文言</p>
                 <textarea
                     name="long_text"
                     value={longText}
@@ -89,23 +69,9 @@ function ItemTypeTerms({selectedItem, updateItemLocalValue, saveItemValue}) {
                     }}
                 />
             </div>
-            <div className="border-b pb-3">
-                <p className="text-sm font-medium text-gray-800">「同意する」のラベル名</p>
-                <p className="text-xs text-gray-500 mt-1">
-                    <input
-                        type="text"
-                        className="input-box w-full"
-                        value={labelName}
-                        onChange={e => updateLabelName(e.target.value)}
-                        onBlur={e => {
-                            saveLabelName(e.target.value)
-                        }}
-                    />
-                </p>
-            </div>
         </div>
     );
 }
 
-export default ItemTypeTerms;
+export default ItemTypePrecautions;
 

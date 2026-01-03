@@ -1,3 +1,5 @@
+@props(['form_item'])
+
 @php
     $details = $form_item->details;
 @endphp

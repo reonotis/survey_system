@@ -6,6 +6,7 @@ import ItemEmail from './view_items/ItemEmail.jsx';
 import ItemGender from './view_items/ItemGender.jsx';
 import ItemKana from './view_items/ItemKana.jsx';
 import ItemName from './view_items/ItemName.jsx';
+import ItemPrecautions from './view_items/ItemPrecautions.jsx';
 import ItemTel from './view_items/ItemTel.jsx';
 import ItemTerms from './view_items/ItemTerms.jsx';
 
@@ -44,6 +45,8 @@ function Item({ item, onClick, itemDelete, isSelected }) {
                 return <ItemAddress item={item} />;
             case 51: // 利用規約
                 return <ItemTerms item={item} />;
+            case 52: // 注意事項
+                return <ItemPrecautions item={item} />;
             default:
                 return '詳細が入ります';
         }

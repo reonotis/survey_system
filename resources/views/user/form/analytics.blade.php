@@ -49,14 +49,14 @@
 
         <div class="">集計</div>
         <div class="dashboard original-dashboard">
-            <div class="widget">コンテンツが選択されていません</div>
-            <div class="widget">コンテンツが選択されていません</div>
-            <div class="widget">コンテンツが選択されていません</div>
-            <div class="widget">コンテンツが選択されていません</div>
-            <div class="widget">コンテンツが選択されていません</div>
-            <div class="widget">コンテンツが選択されていません</div>
-            <div class="widget">コンテンツが選択されていません</div>
-            <div class="widget">コンテンツが選択されていません</div>
+            <div class="widget">この機能は現在作成中です</div>
+            <div class="widget">この機能は現在作成中です</div>
+            <div class="widget">この機能は現在作成中です</div>
+            <div class="widget">この機能は現在作成中です</div>
+            <div class="widget">この機能は現在作成中です</div>
+            <div class="widget">この機能は現在作成中です</div>
+            <div class="widget">この機能は現在作成中です</div>
+            <div class="widget">この機能は現在作成中です</div>
         </div>
 
     </div>

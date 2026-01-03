@@ -45,7 +45,8 @@ class FormItemService
     private function setLongText(int $item_type): ?string
     {
         return match ($item_type) {
-            FormItem::ITEM_TYPE_TERMS => '利用規約が入ります',
+            FormItem::ITEM_TYPE_TERMS => '利用規約が入ります。利用規約が入ります。',
+            FormItem::ITEM_TYPE_PRECAUTIONS => '注意事項が入ります。注意事項が入ります。',
             default => null,
         };
     }
@@ -114,6 +115,7 @@ class FormItemService
             FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_TERMS => $this->makeUpdateParamForTerms($form_item, $target_key, $target_value),
+            FormItem::ITEM_TYPE_PRECAUTIONS => $this->makeUpdateParamForTerms($form_item, $target_key, $target_value),
             default => [],
         };
     }

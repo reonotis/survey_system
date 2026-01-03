@@ -2,8 +2,6 @@
  */
 function ItemTerms({ item }) {
 
-    console.log(item.details)
-
     return (
         <>
             <div className="

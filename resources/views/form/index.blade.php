@@ -53,7 +53,10 @@
                                 @include('form.components.checkbox')
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_TERMS)
-                                @include('form.components.terms')
+                                @include('form.components.terms', ['form_item' => $form_item])
+                                @break
+                            @case(App\Models\FormItem::ITEM_TYPE_PRECAUTIONS)
+                                @include('form.components.precautions', ['form_item' => $form_item])
                                 @break
                             @default
                                 @break

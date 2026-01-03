@@ -51,7 +51,7 @@ class FormItem extends Model
 //        self::ITEM_TYPE_RADIO => 'ラジオボタン',
 //        self::ITEM_TYPE_SELECT_BOX => 'セレクトボックス',
         self::ITEM_TYPE_TERMS => '利用規約',
-//        self::ITEM_TYPE_PRECAUTIONS => '注意事項',
+        self::ITEM_TYPE_PRECAUTIONS => '注意事項',
     ];
 
     // 登録できる項目の上限値
