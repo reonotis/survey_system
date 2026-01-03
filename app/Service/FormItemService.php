@@ -114,6 +114,7 @@ class FormItemService
             FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($form_item, $target_key, $target_value),
+            FormItem::ITEM_TYPE_CHECKBOX => $this->makeUpdateParamForCheckbox($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_TERMS => $this->makeUpdateParamForTerms($form_item, $target_key, $target_value),
             FormItem::ITEM_TYPE_PRECAUTIONS => $this->makeUpdateParamForTerms($form_item, $target_key, $target_value),
             default => [],
@@ -255,20 +256,15 @@ class FormItemService
     }
 
     /**
-     * @param array $param
+     * @param FormItemDraft $form_item
+     * @param string $target_key
+     * @param $target_value
      * @return array
      */
-    private function makeUpdateParamForCheckbox(array $param): array
+    private function makeUpdateParamForCheckbox(FormItemDraft $form_item, string $target_key, $target_value): array
     {
-        $raw = $param['checkbox_list'] ?? '';
-        $lines = preg_split("/\r\n|\r|\n/", $raw);
-        $options = array_values(array_filter(array_map('trim', $lines), function ($v) {
-            return $v !== '';
-        }));
-
         return [
-            'item_title' => $param['item_title'],
-            'value_list' => json_encode($options),
+            $target_key => $target_value
         ];
     }
 

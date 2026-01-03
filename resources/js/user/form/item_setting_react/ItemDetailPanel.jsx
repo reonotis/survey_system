@@ -1,5 +1,6 @@
 import React from 'react';
 import ItemTypeAddress from './detail_items/ItemTypeAddress';
+import ItemTypeCheckbox from './detail_items/ItemTypeCheckbox';
 import ItemTypeEmail from './detail_items/ItemTypeEmail';
 import ItemTypeGender from './detail_items/ItemTypeGender';
 import ItemTypeKana from './detail_items/ItemTypeKana';
@@ -34,6 +35,8 @@ function ItemDetailPanel({ selectedItem, updateItemLocalValue, saveItemValue }) 
                 return <ItemTypeGender selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 6:
                 return <ItemTypeAddress selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
+            case 34: // チェックボックス
+                return <ItemTypeCheckbox selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 51: // 利用規約
                 return <ItemTypeTerms selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 52: // 注意事項

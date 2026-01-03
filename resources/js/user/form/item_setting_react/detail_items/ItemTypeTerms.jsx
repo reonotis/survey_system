@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 
 /**
- * 電話番号設定
+ * 利用規約設定
  */
 function ItemTypeTerms({selectedItem, updateItemLocalValue, saveItemValue}) {
 
