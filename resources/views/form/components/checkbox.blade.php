@@ -9,10 +9,10 @@
 <div>
     <div class="form-item-detail-content">
         <div class="flex flex-wrap gap-2">
-            @foreach($value_list as $value => $max_count)
+            @foreach($value_list as $value)
                 <label>
-                    <input type="checkbox" class="form-check-input" name="checkbox_{{ $form_item->id }}[]">
-                    {{ $value }}
+                    <input type="checkbox" class="form-check-input" name="checkbox_{{ $form_item->id }}[]" value="{{ $value['name'] }}">
+                    {{ $value['name'] }}
                 </label>
             @endforeach
         </div>
