@@ -1,5 +1,5 @@
 @php
-    $value_list = json_decode($form_item->value_list ?? '[]', true);
+    $value_list = $form_item->value_list;
 @endphp
 
 <div class="support-msg">
@@ -9,9 +9,9 @@
 <div>
     <div class="form-item-detail-content">
         <div class="flex flex-wrap gap-2">
-            @foreach($value_list as $value)
+            @foreach($value_list as $value => $max_count)
                 <label>
-                    <input type="checkbox" class="form-check-input" name="checkbox_{{ $form_item->id }}">
+                    <input type="checkbox" class="form-check-input" name="checkbox_{{ $form_item->id }}[]">
                     {{ $value }}
                 </label>
             @endforeach

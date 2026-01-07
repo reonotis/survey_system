@@ -24,6 +24,7 @@ class FormItemService
             FormItem::ITEM_TYPE_TEL => ['hyphen_type' => CommonConst::TEL_HYPHEN_USE],
             FormItem::ITEM_TYPE_GENDER => ['gender_list' => [1, 2]],
             FormItem::ITEM_TYPE_ADDRESS => ['use_post_code_type' => CommonConst::POST_CODE_DISABLED, 'address_separate_type' => CommonConst::ADDRESS_SEPARATE],
+            FormItem::ITEM_TYPE_CHECKBOX => ['max_count' => null],
             FormItem::ITEM_TYPE_TERMS => ['label_name' => '同意する'],
             default => [],
         };

@@ -34,6 +34,7 @@ class FormItem extends Model
     const ITEM_TYPE_CHECKBOX = 34;
     const ITEM_TYPE_RADIO = 35;
     const ITEM_TYPE_SELECT_BOX = 36;
+    const ITEM_TYPE_SLIDER = 37;
     const ITEM_TYPE_TERMS = 51;
     const ITEM_TYPE_PRECAUTIONS = 52;
 

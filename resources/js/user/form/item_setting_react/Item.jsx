@@ -2,6 +2,7 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import ItemAddress from './view_items/ItemAddress.jsx';
+import ItemCheckbox from './view_items/ItemCheckbox.jsx';
 import ItemEmail from './view_items/ItemEmail.jsx';
 import ItemGender from './view_items/ItemGender.jsx';
 import ItemKana from './view_items/ItemKana.jsx';
@@ -43,6 +44,8 @@ function Item({ item, onClick, itemDelete, isSelected }) {
                 return <ItemGender item={item} />;
             case 6:
                 return <ItemAddress item={item} />;
+            case 34: // チェックボックス
+                return <ItemCheckbox item={item} />;
             case 51: // 利用規約
                 return <ItemTerms item={item} />;
             case 52: // 注意事項
