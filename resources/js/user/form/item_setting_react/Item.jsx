@@ -52,7 +52,6 @@ function Item({ item, onClick, itemDelete, isSelected }) {
                 return <ItemRadio item={item} />;
             case 36: // セレクトボックス
                 return <ItemSelectBox item={item} />;
-
             case 51: // 利用規約
                 return <ItemTerms item={item} />;
             case 52: // 注意事項

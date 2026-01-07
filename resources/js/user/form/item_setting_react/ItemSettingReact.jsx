@@ -26,7 +26,7 @@ function ItemSettingReact() {
                 />
             </div>
 
-            <div className="bg-white rounded-lg shadow px-2" style={{ flex: '1' }}>
+            <div className="bg-white rounded-lg shadow px-2 overflow-y-auto" style={{ flex: '1', maxHeight: 'calc(100vh - 200px)' }}>
                 <CurrentItemsList
                     draftFormItems={draftFormItems}
                     onSortEnd={handleOrderChange}
@@ -36,7 +36,7 @@ function ItemSettingReact() {
                 />
             </div>
 
-            <div className="bg-white rounded-lg shadow px-2" style={{ width: '600px' }}>
+            <div className="bg-white rounded-lg shadow px-2 overflow-y-auto" style={{ width: '600px', maxHeight: 'calc(100vh - 200px)' }}>
                 <ItemDetailPanel
                     selectedItem={selectedItem}
                     updateItemLocalValue={updateItemLocalValue}

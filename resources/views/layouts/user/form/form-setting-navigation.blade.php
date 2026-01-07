@@ -20,7 +20,7 @@
 
     <div class="preview-btn-area">
         <a href="{{ route('user_form_preview', ['form_setting' => $form_setting->id]) }}" class="btn" target="_blank">プレビュー</a>
-        <a href="{{ route('form_index', ['route_name' => $form_setting->route_name]) }}" class="btn" target="_blank">申込フォームはこちら</a>
+        <a href="{{ route('form_index', ['route_name' => $form_setting->route_name]) }}" class="btn" target="_blank">実際のフォームを確認する</a>
     </div>
 </div>
 

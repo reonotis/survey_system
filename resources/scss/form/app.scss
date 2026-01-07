@@ -65,6 +65,15 @@ body{
     }
 }
 
+select.input-box option {
+    color: #000;
+    background-color: #fff;
+}
+
+select.input-box option:checked {
+    background-color: #8596ba;
+    color: #fff;
+}
 
 .btn {
     padding: 0.5rem 1rem;

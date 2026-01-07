@@ -20,7 +20,7 @@ function ItemCheckbox({ item }) {
     const choices = getChoices();
 
     return (
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-x-4 gap-y-1">
             {choices.length === 0 && (
                 <div className="text-sm text-gray-400">未選択</div>
             )}
