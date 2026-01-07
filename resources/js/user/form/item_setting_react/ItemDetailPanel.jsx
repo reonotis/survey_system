@@ -7,6 +7,7 @@ import ItemTypeKana from './detail_items/ItemTypeKana';
 import ItemTypeName from './detail_items/ItemTypeName';
 import ItemTypePrecautions from './detail_items/ItemTypePrecautions';
 import ItemTypeRadio from './detail_items/ItemTypeRadio';
+import ItemTypeSelectBox from './detail_items/ItemTypeSelectBox';
 import ItemTypeTel from './detail_items/ItemTypeTel';
 import ItemTypeTerms from './detail_items/ItemTypeTerms';
 
@@ -40,6 +41,8 @@ function ItemDetailPanel({ selectedItem, updateItemLocalValue, saveItemValue }) 
                 return <ItemTypeCheckbox selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 35: // ラジオボタン
                 return <ItemTypeRadio selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
+            case 36: // セレクトボックス
+                return <ItemTypeSelectBox selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 51: // 利用規約
                 return <ItemTypeTerms selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 52: // 注意事項

@@ -5,6 +5,12 @@ function SelectableItemsList({ addableItems, onAddItem }) {
     // 追加しようとして選択した項目タイプ
     const [selectedItemType, setSelectedItemType] = useState(null);
 
+    // 項目追加後にselectedItemTypeをリセットする
+    const handleAddItemWithReset = (newItem) => {
+        onAddItem(newItem);
+        setSelectedItemType(null);
+    };
+
     return (
         <div>
             <h3 className="title-label">追加可能項目</h3>
@@ -17,7 +23,7 @@ function SelectableItemsList({ addableItems, onAddItem }) {
                             item={item}
                             isSelected={selectedItemType === item.itemType}
                             onSelect={() => setSelectedItemType(item.itemType)}
-                            onAdd={onAddItem}
+                            onAdd={handleAddItemWithReset}
                         />
                     ))
                 ) : (

@@ -4,9 +4,11 @@ import CommonRequire from "./component/CommonRequire.jsx";
 import CommonTitle from "./component/CommonTitle.jsx";
 
 /**
- * ラジオボタン設定設定
+ * セレクトボックス設定
  */
-function ItemTypeRadio({selectedItem, updateItemLocalValue, saveItemValue}) {
+function ItemTypeSelectBox({selectedItem, updateItemLocalValue, saveItemValue}) {
+
+
 
     return (
         <div className="space-y-4">
@@ -30,9 +32,10 @@ function ItemTypeRadio({selectedItem, updateItemLocalValue, saveItemValue}) {
                 updateItemLocalValue={updateItemLocalValue}
                 saveItemValue={saveItemValue}
             />
+
         </div>
     );
 }
 
-export default ItemTypeRadio;
+export default ItemTypeSelectBox;
 

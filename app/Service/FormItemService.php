@@ -118,6 +118,7 @@ class FormItemService
 
             FormItem::ITEM_TYPE_CHECKBOX,
             FormItem::ITEM_TYPE_RADIO,
+            FormItem::ITEM_TYPE_SELECT_BOX,
             FormItem::ITEM_TYPE_TERMS,
             FormItem::ITEM_TYPE_PRECAUTIONS => $this->makeUpdateParamDefault($target_key, $target_value),
             default => [],

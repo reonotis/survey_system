@@ -22,9 +22,7 @@ function ItemRadio({ item }) {
     return (
         <div className="flex gap-4">
             {choices.length === 0 && (
-                <div className="text-sm text-gray-400">
-                    未選択
-                </div>
+                <div className="text-sm text-gray-400">未選択</div>
             )}
 
             {choices.map((choice, index) => (

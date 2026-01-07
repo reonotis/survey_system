@@ -9,6 +9,7 @@ import ItemKana from './view_items/ItemKana.jsx';
 import ItemName from './view_items/ItemName.jsx';
 import ItemPrecautions from './view_items/ItemPrecautions.jsx';
 import ItemRadio from './view_items/ItemRadio.jsx';
+import ItemSelectBox from './view_items/ItemSelectBox.jsx';
 import ItemTel from './view_items/ItemTel.jsx';
 import ItemTerms from './view_items/ItemTerms.jsx';
 
@@ -49,6 +50,9 @@ function Item({ item, onClick, itemDelete, isSelected }) {
                 return <ItemCheckbox item={item} />;
             case 35: // ラジオボタン
                 return <ItemRadio item={item} />;
+            case 36: // セレクトボックス
+                return <ItemSelectBox item={item} />;
+
             case 51: // 利用規約
                 return <ItemTerms item={item} />;
             case 52: // 注意事項
