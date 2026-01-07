@@ -49,7 +49,7 @@ class FormItem extends Model
 //        self::ITEM_TYPE_TEXT => 'テキスト（短文）',
 //        self::ITEM_TYPE_TEXTAREA => 'テキスト（長文）',
         self::ITEM_TYPE_CHECKBOX => 'チェックボックス',
-//        self::ITEM_TYPE_RADIO => 'ラジオボタン',
+        self::ITEM_TYPE_RADIO => 'ラジオボタン',
 //        self::ITEM_TYPE_SELECT_BOX => 'セレクトボックス',
         self::ITEM_TYPE_TERMS => '利用規約',
         self::ITEM_TYPE_PRECAUTIONS => '注意事項',
@@ -64,6 +64,7 @@ class FormItem extends Model
         self::ITEM_TYPE_GENDER => 1,
         self::ITEM_TYPE_ADDRESS => 1,
         self::ITEM_TYPE_CHECKBOX => 5,
+        self::ITEM_TYPE_RADIO => 5,
         self::ITEM_TYPE_TERMS => 1,
         self::ITEM_TYPE_PRECAUTIONS => 1,
     ];

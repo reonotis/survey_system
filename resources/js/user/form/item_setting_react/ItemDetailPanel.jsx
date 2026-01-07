@@ -6,6 +6,7 @@ import ItemTypeGender from './detail_items/ItemTypeGender';
 import ItemTypeKana from './detail_items/ItemTypeKana';
 import ItemTypeName from './detail_items/ItemTypeName';
 import ItemTypePrecautions from './detail_items/ItemTypePrecautions';
+import ItemTypeRadio from './detail_items/ItemTypeRadio';
 import ItemTypeTel from './detail_items/ItemTypeTel';
 import ItemTypeTerms from './detail_items/ItemTypeTerms';
 
@@ -37,6 +38,8 @@ function ItemDetailPanel({ selectedItem, updateItemLocalValue, saveItemValue }) 
                 return <ItemTypeAddress selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 34: // チェックボックス
                 return <ItemTypeCheckbox selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
+            case 35: // ラジオボタン
+                return <ItemTypeRadio selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 51: // 利用規約
                 return <ItemTypeTerms selectedItem={selectedItem} updateItemLocalValue={updateItemLocalValue} saveItemValue={saveItemValue} />;
             case 52: // 注意事項
