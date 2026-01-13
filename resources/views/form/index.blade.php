@@ -52,6 +52,12 @@
                             @case(App\Models\FormItem::ITEM_TYPE_CHECKBOX)
                                 @include('form.components.checkbox')
                                 @break
+                            @case(App\Models\FormItem::ITEM_TYPE_RADIO)
+                                @include('form.components.radio')
+                                @break
+                            @case(App\Models\FormItem::ITEM_TYPE_SELECT_BOX)
+                                @include('form.components.select')
+                                @break
                             @case(App\Models\FormItem::ITEM_TYPE_TERMS)
                                 @include('form.components.terms', ['form_item' => $form_item])
                                 @break

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Models\Application;
+use App\Models\ApplicationSub;
 use App\Models\FormSetting;
 use App\Models\FormItem;
 use App\Traits\FormParamChangerTrait;
@@ -25,6 +26,7 @@ class ApplicationsService
      */
     public function register(FormSetting $form_setting, array $request_data)
     {
+        // Applicationテーブルへ登録
         $param = [
             'form_setting_id' => $form_setting->id,
         ];
@@ -32,13 +34,16 @@ class ApplicationsService
         foreach ($form_setting->formItems as $form_item) {
             $param = array_merge($param, $this->makeParamByItemType($form_item, $request_data));
         }
-
-        // Applicationテーブルへ登録
-        Application::create($param);
+        $application = Application::create($param);
 
         // その他のテーブルへ登録
+        $application_id = $application->id;
+        $records = [];
+        foreach ($form_setting->formItems as $form_item) {
+            $records = array_merge($records, $this->applicationSubRecord($application_id, $form_item, $request_data));
+        }
 
-        return 1;
+        ApplicationSub::insert($records);
     }
 
     /**
@@ -55,6 +60,22 @@ class ApplicationsService
             FormItem::ITEM_TYPE_TEL => $this->makeParamForTel($request_data),
             FormItem::ITEM_TYPE_GENDER => $this->makeParamForGender($request_data),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeParamForAddress($form_item->details, $request_data),
+
+            default => [],
+        };
+    }
+
+    /**
+     * @param int $application_id
+     * @param FormItem $form_item
+     * @param array $request_data
+     * @return array
+     */
+    private function applicationSubRecord(int $application_id, FormItem $form_item, array $request_data): array
+    {
+        return match ($form_item->item_type) {
+            FormItem::ITEM_TYPE_CHECKBOX => $this->makeParamForCheckbox($application_id, $form_item, $request_data),
+            FormItem::ITEM_TYPE_RADIO => $this->makeParamForRadio($application_id, $form_item, $request_data),
 
             default => [],
         };

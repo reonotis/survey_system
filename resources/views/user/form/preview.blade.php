@@ -58,6 +58,9 @@
                             @case(App\Models\FormItem::ITEM_TYPE_TERMS)
                                 @include('form.components.terms')
                                 @break
+                            @case(App\Models\FormItem::ITEM_TYPE_PRECAUTIONS)
+                                @include('form.components.precautions')
+                                @break
                             @default
                                 @break
                         @endswitch

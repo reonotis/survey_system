@@ -60,7 +60,7 @@ class FormController extends Controller
         // リレーションされている情報を取得しておく
         $form_setting->load('mailSetting', 'formItems', 'message');
 
-        $request_data = $request->validated();
+        $request_data = $request->all();
 
         DB::transaction(function () use ($form_setting, $request_data) {
             // 申込みデータ登録

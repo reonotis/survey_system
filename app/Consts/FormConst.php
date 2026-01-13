@@ -10,6 +10,8 @@ class FormConst
         FormItem::ITEM_TYPE_TEL => 'tel',
         FormItem::ITEM_TYPE_GENDER => 'gender',
         FormItem::ITEM_TYPE_TERMS => 'terms',
+        FormItem::ITEM_TYPE_CHECKBOX => 'checkbox',
+        FormItem::ITEM_TYPE_RADIO => 'radio',
     ];
 
     /**
@@ -37,7 +39,6 @@ class FormConst
             'street21' => '住所',
             'address' => '住所',
         ],
-
     ];
 
 }

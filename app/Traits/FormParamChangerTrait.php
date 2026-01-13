@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Consts\CommonConst;
+use App\Models\FormItem;
 
 trait FormParamChangerTrait
 {
@@ -109,6 +110,51 @@ trait FormParamChangerTrait
             'post_code' => $post_code,
             'address' => $address,
         ];
+    }
+
+    /**
+     * @param int $application_id
+     * @param FormItem $form_item
+     * @param array $request_data
+     * @return array
+     */
+    private function makeParamForCheckbox(int $application_id, FormItem $form_item, array $request_data): array
+    {
+        if (empty($request_data['checkbox_' . $form_item['id']])) {
+            return [];
+        }
+
+        $records = [];
+        foreach ($request_data['checkbox_' . $form_item['id']] as $value) {
+            $record = [
+                'application_id' => $application_id,
+                'form_item_id' => $form_item['id'],
+                'answer_text' => $value,
+            ];
+            $records[] = $record;
+        }
+
+        return $records;
+    }
+
+    /**
+     * @param int $application_id
+     * @param FormItem $form_item
+     * @param array $request_data
+     * @return array
+     */
+    private function makeParamForRadio(int $application_id, FormItem $form_item, array $request_data): array
+    {
+        if (empty($request_data['radio_' . $form_item['id']])) {
+            return [];
+        }
+        $records = [
+            'application_id' => $application_id,
+            'form_item_id' => $form_item['id'],
+            'answer_text' => $request_data['radio_' . $form_item['id']],
+        ];
+
+        return [$records];
     }
 
 }
