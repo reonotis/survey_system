@@ -27,9 +27,9 @@
                                 <x-input-checkbox
                                     name="display_items[]"
                                     label="{{ $item_title }}"
-                                    id="{{ $item_title }}"
+                                    id="display_item_{{ $form_item->id }}"
                                     value="{{ $form_item->id }}"
-                                    :checked="in_array(  $form_item->id, $display_item_ids)"
+                                    :checked="in_array($form_item->id, $display_item_ids)"
                                 />
                             </td>
                         </tr>

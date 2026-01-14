@@ -41,15 +41,21 @@ class FormApplicationController extends UserController
         $display_item = $this->display_form_item_service->getByFormSettingId($form_setting->id);
         $display_item_ids = $display_item->pluck('form_items_id')->all();
 
+        $display_columns = $this->buildDisplayColumns($form_setting, $display_item_ids);
+
         return view('user.form.application', [
             'form_setting' => $form_setting,
             'display_item_ids' => $display_item_ids,
-            'display_columns' => $this->buildDisplayColumns($form_setting, $display_item_ids),
+            'display_columns' => $display_columns,
         ]);
     }
 
     /**
      * Get form data for DataTables via Ajax.
+     * @param FormSetting $form_setting
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
      */
     public function getApplicationData(FormSetting $form_setting, Request $request): JsonResponse
     {
@@ -110,23 +116,28 @@ class FormApplicationController extends UserController
      */
     private function buildDisplayColumns(FormSetting $form_setting, array $display_item_ids): array
     {
-        $formItems = $form_setting->formItems->keyBy('id');
+        $form_items = $form_setting->formItems->keyBy('id');
 
-        return collect($display_item_ids)
-            ->map(function ($itemId) use ($formItems) {
-                $formItem = $formItems->get($itemId);
+        $data = collect($display_item_ids)
+            ->map(function ($itemId) use ($form_items) {
+                $form_item = $form_items->get($itemId);
 
-                if (!$formItem) {
+                if (!$form_item) {
                     return null;
                 }
 
-                $dataKey = $this->resolveColumnKey($formItem->item_type);
+                $dataKey = $this->resolveColumnKey($form_item->item_type);
 
                 if (!$dataKey) {
-                    return null;
+                    return [
+                        'data' => $form_item->item_type,
+                        'name' => $form_item->item_type,
+                        'title' => $form_item->item_title ?? FormItem::ITEM_TYPE_LIST[$form_item->item_type],
+                        'defaultContent' => '',
+                    ];
                 }
 
-                $title = $formItem->item_title ?: (FormItem::ITEM_TYPE_LIST[$formItem->item_type] ?? '項目');
+                $title = $form_item->item_title ?: (FormItem::ITEM_TYPE_LIST[$form_item->item_type] ?? '項目');
 
                 return [
                     'data' => $dataKey,
@@ -138,6 +149,8 @@ class FormApplicationController extends UserController
             ->filter()
             ->values()
             ->all();
+
+        return $data;
     }
 
     /**
