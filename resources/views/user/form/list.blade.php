@@ -29,12 +29,6 @@
             </div>
         </div>
 
-        @if(!$is_client_domain)
-            <div class="flex-between-center mb-4">
-                <a href="{{ route('user_form_create') }}" class="btn">新規応募フォーム作成</a>
-            </div>
-        @endif
-
         <div class="mb-8">
             <table class="list-tbl" id="form_list_tbl"
                    data-url="{{ route('user_form_get_form_list') }}"
