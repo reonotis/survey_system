@@ -7,11 +7,13 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\UserController;
 use App\Models\FormItem;
 use App\Models\FormSetting;
+use App\Service\ApplicationsService;
 use App\Service\FormItemService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 
@@ -63,14 +65,50 @@ class FormItemSettingController extends UserController
             $form_setting->save();
         }
 
-        $draft_form_items = $form_setting->draftFormItems;
-
         return view('user.form.item-setting', [
             'form_setting' => $form_setting,
-            'draft_form_items' => $draft_form_items,
+            'draft_form_items' => $form_setting->draftFormItems,
             'all_form_item_list' => FormItem::ITEM_TYPE_LIST, // 項目名の一覧
             'upper_limit_item_type' => FormItem::ITEM_TYPE_UPPER_LIMIT, // 登録できる項目の上限値
         ]);
+    }
+
+    /**
+     * @param FormSetting $form_setting
+     * @return RedirectResponse
+     */
+    public function allDraftDelete(FormSetting $form_setting): RedirectResponse
+    {
+        try {
+            DB::transaction(function () use ($form_setting) {
+                $form_setting->draftFormItems()->delete();
+            });
+
+            return redirect()->route('user_form_item_setting',  ['form_setting' => $form_setting->id]);
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
+            return redirect()->back()->with('error', ['削除に失敗しました']);
+        }
+    }
+
+    /**
+     * @param FormSetting $form_setting
+     * @return RedirectResponse
+     */
+    public function resetDraftItem(FormSetting $form_setting): RedirectResponse
+    {
+        try {
+            DB::transaction(function () use ($form_setting) {
+                $form_setting->is_draft_item = 0;
+                $form_setting->save();
+
+                $form_setting->draftFormItems()->delete();
+            });
+            return redirect()->route('user_form_item_setting',  ['form_setting' => $form_setting->id])->with('success',['編集内容をリセットしました']);
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
+            return redirect()->back()->with('error', ['編集内容をリセットに失敗しました']);
+        }
     }
 
     /**

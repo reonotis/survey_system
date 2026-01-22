@@ -50,4 +50,14 @@ class Application extends Model
         ];
     }
 
+    /**
+     * Get the application sub records for the application.
+     *
+     * @return HasMany
+     */
+    public function applicationSubs(): HasMany
+    {
+        return $this->hasMany(ApplicationSub::class);
+    }
+
 }

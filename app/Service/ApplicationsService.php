@@ -104,7 +104,8 @@ class ApplicationsService
         ];
 
         $query = Application::select($select)
-            ->where('form_setting_id', $form_setting_id);
+            ->where('form_setting_id', $form_setting_id)
+            ->with('applicationSubs.formItem');
 
         if (!isset($request_data['order'])) {
             $query = $query->orderBy('created_at', 'desc');

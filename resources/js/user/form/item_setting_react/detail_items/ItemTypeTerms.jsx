@@ -62,7 +62,7 @@ function ItemTypeTerms({selectedItem, updateItemLocalValue, saveItemValue}) {
             </div>
             <div className="border-b pb-3">
                 <p className="text-sm font-medium text-gray-800">「同意する」のラベル名</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs mt-1">
                     <input
                         type="text"
                         className="input-box w-full"

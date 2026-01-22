@@ -48,8 +48,12 @@ Route::prefix('user')->group(function () {
             Route::get('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'index'])->name('user_form_basic_setting');
             Route::post('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'update'])->name('user_form_basic_setting_update');
 
+
             // 項目設定
             Route::get('/{form_setting}/item-setting', [FormItemSettingController::class, 'index'])->name('user_form_item_setting');
+            Route::post('/{form_setting}/all-draft-delete', [FormItemSettingController::class, 'allDraftDelete'])->name('user_form_all_draft_delete');
+            Route::post('/{form_setting}/reset', [FormItemSettingController::class, 'resetDraftItem'])->name('user_form_reset_draft_item');
+
             Route::post('/{form_setting}/draft-add-item', [FormItemSettingController::class, 'draftAddItem'])->name('user_form_draft_add_item');
             Route::post('/{form_setting}/draft-sort-change', [FormItemSettingController::class, 'draftSortChange'])->name('user_form_draft_sort_change');
             Route::post('/{form_setting}/draft-item-save', [FormItemSettingController::class, 'draftItemSave'])->name('user_form_draft_item_save');

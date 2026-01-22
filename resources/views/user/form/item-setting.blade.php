@@ -31,8 +31,16 @@
         <div class="mx-auto py-8">
 
             <div class="flex-center-center mb-4 gap-4">
-                <button type="button" class="btn" >全ての項目を削除</button>
-                <button type="button" class="btn" >編集内容をリセット</button>
+                <form method="POST"
+                    action="{{ route('user_form_all_draft_delete', ['form_setting' => $form_setting->id]) }}">
+                    @csrf
+                    <input type="submit" class="btn" value="全ての項目を削除">
+                </form>
+                <form method="POST"
+                      action="{{ route('user_form_reset_draft_item', ['form_setting' => $form_setting->id]) }}">
+                    @csrf
+                    <input type="submit" class="btn" value="編集内容をリセット">
+                </form>
             </div>
 
             {{-- Reactコンポーネント用のコンテナ --}}

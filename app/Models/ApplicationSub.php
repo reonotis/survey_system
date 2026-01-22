@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -37,6 +38,16 @@ class ApplicationSub extends Model
     {
         return [
         ];
+    }
+
+    /**
+     * Get the form item for the application sub.
+     *
+     * @return BelongsTo
+     */
+    public function formItem(): BelongsTo
+    {
+        return $this->belongsTo(FormItem::class, 'form_item_id');
     }
 
 }

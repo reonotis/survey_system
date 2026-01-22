@@ -59,9 +59,15 @@ class FormApplicationController extends UserController
      */
     public function getApplicationData(FormSetting $form_setting, Request $request): JsonResponse
     {
+        $form_setting->load('formItems');
         $application_query = (new ApplicationsService())->getFormListQuery($form_setting->id, $request->all());
 
-        return DataTables::of($application_query)
+        // 表示項目のform_item_idを取得
+        $display_item = $this->display_form_item_service->getByFormSettingId($form_setting->id);
+        $display_item_ids = $display_item->pluck('form_items_id')->all();
+        $form_items = $form_setting->formItems->whereIn('id', $display_item_ids)->keyBy('id');
+
+        $data_table = DataTables::of($application_query)
             ->addColumn('created_at_text', function ($application) {
                 return $application->created_at->format('Y年m月d日 H:i');
             })
@@ -79,12 +85,30 @@ class FormApplicationController extends UserController
             ->addColumn('gender', function ($application) {
                 return CommonConst::GENDER_LIST[$application->gender]?? '';
             })
-
             ->addColumn('address', function ($application) {
                 return $application->post_code . $application->address;
-            })
+            });
 
-            ->make(true);
+        // ラジオボタンとチェックボックスの列を動的に追加
+        foreach ($form_items as $form_item) {
+            if (in_array($form_item->item_type, [FormItem::ITEM_TYPE_RADIO, FormItem::ITEM_TYPE_CHECKBOX])) {
+                $column_key = 'form_item_' . $form_item->id;
+                $data_table->addColumn($column_key, function ($application) use ($form_item) {
+                    $subs = $application->applicationSubs->where('form_item_id', $form_item->id);
+
+                    if ($form_item->item_type === FormItem::ITEM_TYPE_RADIO) {
+                        // ラジオボタンは0個か1個
+                        $sub = $subs->first();
+                        return $sub ? $sub->answer_text : '';
+                    } else {
+                        // チェックボックスは複数回答の可能性がある
+                        return $subs->pluck('answer_text')->filter()->implode(', ');
+                    }
+                });
+            }
+        }
+
+        return $data_table->make(true);
     }
 
     /**
@@ -127,6 +151,11 @@ class FormApplicationController extends UserController
                 }
 
                 $dataKey = $this->resolveColumnKey($form_item->item_type);
+
+                // ラジオボタンとチェックボックスの場合はform_item_{id}をキーとして使用
+                if (!$dataKey && ($form_item->item_type === FormItem::ITEM_TYPE_RADIO || $form_item->item_type === FormItem::ITEM_TYPE_CHECKBOX)) {
+                    $dataKey = 'form_item_' . $form_item->id;
+                }
 
                 if (!$dataKey) {
                     return [
