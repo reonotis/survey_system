@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import CommonAnnotationText from "./component/CommonAnnotationText.jsx";
-import CommonTitle from "./component/commonTitle.jsx";
+import CommonTitle from "./component/CommonTitle.jsx";
 
 /**
  * 注意事項設定
