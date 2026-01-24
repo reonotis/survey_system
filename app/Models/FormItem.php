@@ -59,7 +59,7 @@ class FormItem extends Model
     const ITEM_TYPE_UPPER_LIMIT = [
         self::ITEM_TYPE_NAME => 1,
         self::ITEM_TYPE_KANA => 1,
-        self::ITEM_TYPE_EMAIL => 2,
+        self::ITEM_TYPE_EMAIL => 1,
         self::ITEM_TYPE_TEL => 1,
         self::ITEM_TYPE_GENDER => 1,
         self::ITEM_TYPE_ADDRESS => 1,

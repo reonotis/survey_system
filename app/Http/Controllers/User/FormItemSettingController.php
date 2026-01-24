@@ -22,47 +22,38 @@ use Illuminate\Support\Facades\Log;
  */
 class FormItemSettingController extends UserController
 {
+    /** @var FormItemService $form_item_service */
+    public FormItemService $form_item_service;
+
     /**
+     * コンストラクタ
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->form_item_service = app(FormItemService::class);
+    }
+
+    /**
+     * 項目設定画面を表示する
      * @param FormSetting $form_setting
      * @return View
      */
     public function index(FormSetting $form_setting): View
     {
-        // 編集中のデータを取得
+        // 編集中ではない場合
         if ($form_setting->is_draft_item == 0) {
-
             // 公開中の項目データを取得
             $form_items = $form_setting->formItems;
 
+            // 設定済みの項目レコードが存在する場合は、編集中のテーブルにコピーしておく
             if ($form_items->isNotEmpty()) {
-                // 既存のデータを編集中のテーブルに保存する
-                $form_item_service = app(FormItemService::class);
-                $records = [];
-                foreach ($form_items as $form_item) {
-                    $record = [
-                        'form_setting_id' => $form_setting->id,
-                        'form_item_id' => $form_item->id,
-                        'item_type' => $form_item->item_type,
-                        'field_required' => $form_item->field_required,
-                        'item_title' => $form_item->item_title,
-                        'value_list' => $form_item->value_list
-                            ? json_encode($form_item->value_list)
-                            : null,
-                        'details' => $form_item->details
-                            ? json_encode($form_item->details)
-                            : null,
-                        'annotation_text' => $form_item->annotation_text,
-                        'long_text' => $form_item->long_text,
-                        'sort' => $form_item->sort,
-                    ];
-                    $records[] = $record;
-                }
-                $form_item_service->insertDraft($records);
-
+                $this->form_item_service->copyDraftFormItems($form_items, $form_setting->id);
             }
 
-            $form_setting->is_draft_item = 1;
-            $form_setting->save();
+            // 編集中にする
+            $this->form_item_service->setEditingStatus($form_setting, 1);
         }
 
         return view('user.form.item-setting', [
@@ -84,7 +75,7 @@ class FormItemSettingController extends UserController
                 $form_setting->draftFormItems()->delete();
             });
 
-            return redirect()->route('user_form_item_setting',  ['form_setting' => $form_setting->id]);
+            return redirect()->route('user_form_item_setting', ['form_setting' => $form_setting->id]);
         } catch (Exception $error) {
             Log::error($error->getMessage());
             return redirect()->back()->with('error', ['削除に失敗しました']);
@@ -104,7 +95,7 @@ class FormItemSettingController extends UserController
 
                 $form_setting->draftFormItems()->delete();
             });
-            return redirect()->route('user_form_item_setting',  ['form_setting' => $form_setting->id])->with('success',['編集内容をリセットしました']);
+            return redirect()->route('user_form_item_setting', ['form_setting' => $form_setting->id])->with('success', ['編集内容をリセットしました']);
         } catch (Exception $error) {
             Log::error($error->getMessage());
             return redirect()->back()->with('error', ['編集内容をリセットに失敗しました']);
@@ -157,7 +148,7 @@ class FormItemSettingController extends UserController
 
             $form_item_service = app(FormItemService::class);
             $form_item_draft = $form_item_service->addDraft(
-                 $form_setting->id,
+                $form_setting->id,
                 (int)$item_type,
                 $new_sort
             );
@@ -278,7 +269,7 @@ class FormItemSettingController extends UserController
                     $form_item_service->updateFormItemById($draft_form_item->form_item_id, $param);
 
                     // 更新済み変数に追加しておく
-                    $updated_ids[]  = $draft_form_item->form_item_id;
+                    $updated_ids[] = $draft_form_item->form_item_id;
                 } else {
                     // 既存の項目が無いので作成
                     $form_item_service->create([
@@ -307,7 +298,7 @@ class FormItemSettingController extends UserController
 
             $form_setting->draftFormItems()->delete();
 
-            return redirect()->route('user_form_item_setting',  ['form_setting' => $form_setting->id])->with('success',['更新しました']);
+            return redirect()->route('user_form_item_setting', ['form_setting' => $form_setting->id])->with('success', ['更新しました']);
         } catch (Exception $error) {
             Log::error($error->getMessage());
             return redirect()->back()->with('error', ['更新に失敗しました']);

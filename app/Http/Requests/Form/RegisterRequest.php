@@ -189,7 +189,7 @@ class RegisterRequest extends FormRequest
             'email',
         ];
 
-        $rules['email.' . $form_item->id] = $email_rules;
+        $rules['email'] = $email_rules;
 
         // confirm 設定の判定
         $confirm_type = $form_item->details['confirm_type'] ?? CommonConst::EMAIL_CONFIRM_DISABLED;
@@ -200,10 +200,10 @@ class RegisterRequest extends FormRequest
                 $form_item->field_required ? 'required' : 'nullable',
                 'string',
                 'email',
-                'same:email.' . $form_item->id,
+                'same:email',
             ];
 
-            $rules['email_confirm.' . $form_item->id] = $confirm_rules;
+            $rules['email_confirm'] = $confirm_rules;
         }
 
         return $rules;

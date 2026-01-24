@@ -7,7 +7,7 @@ use App\Models\FormItem;
 use App\Models\FormItemDraft;
 use App\Models\FormSetting;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  *
@@ -55,6 +55,47 @@ class FormItemService
     public function insertDraft(array $records)
     {
         return FormItemDraft::insert($records);
+    }
+
+    /**
+     * @param Collection<int, FormItem> $form_items
+     * @param int $form_setting_id
+     * @return void
+     */
+    public function copyDraftFormItems(Collection $form_items, int $form_setting_id): void
+    {
+        $records = [];
+        foreach ($form_items as $form_item) {
+            $record = [
+                'form_setting_id' => $form_setting_id,
+                'form_item_id' => $form_item->id,
+                'item_type' => $form_item->item_type,
+                'field_required' => $form_item->field_required,
+                'item_title' => $form_item->item_title,
+                'value_list' => $form_item->value_list
+                    ? json_encode($form_item->value_list)
+                    : null,
+                'details' => $form_item->details
+                    ? json_encode($form_item->details)
+                    : null,
+                'annotation_text' => $form_item->annotation_text,
+                'long_text' => $form_item->long_text,
+                'sort' => $form_item->sort,
+            ];
+            $records[] = $record;
+        }
+        $this->insertDraft($records);
+    }
+
+    /**
+     * @param FormSetting $form_setting
+     * @param int $status
+     * @return void
+     */
+    public function setEditingStatus(FormSetting $form_setting, int $status): void
+    {
+        $form_setting->is_draft_item = $status;
+        $form_setting->save();
     }
 
     public function sortChangeDraft(int $form_item_drafts_id, int $sort): bool

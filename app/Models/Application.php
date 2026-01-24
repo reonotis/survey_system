@@ -34,6 +34,7 @@ class Application extends Model
         'kana',
         'kana_last',
         'tel',
+        'email',
         'gender',
         'post_code',
         'address',

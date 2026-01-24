@@ -15,10 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $host = request()->getHost();
+
         User::create([
             'name' => 'ユーザー',
             'email' => 'user@test.jp',
-            'host' => 'localhost',
+            'host' => $host,
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
