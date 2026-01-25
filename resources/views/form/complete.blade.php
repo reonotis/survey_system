@@ -14,7 +14,7 @@
 
         <div class="form-title">{{ $form_setting->title }}</div>
 
-        @if($message)
+        @if($message && $message->complete_message)
             {!! nl2br($message->complete_message)?? '申し込みが完了しました' !!}
         @else
             申し込みが完了しました

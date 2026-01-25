@@ -72,7 +72,7 @@ class FormSettingController extends UserController
                 $param,
                 request()->getHost()
             );
-            return redirect()->route('user_form_application_list', ['form_setting' => $form_setting->id])->with('success', ['新しいフォームを作成しました。引き続き詳細設定を行って下さい']);
+            return redirect()->route('user_form_basic_setting', ['form_setting' => $form_setting->id])->with('success', ['新しいフォームを作成しました。引き続き詳細設定を行って下さい']);
         } catch (\Exception $error) {
             \Log::error($error->getMessage());
             return redirect()->back()->with('error', ['新しいフォームの作成に失敗しました']);

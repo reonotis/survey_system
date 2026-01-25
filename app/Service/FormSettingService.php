@@ -37,6 +37,8 @@ class FormSettingService
         $query = FormSetting::select($select)
             ->withCount('applications');
 
+        $query->where('host_name',  request()->getHost());
+
         if ($user_id) {
             $query->where('created_by_user', $user_id);
         }
