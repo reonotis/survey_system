@@ -28,10 +28,10 @@ trait FormReplaceTrait
      */
     public function getReplaceDataByName($form_item, $request_data): array
     {
-        $details = json_decode($form_item->details ?? '{}', true);
+        $details = $form_item->details;
         $res = [];
 
-        if ($details['name_type'] == CommonConst::NAME_NON_SEPARATE) {
+        if ($details['name_separate_type'] == CommonConst::NAME_NON_SEPARATE) {
             if (!isset($request_data['name'])) {
                 return $res;
             }
@@ -43,7 +43,7 @@ trait FormReplaceTrait
             return $res;
         }
 
-        $res['#####name#####'] = $request_data['sei'] . $request_data['mei'];
+        $res['#####name#####'] = $request_data['sei'] . ' ' . $request_data['mei'];
         return $res;
     }
 

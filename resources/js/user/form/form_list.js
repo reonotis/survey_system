@@ -30,23 +30,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: 'count',
                 name: 'count',
                 title: '応募数',
+                createdCell: function (td, cellData, rowData, row, col) {
+                    td.classList.add('dt-right');
+                },
             }, {
                 data: 'id',
                 title: 'フォーム設定',
                 orderable: false,
-                className: 'dt-center',
+                createdCell: function (td, cellData, rowData, row, col) {
+                    td.classList.add('dt-center');
+                },
                 render: function(data, type, row) {
                     const url = (formSettingURL || '').replace('__ID__', data);
                     return '<a href="' + url + '" class="btn min">設定</a>';
                 }
             }, {
                 data: 'id',
-                title: '分析',
+                title: '申込一覧 / 分析',
                 orderable: false,
-                className: 'dt-center',
+                createdCell: function (td, cellData, rowData, row, col) {
+                    td.classList.add('dt-center');
+                },
                 render: function(data, type, row) {
                     const url = (showUrlTemplate || '').replace('__ID__', data);
-                    return '<a href="' + url + '" class="btn min">管理</a>';
+                    return '<a href="' + url + '" class="btn min">確認</a>';
                 }
             }
         ]

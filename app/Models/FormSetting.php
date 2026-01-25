@@ -113,4 +113,12 @@ class FormSetting extends Model
         return $this->hasOne(MailSetting::class);
     }
 
+    public function applications()
+    {
+        return $this->hasMany(
+            Application::class,
+            'form_setting_id'
+        );
+    }
+
 }

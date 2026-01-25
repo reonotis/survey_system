@@ -34,7 +34,8 @@ class FormSettingService
             'created_at',
         ];
 
-        $query = FormSetting::select($select);
+        $query = FormSetting::select($select)
+            ->withCount('applications');
 
         if ($user_id) {
             $query->where('created_by_user', $user_id);
@@ -83,7 +84,6 @@ class FormSettingService
             ->values(); // インデックスを振り直す
 
         return $merged;
-        dd($form_items,$draft_form_items  , $merged);
 
         // 現在登録されている各 item_type の件数を集計
         $current_counts_type = $form_items

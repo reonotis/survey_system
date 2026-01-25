@@ -176,15 +176,7 @@ header {
 
         & > tr > th {
             padding: .5rem .25rem;
-
-            &.sort-title {
-                text-align: center;
-                font-weight: bold;
-
-                & span {
-                    margin: 0 -3px;
-                }
-            }
+            text-align: center !important;
 
             &:not(:last-child) {
                 border-right: 1px solid #e5e7eb;
