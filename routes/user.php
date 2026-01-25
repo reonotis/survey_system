@@ -30,7 +30,7 @@ Route::prefix('user')->group(function () {
     Route::post('/login', [UserAuthController::class, 'login']);
 
     // 認証が必要なルート
-    Route::middleware('auth.custom:user')->group(function () {
+    Route::middleware(['auth.custom:user', 'belongs_host', 'access_form_setting'])->group(function () {
         Route::post('/logout', [UserAuthController::class, 'logout'])->name('user_logout');
 
         Route::get('/dashboard', function () {

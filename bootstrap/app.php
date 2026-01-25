@@ -23,6 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.api' => \App\Http\Middleware\ApiAuthenticate::class,
             'client_only' => \App\Http\Middleware\ClientOnlyMiddleware::class,
             'not_client' => \App\Http\Middleware\NotClientMiddleware::class,
+            'belongs_host' => \App\Http\Middleware\EnsureBelongsToHost ::class,
+            'access_form_setting' => \App\Http\Middleware\EnsureAccessFormSetting ::class,
         ]);
 
         // APIルートにもセッションベースの認証を可能にするため、必要なミドルウェアを追加

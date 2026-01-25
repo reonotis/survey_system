@@ -14,7 +14,7 @@ class FormSeeder extends Seeder
     public function run(): void
     {
         FormSetting::create([
-            'host_name' => 'example.com',
+            'host_name' => request()->getHost(),
             'form_name' => 'サンプルアンケート',
             'title' => 'サンプルアンケート',
             'route_name' => 'sample-form',

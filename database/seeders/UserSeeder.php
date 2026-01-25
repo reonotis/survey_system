@@ -17,12 +17,20 @@ class UserSeeder extends Seeder
     {
         $host = request()->getHost();
 
-        User::create([
-            'name' => 'ユーザー',
-            'email' => 'user@test.jp',
-            'host' => $host,
-            'password' => Hash::make('password'),
-            'email_verified_at' => now(),
+        User::insert([
+            [
+                'name' => 'ユーザー1',
+                'email' => 'user@test.jp',
+                'host' => $host,
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ],[
+                'name' => 'ユーザー2',
+                'email' => 'user2@test.jp',
+                'host' => $host,
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
         ]);
     }
 }
