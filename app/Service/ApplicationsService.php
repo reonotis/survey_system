@@ -10,6 +10,7 @@ use App\Models\FormSetting;
 use App\Models\FormItem;
 use App\Traits\FormParamChangerTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class ApplicationsService
 {
@@ -112,6 +113,39 @@ class ApplicationsService
         }
 
         return $query;
+    }
+
+    /**
+     * @param $form_setting_id
+     * @return array
+     */
+    public function getSelectMaxCount($form_setting_id): array
+    {
+        $records = ApplicationSub::query()
+            ->join('applications', 'applications.id', '=', 'application_sub.application_id')
+            ->where('applications.form_setting_id', $form_setting_id)
+            ->whereNull('application_sub.deleted_at')
+            ->select([
+                'application_sub.form_item_id',
+                'application_sub.answer_text',
+                DB::raw('COUNT(*) as total')
+            ])
+            ->groupBy('application_sub.form_item_id', 'application_sub.answer_text')
+            ->orderBy('application_sub.form_item_id')
+            ->orderByDesc('total')
+            ->get();
+
+
+        $data = [];
+        foreach ($records as $row) {
+            $formItemId = $row->form_item_id;
+            $answerText = $row->answer_text;
+            $total      = $row->total;
+
+            $data[$formItemId][$answerText] = $total;
+        }
+
+        return $data;
     }
 
 }

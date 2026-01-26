@@ -35,6 +35,11 @@ class FormController extends Controller
     public function index(string $route_name): View
     {
         $form_setting = $this->form_service->getSurveyByRouteName($route_name);
+        if (!$form_setting) {
+            abort(404);
+        }
+
+        // 申込できない場合はエラー画面に遷移する
         $error_type = $this->checkFormAvailablePeriod($form_setting);
         if ($error_type !== 0) {
             return view('form.outside_period', [
@@ -43,8 +48,12 @@ class FormController extends Controller
             ]);
         }
 
+        // 選択肢の最大値が設定されている場合は、最大数に達していないかチェックする
+        $max_count = $this->checkSelectMaxCount($form_setting);
+
         return view('form.index', [
             'form_setting' => $form_setting,
+            'max_count' => $max_count,
         ]);
     }
 
@@ -121,5 +130,39 @@ class FormController extends Controller
         }
 
         return 0;
+    }
+
+
+    /**
+     */
+    private function checkSelectMaxCount(FormSetting $form_setting): array
+    {
+        if (!$this->checkMaxSetting($form_setting)) {
+            return [];
+        }
+
+        return app(ApplicationsService::class)->getSelectMaxCount($form_setting->id);
+    }
+
+    /**
+     * @param FormSetting $form_setting
+     * @return bool
+     */
+    private function checkMaxSetting(FormSetting $form_setting): bool
+    {
+        foreach ($form_setting->formItems as $form_items) {
+            // value_listが設定されてい無い場合は、スルーして次の項目を確認させる
+            if (is_null($form_items->value_list)) {
+                continue;
+            }
+
+            foreach ($form_items->value_list as $value_item) {
+                if (is_null($value_item['count'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

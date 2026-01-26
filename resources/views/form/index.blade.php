@@ -50,10 +50,10 @@
                                 @include('form.components.address')
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_CHECKBOX)
-                                @include('form.components.checkbox')
+                                @include('form.components.checkbox', ['max_count' => $max_count])
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_RADIO)
-                                @include('form.components.radio')
+                                @include('form.components.radio', ['max_count' => $max_count])
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_SELECT_BOX)
                                 @include('form.components.select')

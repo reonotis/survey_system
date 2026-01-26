@@ -15,7 +15,9 @@ class FormSettingService
      */
     public function getSurveyByRouteName(string $route_name): ?FormSetting
     {
-        return FormSetting::where('route_name', $route_name)->with('formItems')->first();
+        return FormSetting::where('route_name', $route_name)
+            ->where('host_name',  request()->getHost())
+            ->with('formItems')->first();
     }
 
     /**

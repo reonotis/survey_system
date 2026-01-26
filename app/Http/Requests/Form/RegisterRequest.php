@@ -118,6 +118,9 @@ class RegisterRequest extends FormRequest
             FormItem::ITEM_TYPE_GENDER => $this->makeRulesForGender($form_item),
             FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress($form_item),
             FormItem::ITEM_TYPE_TERMS => $this->makeRulesForTerms($form_item),
+            FormItem::ITEM_TYPE_CHECKBOX => $this->makeRulesForCheckbox($form_item),
+            FormItem::ITEM_TYPE_RADIO => $this->makeRulesForRadio($form_item),
+            FormItem::ITEM_TYPE_SELECT_BOX => [], //TODO
             default => [],
         };
     }
@@ -302,5 +305,39 @@ class RegisterRequest extends FormRequest
         ];
     }
 
+    /**
+     * チェックボックスのバリデーション
+     * @param FormItem $form_item
+     * @return array[]
+     */
+    private function makeRulesForCheckbox(FormItem $form_item): array
+    {
+        // TODO
+        $validates = [];
+        if ($form_item->field_required) {
+            $validates[] = 'required';
+        }
+
+        return [
+            'checkbox_' . $form_item->id => $validates,
+        ];
+    }
+    /**
+     * ラジオボタンのバリデーション
+     * @param FormItem $form_item
+     * @return array[]
+     */
+    private function makeRulesForRadio(FormItem $form_item): array
+    {
+        // TODO
+        $validates = [];
+        if ($form_item->field_required) {
+            $validates[] = 'required';
+        }
+
+        return [
+            'radio_' . $form_item->id => $validates,
+        ];
+    }
 }
 
