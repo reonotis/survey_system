@@ -75,6 +75,19 @@ select.input-box option:checked {
     color: #fff;
 }
 
+/* radio 本体 */
+.form-check-input:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ラベル全体（文字も含めて） */
+label:has(.form-check-input:disabled) {
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+
 .btn {
     padding: 0.5rem 1rem;
     display: inline-flex;
