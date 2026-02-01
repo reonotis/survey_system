@@ -24,6 +24,8 @@ return new class extends Migration
             $table->bigInteger('analytics_dashboard_widget_id_2')->nullable()->comment('分析ウィジェットID');
             $table->bigInteger('analytics_dashboard_widget_id_3')->nullable()->comment('分析ウィジェットID');
             $table->bigInteger('analytics_dashboard_widget_id_4')->nullable()->comment('分析ウィジェットID');
+            $table->bigInteger('analytics_dashboard_widget_id_5')->nullable()->comment('分析ウィジェットID');
+            $table->bigInteger('analytics_dashboard_widget_id_6')->nullable()->comment('分析ウィジェットID');
 
             $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'))->comment('作成日時');
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->comment('更新日時');

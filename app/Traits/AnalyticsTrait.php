@@ -70,9 +70,9 @@ trait AnalyticsTrait
     {
         return match ($analytics_widget->item_type) {
             FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
+            FormItem::ITEM_TYPE_CHECKBOX => $this->getCheckboxCircleData($analytics_widget),
             default => [],
         };
-
     }
 
     /**
@@ -83,6 +83,7 @@ trait AnalyticsTrait
     {
         return match ($analytics_widget->item_type) {
             FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
+            FormItem::ITEM_TYPE_CHECKBOX => $this->getCheckboxCircleData($analytics_widget),
             default => [],
         };
     }
@@ -93,26 +94,36 @@ trait AnalyticsTrait
      */
     private function getGenderData(AnalyticsDashboardWidget $analytics_widget): array
     {
+        $data = $this->application_repository->getGenderData($analytics_widget->form_setting_id);
 
-        if (in_array($analytics_widget->display_type, [CommonConst::GRAPH_TYPE_CIRCLE, CommonConst::GRAPH_TYPE_VERTICAL,])) {
-            $data = $this->application_repository->getGenderData($analytics_widget->form_setting_id);
+        $array = [
+            'labels' => array_column($data, 'labels'),
+            'count' => array_column($data, 'count'),
+        ];
 
-            $array = [
-                'labels' => array_column($data, 'labels'),
-                'count' => array_column($data, 'count'),
-            ];
-
-            return [
-                'labels' => array_map(
-                    fn($gender) => CommonConst::GENDER_LIST[$gender] ?? '未回答',
-                    $array['labels']
-                ),
-                'count' => $array['count'],
-            ];
-        }
-
-        return [];
+        return [
+            'labels' => array_map(
+                fn($gender) => CommonConst::GENDER_LIST[$gender] ?? '未回答',
+                $array['labels']
+            ),
+            'count' => $array['count'],
+        ];
     }
+
+    /**
+     * @param AnalyticsDashboardWidget $analytics_widget
+     * @return array
+     */
+    private function getCheckboxCircleData(AnalyticsDashboardWidget $analytics_widget): array
+    {
+        $data = $this->application_sub_repository->getSelectionsItemCount($analytics_widget->form_item_id);
+
+        return [
+            'labels' => array_column($data, 'labels'),
+            'count' => array_column($data, 'count'),
+        ];
+    }
+
 
     /**
      * @param AnalyticsDashboardWidget $analytics_widget
