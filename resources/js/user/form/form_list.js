@@ -17,9 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         columns: [
             {
-                data: 'form_name',
-                title: '管理名',
-            }, {
                 data: 'title',
                 title: 'タイトル',
             }, {

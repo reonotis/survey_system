@@ -15,7 +15,7 @@
             @foreach($value_list as $value)
                 <label>
                     <input type="checkbox" class="form-check-input" name="checkbox_{{ $form_item->id }}[]" value="{{ $value['name'] }}"
-                        @if(!is_null($value['count']) && $max_count[$value['name']] >= $value['count'])
+                        @if(!is_null($value['count']) && isset($max_count[$value['name']]) && $max_count[$value['name']] >= $value['count'])
                             disabled
                         @endif
                         >

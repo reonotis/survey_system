@@ -123,7 +123,7 @@ class FormController extends Controller
 
         // 申込上限に達している場合
         if ($form_setting->max_applications) {
-            $count = app(ApplicationsService::class)->getApplications($form_setting->id);
+            $count = app(ApplicationsService::class)->getApplicationCount($form_setting->id);
             if ($form_setting->max_applications <= $count) {
                 return 3;
             }

@@ -1,7 +1,10 @@
 <x-user-app-layout>
 
     @push('scripts')
-        @vite('resources/js/user/form/mail_setting.js')
+        @viteReactRefresh
+        @vite([
+            'resources/js/user/form/analytics/analytics.jsx'
+        ])
     @endpush
 
     {{-- 画面名 --}}
@@ -24,51 +27,34 @@
     <div class="custom-container py-4">
         @include('layouts.user.form.navigation', ['number' => \App\Consts\UserConst::NAV_MANU_ANALYTICS])
 
-        <div class="dashboard common-dashboard mb-4">
-            <div class="widget">
-                <div class="widget-title">申込み総件数</div>
-                <div class="widget-content">
-                    <span class="counter">{{ $total_count }}<span class="unit">件</span></span>
-                </div>
-            </div>
-            <div class="widget">
-                <div class="widget-title gap-8">
-                    期間内応募
-                    <x-input-radio
-                        name="name_type_kana"
-                        :options="\App\Consts\CommonConst::ANALYTICS_TYPE_LIST"
-                        :checked="1"
-                    />
-                </div>
-                <div class="widget-content">
-                    <div class="my-8">この機能は現在作成中です</div>
-                </div>
-            </div>
-        </div>
-
-
+        {{-- Reactコンポーネント用のコンテナ --}}
         <div class="">集計</div>
-        <div class="dashboard original-dashboard">
-            <div class="widget">この機能は現在作成中です</div>
-            <div class="widget">この機能は現在作成中です</div>
-            <div class="widget">この機能は現在作成中です</div>
-            <div class="widget">この機能は現在作成中です</div>
-            <div class="widget">この機能は現在作成中です</div>
-            <div class="widget">この機能は現在作成中です</div>
-            <div class="widget">この機能は現在作成中です</div>
-            <div class="widget">この機能は現在作成中です</div>
-        </div>
+        <div
+            id="react-analytics-container"
+            data-analytics='@json($analytics_list)'
+            data-form-items='@json($form_items)'
+            data-widget-type-list='@json($widget_type_list)'
+            data-url-add-widget-row='@json(route('user_form_analytics_add_widget_row', ['form_setting' => $form_setting->id]))'
+            data-url-widget-add='@json(route('user_form_analytics_add_widget', ['form_setting' => $form_setting->id]))'
+        ></div>
 
     </div>
 
 </x-user-app-layout>
 
+<script>
+    window.graphTypes = @json(\App\Consts\CommonConst::GRAPH_TYPE_LIST);
+    window.urlWidgetRowDelete = @json(route('user_form_analytics_widget_row_delete', ['form_setting' => $form_setting->id]));
+</script>
+
 <style>
-    .dashboard {
+    .dashboard,
+    .dashboard-row{
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-auto-rows: 120px;
-        gap: 16px;
+        grid-template-columns: repeat(61, 1fr);
+        gap: 5px;
+        grid-auto-rows: minmax(80px, auto);
+        grid-auto-flow: row;
 
         /* 共通ウィジェット */
         .widget {
@@ -77,6 +63,12 @@
             border-radius: 6px;
             display: flex;
             flex-flow: column;
+            min-height: 80px;
+            grid-auto-rows: minmax(80px, auto);
+
+            &.add-widget {
+                border: dashed 3px #999;
+            }
 
             & .widget-title {
                 padding: .25rem 1rem;
@@ -106,29 +98,7 @@
         }
     }
 
-    .common-dashboard {
-        & > .widget:nth-child(1) {
-            grid-column: 1 / span 1; /* 1列目から1列分 */
-            grid-row: 1 / span 1; /* 1行目から1行分 */
-        }
 
-        & > .widget:nth-child(2) {
-            grid-column: 2 / span 5; /* 2列目から5列分 */
-            grid-row: 1 / span 3; /* 1行目から3行分 */
-        }
-    }
-
-    .original-dashboard {
-        & > .widget:nth-child(1) {
-            grid-column: 1 / span 2;
-            grid-row: 1 / span 1;
-        }
-
-        & > .widget:nth-child(2) {
-            grid-column: 3 / span 4;
-            grid-row: 1 / span 1;
-        }
-    }
 
 </style>
 

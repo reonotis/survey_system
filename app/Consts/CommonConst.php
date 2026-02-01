@@ -4,12 +4,58 @@ namespace App\Consts;
 
 class CommonConst
 {
+    public const GRAPH_TYPE_TOTAL = 1;
+    public const GRAPH_TYPE_RATE = 2;
+    public const GRAPH_TYPE_CIRCLE = 3;
+    public const GRAPH_TYPE_VERTICAL = 4;
+    public const GRAPH_TYPE_LIST = [
+        self::GRAPH_TYPE_TOTAL => '総件数',
+        self::GRAPH_TYPE_RATE => '回答率',
+        self::GRAPH_TYPE_CIRCLE => '円グラフ',
+        self::GRAPH_TYPE_VERTICAL => '棒グラフ',
+    ];
+
+    public const WIDGET_TYPE_1 = 1;
+    public const WIDGET_TYPE_2 = 2;
+    public const WIDGET_TYPE_3 = 3;
+    public const WIDGET_TYPE_4 = 4;
+    public const WIDGET_TYPE_5 = 5;
+    public const WIDGET_TYPE_6 = 6;
+    public const WIDGET_TYPE_7 = 7;
+    public const WIDGET_TYPE_8 = 8;
+    public const WIDGET_TYPE_9 = 9;
+    public const WIDGET_TYPE_10 = 10;
+    public const WIDGET_TYPE_LIST = [
+        self::WIDGET_TYPE_1 => '1分割',
+        self::WIDGET_TYPE_2 => '2分割',
+        self::WIDGET_TYPE_3 => '2分割(左メイン)',
+        self::WIDGET_TYPE_4 => '2分割(右メイン)',
+        self::WIDGET_TYPE_5 => '3分割(均等)',
+        self::WIDGET_TYPE_6 => '3分割(真ん中がメイン)',
+        self::WIDGET_TYPE_7 => '3分割(左メイン)',
+        self::WIDGET_TYPE_8 => '3分割(右メイン)',
+        self::WIDGET_TYPE_9 => '4分割',
+        self::WIDGET_TYPE_10 => '5分割',
+    ];
+    public const WIDGET_TYPE_COLUMN = [
+        self::WIDGET_TYPE_1 => [60],
+        self::WIDGET_TYPE_2 => [30, 30],
+        self::WIDGET_TYPE_3 => [45, 15],
+        self::WIDGET_TYPE_4 => [15, 45],
+        self::WIDGET_TYPE_5 => [20, 20, 20],
+        self::WIDGET_TYPE_6 => [15, 30, 15],
+        self::WIDGET_TYPE_7 => [30, 15, 15],
+        self::WIDGET_TYPE_8 => [15, 15, 30],
+        self::WIDGET_TYPE_9 => [15, 15, 15, 15],
+        self::WIDGET_TYPE_10 => [12, 12, 12, 12, 12],
+    ];
+
     // 利用可否
-    public const USE_TYPE_DISABLED  = 0;
-    public const USE_TYPE_ENABLED   = 1;
+    public const USE_TYPE_DISABLED = 0;
+    public const USE_TYPE_ENABLED = 1;
     public const USE_TYPE_LIST = [
         self::USE_TYPE_DISABLED => '利用しない',
-        self::USE_TYPE_ENABLED   => '利用する',
+        self::USE_TYPE_ENABLED => '利用する',
     ];
 
     // 名前

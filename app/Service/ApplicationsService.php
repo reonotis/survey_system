@@ -16,7 +16,7 @@ class ApplicationsService
 {
     use FormParamChangerTrait;
 
-    public function getApplications(int $form_setting_id)
+    public function getApplicationCount(int $form_setting_id)
     {
         return Application::where('form_setting_id', $form_setting_id)->count();
     }
