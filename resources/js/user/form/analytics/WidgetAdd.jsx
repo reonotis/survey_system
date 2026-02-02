@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+// 総件数は CommonConst::GRAPH_TYPE_TOTAL = 1
+const GRAPH_TYPE_TOTAL = '1';
 
 // 画面遷移する通常の POST フォーム送信用コンポーネント
 // actionUrl は実際の URL（例: route('user_form_analytics_add_widget') のパス）を渡してください
@@ -6,6 +9,8 @@ export function WidgetAdd({formItems, rowId, columnId, urlWidgetAdd}) {
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
     const graphTypes = window.graphTypes ?? [];
+    const [selectedGraphType, setSelectedGraphType] = useState('');
+    const showFormItemSelect = selectedGraphType !== '' && selectedGraphType !== GRAPH_TYPE_TOTAL;
 
     return (
         <>
@@ -28,6 +33,8 @@ export function WidgetAdd({formItems, rowId, columnId, urlWidgetAdd}) {
                                             type="radio"
                                             name="graph_type"
                                             value={value}
+                                            checked={selectedGraphType === value}
+                                            onChange={() => setSelectedGraphType(value)}
                                             className="border-gray-300"
                                         />
                                         <label htmlFor={id} className="radio-label">
@@ -40,19 +47,22 @@ export function WidgetAdd({formItems, rowId, columnId, urlWidgetAdd}) {
                     </fieldset>
                 </div>
 
-                <div className="">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">対象フォーム項目</label>
-                    <select
-                        name="form_item_id"
-                        className="w-full"
-                        required
-                    >
-                        <option value="" disabled>項目を選択してください</option>
-                        {formItems.map((item) => (
-                            <option key={item.id} value={item.id}>{item.item_title}</option>
-                        ))}
-                    </select>
-                </div>
+                {showFormItemSelect && (
+                    <div className="">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">対象フォーム項目</label>
+                        <select
+                            name="form_item_id"
+                            className="w-full"
+                            required
+                        >
+                            <option value="" disabled>項目を選択してください</option>
+                            {formItems.map((item) => (
+                                <option key={item.id} value={item.id}>{item.item_title}</option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+                {!showFormItemSelect && <input type="hidden" name="form_item_id" value="" />}
 
                 <div className="mt-6 flex justify-end gap-2">
                     <button

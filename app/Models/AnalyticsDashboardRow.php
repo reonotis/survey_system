@@ -39,6 +39,7 @@ class AnalyticsDashboardRow extends Model
         'analytics_dashboard_widget_id_2',
         'analytics_dashboard_widget_id_3',
         'analytics_dashboard_widget_id_4',
+        'analytics_dashboard_widget_id_5',
     ];
 
     protected $casts = [

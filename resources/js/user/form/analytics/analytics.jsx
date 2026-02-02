@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { AnalyticsData } from './AnalyticsData';
 import { AnalyticsRow } from './AnalyticsRow';
 import { SettingModal } from './SettingModal';
 import {
@@ -72,10 +73,6 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
         setIsOpenCreateModal(false);
     };
 
-    const handleRowDelete = (rowId) => {
-        setAnalyticsList((prev) => prev.filter((row) => row.id !== rowId));
-    };
-
     return (
         <>
             {analyticsList.map((item, index) => (
@@ -83,11 +80,11 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
                     key={item.id ?? index}
                     analyticsData={item}
                     openCreateWidgetSettingModal={openCreateWidgetSettingModal}
-                    onRowDelete={handleRowDelete}
                 />
             ))}
             <div className="dashboard original-dashboard">
-                <div className="widget add-widget" style={{gridColumn: `span 61` }}>
+
+                <div className="widget add-widget" style={{gridColumn: `span 60` }}>
                     <div className="flex-center-center h-full w-full">追加する構造を選択してください</div>
                     <div className="flex-center-center gap-8 h-full w-full">
                         {Object.entries(widgetTypeList || {}).map(([type, label]) => (

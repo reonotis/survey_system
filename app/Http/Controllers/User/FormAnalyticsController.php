@@ -6,11 +6,12 @@ namespace App\Http\Controllers\User;
 
 use App\Consts\CommonConst;
 use App\Http\Controllers\UserController;
-use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Service\ApplicationsService;
 use App\Service\AnalyticsService;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -48,9 +49,10 @@ class FormAnalyticsController extends UserController
         // 申込件数を取得
         $total_count = $this->application_service->getApplicationCount($form_setting->id);
 
-        // ウィジェット追加時に選択可能な項
+        // ウィジェット追加時に選択可能な項目
         $form_items_array = $this->analytics_service->makeSelectableFormItems($form_setting);
 
+        // 各種分析のウィジェット情報を取得
         $analytics_list = $this->analytics_service->getByFormSettingId($form_setting->id, $total_count);
 
         return view('user.form.analytics', [
@@ -78,7 +80,7 @@ class FormAnalyticsController extends UserController
                 'success' => true,
                 'row' => $row,
             ]);
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             Log::error($error->getMessage());
             return response()->json([
                 'message' => $error->getMessage(),
@@ -92,7 +94,7 @@ class FormAnalyticsController extends UserController
      * @param Request $request
      * @return JsonResponse
      */
-    public function widgetRowDelete(FormSetting $form_setting, Request $request)
+    public function widgetRowDelete(FormSetting $form_setting, Request $request): JsonResponse
     {
         try {
 
@@ -103,7 +105,7 @@ class FormAnalyticsController extends UserController
             return response()->json([
                 'success' => true,
             ]);
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             Log::error($error->getMessage());
             return response()->json([
                 'message' => $error->getMessage(),
@@ -115,9 +117,9 @@ class FormAnalyticsController extends UserController
     /**
      * @param FormSetting $form_setting
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function addWidget(FormSetting $form_setting, Request $request)
+    public function addWidget(FormSetting $form_setting, Request $request): RedirectResponse
     {
         try {
             DB::transaction(function () use ($form_setting, $request) {
@@ -138,7 +140,7 @@ class FormAnalyticsController extends UserController
                 ]);
             });
             return redirect()->back()->with('success', ['ウィジェットを登録しました']);
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             Log::error($error->getMessage());
             return redirect()->back()->with('error', ['ウィジェットの登録に失敗しました']);
         }

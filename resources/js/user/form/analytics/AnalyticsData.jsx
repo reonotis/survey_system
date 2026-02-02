@@ -3,7 +3,6 @@ import { Pie, Bar } from 'react-chartjs-2';
 
 export function AnalyticsData({  widgetData, onClick }) {
 
-
     const labels = widgetData?.analytics_data?.labels ?? [];
     const counts = widgetData?.analytics_data?.count ?? [];
 

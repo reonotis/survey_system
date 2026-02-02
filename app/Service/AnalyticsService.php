@@ -67,7 +67,6 @@ class AnalyticsService
             $analytics_data[$analytics_widget['id']] = $this->getAnalyticsData($analytics_widget, $total_count);
         }
 
-
         // 集計した分析データを紐づけて返却する
         return $this->setAnalyticsData($analytics_list, $analytics_data);
     }
@@ -195,6 +194,8 @@ class AnalyticsService
                 $row->analytics_dashboard_widget_id_2,
                 $row->analytics_dashboard_widget_id_3,
                 $row->analytics_dashboard_widget_id_4,
+                $row->analytics_dashboard_widget_id_5,
+                $row->analytics_dashboard_widget_id_6,
             ])->filter()->unique()->values()->toArray();
     }
 
@@ -217,6 +218,12 @@ class AnalyticsService
             }
             if ($row['analytics_dashboard_widget_id_4']) {
                 $row['analytics_dashboard_widget_id_4'] = $analytics_data[$row['analytics_dashboard_widget_id_4']];
+            }
+            if ($row['analytics_dashboard_widget_id_5']) {
+                $row['analytics_dashboard_widget_id_5'] = $analytics_data[$row['analytics_dashboard_widget_id_5']];
+            }
+            if ($row['analytics_dashboard_widget_id_6']) {
+                $row['analytics_dashboard_widget_id_6'] = $analytics_data[$row['analytics_dashboard_widget_id_6']];
             }
         }
 

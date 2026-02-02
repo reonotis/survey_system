@@ -20,7 +20,7 @@ trait AnalyticsTrait
             CommonConst::GRAPH_TYPE_RATE => $this->getRateData($analytics_widget, $total_count),
             CommonConst::GRAPH_TYPE_CIRCLE => $this->getCircleData($analytics_widget),
             CommonConst::GRAPH_TYPE_VERTICAL => $this->getVerticalData($analytics_widget),
-            default => [],
+            default => false,
         };
 
         return [
@@ -52,13 +52,18 @@ trait AnalyticsTrait
      * 項目毎の登録率を返却する
      * @param AnalyticsDashboardWidget $analytics_widget
      * @param $total_count
-     * @return mixed
+     * @return string|float
      */
-    private function getRateData(AnalyticsDashboardWidget $analytics_widget, $total_count): mixed
+    private function getRateData(AnalyticsDashboardWidget $analytics_widget, $total_count): string|float
     {
         return match ($analytics_widget->item_type) {
-            FormItem::ITEM_TYPE_GENDER => $this->getGenderRateData($analytics_widget, $total_count),
-            default => [],
+            FormItem::ITEM_TYPE_NAME => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'name'),
+            FormItem::ITEM_TYPE_KANA => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'kana'),
+            FormItem::ITEM_TYPE_EMAIL => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'email'),
+            FormItem::ITEM_TYPE_TEL => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'tel'),
+            FormItem::ITEM_TYPE_GENDER => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'gender'),
+            FormItem::ITEM_TYPE_ADDRESS => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'address'),
+            default => '調整中',
         };
     }
 
@@ -71,7 +76,7 @@ trait AnalyticsTrait
         return match ($analytics_widget->item_type) {
             FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
             FormItem::ITEM_TYPE_CHECKBOX => $this->getCheckboxCircleData($analytics_widget),
-            default => [],
+            default => ['調整中'],
         };
     }
 
@@ -84,7 +89,7 @@ trait AnalyticsTrait
         return match ($analytics_widget->item_type) {
             FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
             FormItem::ITEM_TYPE_CHECKBOX => $this->getCheckboxCircleData($analytics_widget),
-            default => [],
+            default => ['調整中'],
         };
     }
 
@@ -124,15 +129,15 @@ trait AnalyticsTrait
         ];
     }
 
-
     /**
      * @param AnalyticsDashboardWidget $analytics_widget
      * @param int $total_count
+     * @param string $column_name
      * @return float
      */
-    private function getGenderRateData(AnalyticsDashboardWidget $analytics_widget, int $total_count): float
+    private function getInputRateByTargetItem(AnalyticsDashboardWidget $analytics_widget, int $total_count, string $column_name): float
     {
-        $gender_count = $this->application_repository->getApplicationsByGenderCount($analytics_widget->form_setting_id);
+        $gender_count = $this->application_repository->getApplicationsCountByColumn($analytics_widget->form_setting_id, $column_name);
         return round(($gender_count / $total_count) * 100, 2);
 
     }

@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 /**
  * @property int $id
  * @property int $form_setting_id
+ * @property int $form_item_id
  * @property int $display_type
  * @property int $item_type
  *
