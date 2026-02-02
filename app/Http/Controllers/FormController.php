@@ -48,12 +48,12 @@ class FormController extends Controller
             ]);
         }
 
-        // 選択肢の最大値が設定されている場合は、最大数に達していないかチェックする
-        $max_count = $this->checkSelectMaxCount($form_setting);
+        // 選択肢の最大値が設定されている場合は、申込数を取得する
+        $selectable_count = $this->getSelectableCount($form_setting);
 
         return view('form.index', [
             'form_setting' => $form_setting,
-            'max_count' => $max_count,
+            'selectable_count' => $selectable_count,
         ]);
     }
 
@@ -132,16 +132,17 @@ class FormController extends Controller
         return 0;
     }
 
-
     /**
+     * @param FormSetting $form_setting
+     * @return array
      */
-    private function checkSelectMaxCount(FormSetting $form_setting): array
+    private function getSelectableCount(FormSetting $form_setting): array
     {
         if (!$this->checkMaxSetting($form_setting)) {
             return [];
         }
 
-        return app(ApplicationsService::class)->getSelectMaxCount($form_setting->id);
+        return app(ApplicationsService::class)->getSelectableCount($form_setting->id);
     }
 
     /**

@@ -119,7 +119,7 @@ class ApplicationsService
      * @param $form_setting_id
      * @return array
      */
-    public function getSelectMaxCount($form_setting_id): array
+    public function getSelectableCount($form_setting_id): array
     {
         $records = ApplicationSub::query()
             ->join('applications', 'applications.id', '=', 'application_sub.application_id')
@@ -135,14 +135,13 @@ class ApplicationsService
             ->orderByDesc('total')
             ->get();
 
-
         $data = [];
         foreach ($records as $row) {
-            $formItemId = $row->form_item_id;
-            $answerText = $row->answer_text;
-            $total      = $row->total;
+            $form_item_id = $row->form_item_id;
+            $answer_text = $row->answer_text;
+            $total = $row->total;
 
-            $data[$formItemId][$answerText] = $total;
+            $data[$form_item_id][$answer_text] = $total;
         }
 
         return $data;

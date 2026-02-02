@@ -8,6 +8,7 @@
         @elseif($form_setting->design_type === 3)
             @vite('resources/js/form/type_c.js')
         @endif
+        @vite('resources/js/form/form.js')
     @endpush
 
     <div class="custom-container py-8 mx-auto" style="width: 95%;max-width: 600px;">
@@ -50,10 +51,10 @@
                                 @include('form.components.address')
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_CHECKBOX)
-                                @include('form.components.checkbox', ['max_count' => $max_count])
+                                @include('form.components.checkbox', ['selectable_count' => $selectable_count])
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_RADIO)
-                                @include('form.components.radio', ['max_count' => $max_count])
+                                @include('form.components.radio', ['selectable_count' => $selectable_count])
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_SELECT_BOX)
                                 @include('form.components.select')
