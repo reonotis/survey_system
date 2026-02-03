@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('analytics_dashboard_widget', function (Blueprint $table) {
             $table->id()->comment('ID');
             $table->bigInteger('form_setting_id')->comment('フォーム設定ID');
-            $table->bigInteger('form_item_id')->comment('項目設定ID');
+            $table->bigInteger('form_item_id')->nullable()->comment('項目設定ID');
             $table->string('analytics_title')->nullable()->comment('分析タイトル');
             $table->tinyInteger('display_type')->comment('表示形式');
 

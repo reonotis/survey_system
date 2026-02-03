@@ -6,7 +6,6 @@
     {!! nl2br($form_item->annotation_text) !!}
 </div>
 
-@dump($errors)
 <div>
     <div class="form-item-detail-content">
         <select name="select_box_{{ $form_item->id }}" id="" class="input-box w-full">

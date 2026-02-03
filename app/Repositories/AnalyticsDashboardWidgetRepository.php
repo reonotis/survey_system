@@ -17,7 +17,7 @@ class AnalyticsDashboardWidgetRepository
         return AnalyticsDashboardWidget::select('analytics_dashboard_widget.*', 'form_items.item_title', 'form_items.item_type')
             ->where('analytics_dashboard_widget.form_setting_id', $form_setting_id)
             ->whereIn('analytics_dashboard_widget.id', $ids)
-            ->join('form_items', 'form_items.id', '=', 'analytics_dashboard_widget.form_item_id')
+            ->leftJoin('form_items', 'form_items.id', '=', 'analytics_dashboard_widget.form_item_id')
             ->get();
     }
 
