@@ -155,8 +155,8 @@ class RegisterRequest extends FormRequest
             FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress($form_item),
             FormItem::ITEM_TYPE_TERMS => $this->makeRulesForTerms($form_item),
             FormItem::ITEM_TYPE_CHECKBOX => $this->makeRulesForCheckbox($form_item),
-            FormItem::ITEM_TYPE_RADIO => $this->makeRulesForRadio($form_item),
-            FormItem::ITEM_TYPE_SELECT_BOX => [], //TODO
+            FormItem::ITEM_TYPE_RADIO => $this->makeRulesForSelection($form_item,  'radio_'),
+            FormItem::ITEM_TYPE_SELECT_BOX => $this->makeRulesForSelection($form_item,  'select_box_'),
             default => [],
         };
     }
@@ -375,20 +375,22 @@ class RegisterRequest extends FormRequest
     }
 
     /**
-     * ラジオボタンのバリデーション
      * @param FormItem $form_item
+     * @param string $prefix
      * @return array[]
      */
-    private function makeRulesForRadio(FormItem $form_item): array
+    private function makeRulesForSelection(FormItem $form_item, string $prefix): array
     {
-        $request_key_name = 'radio_' . $form_item->id;
+        $request_key_name = $prefix . $form_item->id;
         $validates = [];
 
         if ($form_item->field_required) {
             $validates[] = 'required';
+        } else {
+            $validates[] = 'nullable';
         }
-        $validates[] = 'string';
 
+        $validates[] = 'string';
 
         // 不正な値を選択していないか
         $selectable_values = $this->makeSelectableValueList($form_item);

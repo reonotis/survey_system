@@ -141,17 +141,18 @@ trait FormParamChangerTrait
      * @param int $application_id
      * @param FormItem $form_item
      * @param array $request_data
+     * @param string $prefix
      * @return array
      */
-    private function makeParamForRadio(int $application_id, FormItem $form_item, array $request_data): array
+    private function makeParamForSelection(int $application_id, FormItem $form_item, array $request_data, string $prefix): array
     {
-        if (empty($request_data['radio_' . $form_item['id']])) {
+        if (empty($request_data[$prefix . $form_item['id']])) {
             return [];
         }
         $records = [
             'application_id' => $application_id,
             'form_item_id' => $form_item['id'],
-            'answer_text' => $request_data['radio_' . $form_item['id']],
+            'answer_text' => $request_data[$prefix . $form_item['id']],
         ];
 
         return [$records];

@@ -94,8 +94,8 @@ class ApplicationsService
     {
         return match ($form_item->item_type) {
             FormItem::ITEM_TYPE_CHECKBOX => $this->makeParamForCheckbox($application_id, $form_item, $request_data),
-            FormItem::ITEM_TYPE_RADIO => $this->makeParamForRadio($application_id, $form_item, $request_data),
-
+            FormItem::ITEM_TYPE_RADIO => $this->makeParamForSelection($application_id, $form_item, $request_data, 'radio_'),
+            FormItem::ITEM_TYPE_SELECT_BOX => $this->makeParamForSelection($application_id, $form_item, $request_data, 'select_box_'),
             default => [],
         };
     }

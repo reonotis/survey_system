@@ -89,21 +89,15 @@ class FormApplicationController extends UserController
                 return $application->post_code . $application->address;
             });
 
-        // ラジオボタンとチェックボックスの列を動的に追加
+        // 選択式項目の列を動的に追加
         foreach ($form_items as $form_item) {
-            if (in_array($form_item->item_type, [FormItem::ITEM_TYPE_RADIO, FormItem::ITEM_TYPE_CHECKBOX])) {
+            if (in_array($form_item->item_type, [FormItem::ITEM_TYPE_CHECKBOX, FormItem::ITEM_TYPE_RADIO, FormItem::ITEM_TYPE_SELECT_BOX])) {
                 $column_key = 'form_item_' . $form_item->id;
                 $data_table->addColumn($column_key, function ($application) use ($form_item) {
                     $subs = $application->applicationSubs->where('form_item_id', $form_item->id);
 
-                    if ($form_item->item_type === FormItem::ITEM_TYPE_RADIO) {
-                        // ラジオボタンは0個か1個
-                        $sub = $subs->first();
-                        return $sub ? $sub->answer_text : '';
-                    } else {
-                        // チェックボックスは複数回答の可能性がある
-                        return $subs->pluck('answer_text')->filter()->implode(', ');
-                    }
+                    // チェックボックスは複数回答の可能性があるのでカンマ区切り
+                    return $subs->pluck('answer_text')->filter()->implode(', ');
                 });
             }
         }
@@ -152,8 +146,8 @@ class FormApplicationController extends UserController
 
                 $dataKey = $this->resolveColumnKey($form_item->item_type);
 
-                // ラジオボタンとチェックボックスの場合はform_item_{id}をキーとして使用
-                if (!$dataKey && ($form_item->item_type === FormItem::ITEM_TYPE_RADIO || $form_item->item_type === FormItem::ITEM_TYPE_CHECKBOX)) {
+                // ラジオボタン、チェックボックス、セレクトボックスの場合はform_item_{id}をキーとして使用
+                if (!$dataKey && in_array($form_item->item_type, [FormItem::ITEM_TYPE_RADIO, FormItem::ITEM_TYPE_CHECKBOX, FormItem::ITEM_TYPE_SELECT_BOX])) {
                     $dataKey = 'form_item_' . $form_item->id;
                 }
 
