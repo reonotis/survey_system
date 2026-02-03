@@ -8,6 +8,11 @@ use App\Models\Application;
 use App\Models\ApplicationSub;
 use App\Models\FormSetting;
 use App\Models\FormItem;
+use App\Repositories\AnalyticsDashboardRowRepository;
+use App\Repositories\AnalyticsDashboardWidgetRepository;
+use App\Repositories\ApplicationRepository;
+use App\Repositories\ApplicationSubRepository;
+use App\Repositories\FormItemRepository;
 use App\Traits\FormParamChangerTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +20,19 @@ use Illuminate\Support\Facades\DB;
 class ApplicationsService
 {
     use FormParamChangerTrait;
+
+    private ApplicationRepository $application_repository;
+    private ApplicationSubRepository $application_sub_repository;
+
+    public function __construct(
+        ApplicationRepository    $application,
+        ApplicationSubRepository $application_sub,
+    )
+    {
+        $this->application_repository = $application;
+        $this->application_sub_repository = $application_sub;
+    }
+
 
     public function getApplicationCount(int $form_setting_id)
     {
@@ -116,14 +134,15 @@ class ApplicationsService
     }
 
     /**
-     * @param $form_setting_id
+     * 既に登録されている項目が、どれだけ選択されていたのかを取得する
+     * @param FormSetting $form_setting
      * @return array
      */
-    public function getSelectableCount($form_setting_id): array
+    public function getSelectedCount(FormSetting $form_setting): array
     {
         $records = ApplicationSub::query()
             ->join('applications', 'applications.id', '=', 'application_sub.application_id')
-            ->where('applications.form_setting_id', $form_setting_id)
+            ->where('applications.form_setting_id', $form_setting->id)
             ->whereNull('application_sub.deleted_at')
             ->select([
                 'application_sub.form_item_id',
@@ -145,6 +164,29 @@ class ApplicationsService
         }
 
         return $data;
+    }
+
+    /**
+     * 項目別上限値 が設定されているかチェックする
+     * @param FormSetting $form_setting
+     * @return bool
+     */
+    public function checkMaxSetting(FormSetting $form_setting): bool
+    {
+        foreach ($form_setting->formItems as $form_items) {
+            // value_listが設定されてい無い場合は、スルーして次の項目を確認させる
+            if (is_null($form_items->value_list)) {
+                continue;
+            }
+
+            foreach ($form_items->value_list as $value_item) {
+                if (is_null($value_item['count'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 }

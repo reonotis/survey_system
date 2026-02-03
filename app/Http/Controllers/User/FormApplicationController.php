@@ -60,7 +60,7 @@ class FormApplicationController extends UserController
     public function getApplicationData(FormSetting $form_setting, Request $request): JsonResponse
     {
         $form_setting->load('formItems');
-        $application_query = (new ApplicationsService())->getFormListQuery($form_setting->id, $request->all());
+        $application_query = app(ApplicationsService::class)->getFormListQuery($form_setting->id, $request->all());
 
         // 表示項目のform_item_idを取得
         $display_item = $this->display_form_item_service->getByFormSettingId($form_setting->id);

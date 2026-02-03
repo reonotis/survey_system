@@ -138,32 +138,12 @@ class FormController extends Controller
      */
     private function getSelectableCount(FormSetting $form_setting): array
     {
-        if (!$this->checkMaxSetting($form_setting)) {
+        $service = app(ApplicationsService::class);
+
+        if (!$service->checkMaxSetting($form_setting)) {
             return [];
         }
-
-        return app(ApplicationsService::class)->getSelectableCount($form_setting->id);
+        return $service->getSelectedCount($form_setting);
     }
 
-    /**
-     * @param FormSetting $form_setting
-     * @return bool
-     */
-    private function checkMaxSetting(FormSetting $form_setting): bool
-    {
-        foreach ($form_setting->formItems as $form_items) {
-            // value_listが設定されてい無い場合は、スルーして次の項目を確認させる
-            if (is_null($form_items->value_list)) {
-                continue;
-            }
-
-            foreach ($form_items->value_list as $value_item) {
-                if (is_null($value_item['count'])) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 }

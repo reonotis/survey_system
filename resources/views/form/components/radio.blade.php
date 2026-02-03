@@ -3,6 +3,10 @@
 @php
     $value_list = $form_item->value_list;
     $selectable_count = $selectable_count[$form_item->id]?? [];
+    $message_list = collect($errors->get('radio_' . $form_item->id . '*'))
+        ->flatten()
+        ->values()
+        ->all();
 @endphp
 
 <div class="support-msg">
@@ -22,5 +26,6 @@
                 </label>
             @endforeach
         </div>
+        <x-input-error :messages="$message_list" class="mt-1"/>
     </div>
 </div>

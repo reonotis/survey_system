@@ -8,7 +8,6 @@
         @elseif($form_setting->design_type === 3)
             @vite('resources/js/form/type_c.js')
         @endif
-        @vite('resources/js/form/form.js')
     @endpush
 
     <div class="custom-container py-8 mx-auto" style="width: 95%;max-width: 600px;">
