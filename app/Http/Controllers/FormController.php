@@ -49,11 +49,11 @@ class FormController extends Controller
         }
 
         // 選択肢の最大値が設定されている場合は、申込数を取得する
-        $selectable_count = $this->getSelectableCount($form_setting);
+        $selected_count = $this->getSelectedCount($form_setting);
 
         return view('form.index', [
             'form_setting' => $form_setting,
-            'selectable_count' => $selectable_count,
+            'selected_count' => $selected_count,
         ]);
     }
 
@@ -136,7 +136,7 @@ class FormController extends Controller
      * @param FormSetting $form_setting
      * @return array
      */
-    private function getSelectableCount(FormSetting $form_setting): array
+    private function getSelectedCount(FormSetting $form_setting): array
     {
         $service = app(ApplicationsService::class);
 

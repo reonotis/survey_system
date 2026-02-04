@@ -93,7 +93,7 @@ class RegisterRequest extends FormRequest
                 => $this->makeAttributesForName($form_item),
             FormItem::ITEM_TYPE_CHECKBOX => $this->makeAttributesForSelectionItem($form_item, 'checkbox_'),
             FormItem::ITEM_TYPE_RADIO => $this->makeAttributesForSelectionItem($form_item, 'radio_'),
-            FormItem::ITEM_TYPE_SELECT_BOX => $this->makeAttributesForSelectionItem($form_item, 'selectbox_'),
+            FormItem::ITEM_TYPE_SELECT_BOX => $this->makeAttributesForSelectionItem($form_item, 'select_box_'),
 
             default => $this->makeAttributesDefault($form_item),
         };

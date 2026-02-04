@@ -50,13 +50,13 @@
                                 @include('form.components.address')
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_CHECKBOX)
-                                @include('form.components.checkbox', ['selectable_count' => $selectable_count])
+                                @include('form.components.checkbox', ['selected_count' => $selected_count])
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_RADIO)
-                                @include('form.components.radio', ['selectable_count' => $selectable_count])
+                                @include('form.components.radio', ['selected_count' => $selected_count])
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_SELECT_BOX)
-                                @include('form.components.select')
+                                @include('form.components.select', ['selected_count' => $selected_count])
                                 @break
                             @case(App\Models\FormItem::ITEM_TYPE_TERMS)
                                 @include('form.components.terms', ['form_item' => $form_item])

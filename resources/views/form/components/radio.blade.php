@@ -1,8 +1,8 @@
-@props(['selectable_count'])
+@props(['selected_count'])
 
 @php
     $value_list = $form_item->value_list;
-    $selectable_count = $selectable_count[$form_item->id]?? [];
+    $selected_count = $selected_count[$form_item->id]?? [];
     $message_list = collect($errors->get('radio_' . $form_item->id . '*'))
         ->flatten()
         ->values()
@@ -19,13 +19,14 @@
             @foreach($value_list as $value)
                 <label>
                     <input type="radio" class="form-check-input" name="radio_{{ $form_item->id }}" value="{{ $value['name'] }}"
-                       @if(!is_null($value['count']) && isset($selectable_count[$value['name']]) && $selectable_count[$value['name']] >= $value['count'])
+                       @if(!is_null($value['count']) && isset($selected_count[$value['name']]) && $selected_count[$value['name']] >= $value['count'])
                            disabled
                         @endif>
                     {{ $value['name'] }}
                 </label>
             @endforeach
         </div>
+
         <x-input-error :messages="$message_list" class="mt-1"/>
     </div>
 </div>
