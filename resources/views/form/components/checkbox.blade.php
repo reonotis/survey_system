@@ -9,9 +9,11 @@
         ->all();
 @endphp
 
+@if($form_item->annotation_text)
 <div class="support-msg">
     {!! nl2br($form_item->annotation_text) !!}
 </div>
+@endif
 
 <div class="checkbox-group" data-form-item-id="{{ $form_item->id }}" data-max-count="{{ $form_item->details['max_count'] ?? '' }}">
     <div class="form-item-detail-content">

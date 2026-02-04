@@ -1,13 +1,28 @@
+:root {
+    --main-color: #71690d;
+}
 
 body {
-    background : #fffbdf;
+    background : #faf7e2;
 }
 
 .item-row {
-    border: solid 1px #71690d;
+    border: solid 1px #c6bf77;
+    box-shadow: 1px 1px 10px rgba(202, 190, 132, 0.34);
 
     .item-title {
-        background : #71690d;
+        background : var(--main-color);
         color: white;
+    }
+}
+
+.btn {
+    background-color: rgba(255, 255, 255, 0);
+    color: var(--main-color);
+    border: solid 1px var(--main-color);
+
+    &:hover {
+        color: #fff;
+        background-color: var(--main-color);
     }
 }
