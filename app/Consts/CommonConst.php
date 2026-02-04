@@ -26,16 +26,46 @@ class CommonConst
     public const WIDGET_TYPE_9 = 9;
     public const WIDGET_TYPE_10 = 10;
     public const WIDGET_TYPE_LIST = [
-        self::WIDGET_TYPE_1 => '1分割',
-        self::WIDGET_TYPE_2 => '2分割',
-        self::WIDGET_TYPE_3 => '2分割(左メイン)',
-        self::WIDGET_TYPE_4 => '2分割(右メイン)',
-        self::WIDGET_TYPE_5 => '3分割(均等)',
-        self::WIDGET_TYPE_6 => '3分割(真ん中がメイン)',
-        self::WIDGET_TYPE_7 => '3分割(左メイン)',
-        self::WIDGET_TYPE_8 => '3分割(右メイン)',
-        self::WIDGET_TYPE_9 => '4分割',
-        self::WIDGET_TYPE_10 => '5分割',
+        self::WIDGET_TYPE_1 => [
+            'label' => '1分割',
+            'image_file' => 'split_1.png',
+        ],
+        self::WIDGET_TYPE_2 => [
+            'label' => '2分割',
+            'image_file' => 'split_2.png',
+        ],
+        self::WIDGET_TYPE_3 => [
+            'label' => '2分割(左メイン)',
+            'image_file' => 'split_2_left.png',
+        ],
+        self::WIDGET_TYPE_4 => [
+            'label' => '2分割(右メイン)',
+            'image_file' => 'split_2_right.png',
+        ],
+        self::WIDGET_TYPE_5 => [
+            'label' => '3分割(均等)',
+            'image_file' => 'split_3.png',
+        ],
+        self::WIDGET_TYPE_6 => [
+            'label' => '3分割(真ん中がメイン)',
+            'image_file' => 'split_3_center.png',
+        ],
+        self::WIDGET_TYPE_7 => [
+            'label' => '3分割(左メイン)',
+        'image_file' => 'split_3_left.png',
+        ],
+        self::WIDGET_TYPE_8 => [
+            'label' => '3分割(右メイン)',
+            'image_file' => 'split_3_right.png',
+        ],
+        self::WIDGET_TYPE_9 => [
+            'label' => '4分割',
+            'image_file' => 'split_4.png',
+        ],
+        self::WIDGET_TYPE_10 => [
+            'label' => '5分割',
+            'image_file' => 'split_5.png',
+        ],
     ];
     public const WIDGET_TYPE_COLUMN = [
         self::WIDGET_TYPE_1 => [60],

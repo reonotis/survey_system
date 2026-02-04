@@ -84,16 +84,26 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
             ))}
             <div className="dashboard original-dashboard">
 
-                <div className="widget add-widget" style={{gridColumn: `span 60` }}>
-                    <div className="flex-center-center h-full w-full">追加する構造を選択してください</div>
-                    <div className="flex-center-center gap-8 h-full w-full">
-                        {Object.entries(widgetTypeList || {}).map(([type, label]) => (
+                <div className="widget add-widget p-2" style={{gridColumn: `span 62` }}>
+                    <div className="flex-center-center h-full w-full mb-2">追加する構造を選択してください</div>
+                    <div className="flex-center-center flex-wrap gap-4 h-full w-full">
+                        {Object.entries(widgetTypeList || {}).map(([type, data]) => (
                             <div
                                 key={type}
-                                className="cursor-pointer"
+                                className="cursor-pointer flex flex-col items-center gap-1 border border-gray-300 p-2 rounded"
                                 onClick={() => registerWidgetRow(Number(type))}
                             >
-                                {label}
+                                {/* 画像 */}
+                                <img
+                                    src={`/image/${data.image_file}`}
+                                    alt={data.label}
+                                    className="w-40 object-contain"
+                                />
+
+                                {/* ラベル */}
+                                <div className="text-sm text-center">
+                                    {data.label}
+                                </div>
                             </div>
                         ))}
                     </div>
