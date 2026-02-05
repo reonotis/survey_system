@@ -40,6 +40,10 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
         setIsOpenCreateModal(true);
     };
 
+    const handleRowDelete = (deletedRowId) => {
+        setAnalyticsList((prev) => prev.filter((row) => row.id !== deletedRowId));
+    };
+
     const registerWidgetRow = async (layout_type) => {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
         try {
@@ -80,6 +84,7 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
                     key={item.id ?? index}
                     analyticsData={item}
                     openCreateWidgetSettingModal={openCreateWidgetSettingModal}
+                    onRowDelete={handleRowDelete}
                 />
             ))}
             <div className="dashboard original-dashboard">
