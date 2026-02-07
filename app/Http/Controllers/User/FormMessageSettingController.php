@@ -19,7 +19,7 @@ class FormMessageSettingController extends UserController
     {
         $form_setting->load('message');
 
-        return view('user.form.message-setting', [
+        return view('user.form.basic.message-setting', [
             'form_setting' => $form_setting,
         ]);
     }

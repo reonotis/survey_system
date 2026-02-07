@@ -19,7 +19,7 @@ class FormDesignSettingController extends UserController
      */
     public function index(FormSetting $form_setting): View
     {
-        return view('user.form.design-setting', [
+        return view('user.form.basic.design-setting', [
             'form_setting' => $form_setting,
         ]);
     }

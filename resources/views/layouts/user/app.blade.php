@@ -33,6 +33,7 @@
 
                         <div class="flex-center-center gap-2">
                             <a href="{{ route('user_dashboard') }}" class="btn">フォーム</a>
+                            <a href="" class="btn">問い合わせ</a>
                         </div>
 
                         <div>

@@ -14,7 +14,7 @@ class FormWinningSettingController extends UserController
      */
     public function index(FormSetting $form_setting): View
     {
-        return view('user.form.winning-setting', [
+        return view('user.form.answer.winning-setting', [
             'form_setting' => $form_setting,
         ]);
     }

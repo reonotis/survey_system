@@ -19,7 +19,7 @@ class FormMailSettingController extends UserController
     {
         $form_setting->load('mailSetting');
 
-        return view('user.form.mail-setting', [
+        return view('user.form.basic.mail-setting', [
             'form_setting' => $form_setting,
         ]);
     }

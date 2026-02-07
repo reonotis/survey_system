@@ -43,7 +43,7 @@ class FormApplicationController extends UserController
 
         $display_columns = $this->buildDisplayColumns($form_setting, $display_item_ids);
 
-        return view('user.form.application', [
+        return view('user.form.answer.application', [
             'form_setting' => $form_setting,
             'display_item_ids' => $display_item_ids,
             'display_columns' => $display_columns,

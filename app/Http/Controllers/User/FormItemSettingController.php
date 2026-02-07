@@ -56,7 +56,7 @@ class FormItemSettingController extends UserController
             $this->form_item_service->setEditingStatus($form_setting, 1);
         }
 
-        return view('user.form.item-setting', [
+        return view('user.form.item.item-setting', [
             'form_setting' => $form_setting,
             'draft_form_items' => $form_setting->draftFormItems,
             'all_form_item_list' => FormItem::ITEM_TYPE_LIST, // 項目名の一覧

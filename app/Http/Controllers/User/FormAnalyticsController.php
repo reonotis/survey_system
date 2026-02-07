@@ -55,7 +55,7 @@ class FormAnalyticsController extends UserController
         // 各種分析のウィジェット情報を取得
         $analytics_list = $this->analytics_service->getByFormSettingId($form_setting->id, $total_count);
 
-        return view('user.form.analytics', [
+        return view('user.form.answer.analytics', [
             'form_setting' => $form_setting,
             'form_items' => $form_items_array,
             'total_count' => $total_count,
