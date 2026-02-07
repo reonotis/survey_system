@@ -151,10 +151,12 @@ class CommonConst
     public const DESIGN_TYPE_A = 1;
     public const DESIGN_TYPE_B = 2;
     public const DESIGN_TYPE_C = 3;
+    public const DESIGN_TYPE_D = 4;
     public const DESIGN_TYPE_LIST = [
         self::DESIGN_TYPE_A => 'タイプA',
         self::DESIGN_TYPE_B => 'タイプB',
         self::DESIGN_TYPE_C => 'タイプC',
+        self::DESIGN_TYPE_D => 'タイプD',
     ];
 
     // 分析画面、期間内応募選択肢

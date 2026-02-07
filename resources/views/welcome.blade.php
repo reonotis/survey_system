@@ -3,120 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>誰でも作れるアンケート作成アプリ</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: "Hiragino Sans", "Helvetica Neue", Arial, sans-serif;
-            background: #f7fbff;
-            color: #333;
-            line-height: 1.6;
-        }
+    <meta name="description"
+          content="誰でもブラウザだけでアンケート・申込フォームを作成できる無料ツール。自動返信メール、受付期間設定、当選機能、CSV出力でキャンペーンやイベントの集計・管理を効率化します。">
 
-        header {
-            background: linear-gradient(135deg, #5ec8ff, #3ea9ff);
-            color: #fff;
-            text-align: center;
-            padding: 80px 20px;
-        }
+    <title>誰でも簡単に作れるアンケート・申込フォーム作成ツール</title>
+    <meta property="og:title" content="誰でも簡単に作れるアンケート・申込フォーム作成ツール">
+    <meta property="og:description"
+          content="誰でもブラウザだけでアンケート・申込フォームを作成できる無料ツール。自動返信メール、受付期間設定、当選機能、CSV出力でキャンペーンやイベントの集計・管理を効率化します。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1556761175-4b46a572b786">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 
-        header h1 {
-            font-size: 42px;
-            margin: 0;
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
+    @vite([
+        'resources/scss/welcome.scss',
+    ])
 
-        header p {
-            font-size: 20px;
-            margin-top: 20px;
-            opacity: 0.95;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 980px;
-            margin: auto;
-            padding: 60px 20px;
-        }
-
-        .section {
-            margin-bottom: 80px;
-        }
-
-        .section h2 {
-            font-size: 32px;
-            color: #2c8cd9;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .features {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .feature-box {
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            border-left: 6px solid #2c8cd9;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-        }
-
-        .feature-box h3 {
-            margin-top: 0;
-            font-size: 26px;
-            color: #2c8cd9;
-        }
-
-        .cta {
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        .cta a {
-            display: inline-block;
-            background: #2c98ff;
-            padding: 18px 40px;
-            color: #fff;
-            font-size: 22px;
-            font-weight: bold;
-            border-radius: 50px;
-            text-decoration: none;
-            box-shadow: 0 6px 18px rgba(46, 146, 255, 0.3);
-            transition: 0.3s;
-        }
-
-        .cta a:hover {
-            transform: translateY(-3px);
-            background: #1b89ec;
-        }
-
-        footer {
-            background: #dff2ff;
-            padding: 20px;
-            text-align: center;
-            color: #4c4c4c;
-            margin-top: 80px;
-        }
-
-        /* 画像エリア */
-        .hero-img {
-            width: 100%;
-            max-width: 900px;
-            margin: 40px auto 0;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        .hero-img img {
-            width: 100%;
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
@@ -127,62 +30,188 @@
         受付期間設定・自動返信メール・当選機能など “全部” 思いのまま。</p>
 
     <div class="hero-img">
-        <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786" alt="アンケート作成">
+        <img src="/image/form/form_image.png" alt="アンケート作成">
     </div>
 </header>
 
 <div class="container">
 
     <div class="section">
-        <h2>機能一覧</h2>
-
+        <h2 data-title-name="FEATURE">機能一覧</h2>
         <div class="features">
 
             <div class="feature-box">
-                <h3>自由な項目設定</h3>
-                <p>会員登録するだけで、項目を好きなように追加・編集可能。
-                    テキスト・ラジオ・チェックボックスなど、用途に合わせて自由に設計できます。</p>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <h3>自由な項目設定</h3>
+                        <p>
+                            会員登録するだけで、項目を好きなように追加・編集可能。
+                            テキスト・ラジオ・チェックボックスなど、用途に合わせて自由に設計できます。
+                        </p>
+                    </div>
+
+                    <div class="feature-image" style="width: 800px;">
+                        <img src="/image/form/form_item_setting.png" alt="項目設定画面">
+                    </div>
+                </div>
             </div>
 
             <div class="feature-box">
-                <h3>申込期間の設定</h3>
-                <p>受付開始日・締切日を自由に設定できるので、キャンペーンやイベントにも最適。
-                    申込完了後に表示されるメッセージも管理画面から変更できます。</p>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <h3>申込可能期間や上限値の設定</h3>
+                        <p>
+                            受付開始日・締切日、先着申込人数を自由に設定できるので、キャンペーンやイベントにも最適。
+                            申込完了後メッセージも変更できます。
+                        </p>
+                    </div>
+
+                    <div class="feature-image" style="width: 600px;">
+                        <img src="/image/form/period.png" alt="申込可能期間設定画面">
+                    </div>
+                </div>
             </div>
 
             <div class="feature-box">
-                <h3>自動返信・通知メールを自由に編集</h3>
-                <p>申込者への自動返信メール、管理者への通知メールなど、すべて文章を自由にカスタマイズ可能。</p>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <h3>自動返信・通知メールを自由に編集</h3>
+                        <p>
+                            申込者・管理者向けメールをすべて自由にカスタマイズ可能。
+                        </p>
+                    </div>
+
+                    <div class="feature-image" style="width: 600px;">
+                        <img src="/image/form/mail.png" alt="メール設定画面">
+                    </div>
+                </div>
             </div>
 
             <div class="feature-box">
-                <h3>申込み結果のCSVダウンロード</h3>
-                <p>管理画面では申し込み一覧をいつでも閲覧でき、ワンクリックで CSV としてダウンロードできます。</p>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <h3>回答結果をCSVダウンロード</h3>
+                        <p>
+                            申込フォームに対する回答一覧ををいつでも確認でき、CSVでダウンロードできます。
+                        </p>
+                    </div>
+
+                    <div class="feature-image" style="width: 600px;">
+                        <img src="/image/form/csv.png" alt="CSVダウンロード画面">
+                    </div>
+                </div>
             </div>
 
             <div class="feature-box">
-                <h3>豊富なフォームデザイン設定</h3>
-                <p>背景色・文字色・装飾など、フォーム全体のデザインを好きなようにカスタマイズ。
-                    ブランドカラーに合わせたフォームも即座に作成できます。</p>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <h3>自由なフォームデザイン設定</h3>
+                        <p>背景色など、フォーム全体のデザインを好きなようにカスタマイズ。個別CSSを記載することも可能。
+                            ブランドカラーに合わせたフォームも即座に作成できます。</p>
+                    </div>
+
+                    <div class="feature-image" style="width: 400px;">
+                        <img src="/image/form/mobile.png" alt="CSVダウンロード画面">
+                    </div>
+                </div>
             </div>
 
             <div class="feature-box">
-                <h3>当選機能付き</h3>
-                <p>アンケートやキャンペーンにぴったりの “当選機能” を標準搭載。
-                    当選数や条件を設定して、自動抽選も楽々。</p>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <h3>柔軟なサポート</h3>
+                        <p>操作について不明な場合は専門のスタッフがサポートいたします。</p>
+                    </div>
+
+                    <div class="feature-image" style="width: 600px;">
+                        <img src="/image/form/support.png" alt="CSVダウンロード画面">
+                    </div>
+                </div>
             </div>
 
+{{--            <div class="feature-box">--}}
+{{--                <div class="feature-content">--}}
+{{--                    <div class="feature-text">--}}
+{{--                        <h3>当選機能付き</h3>--}}
+{{--                        <p>アンケートやキャンペーンにぴったりの “当選機能” を標準搭載。--}}
+{{--                            当選数や条件を設定して、自動抽選も楽々。</p>--}}
+{{--                    </div>--}}
+
+{{--                    <div class="feature-image" style="width: 800px;">--}}
+{{--                        <img src="/image/form/form_image.png" alt="CSVダウンロード画面">--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+
+        </div>
+    </div>
+
+{{--    <div class="section">--}}
+{{--        <h2 data-title-name="PRICE">料金プラン</h2>--}}
+{{--        <div class="">--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
+    <div class="cta">
+        <a href="{{ route('user_register') }}">今すぐ無料で始める</a>
+    </div>
+
+    <div class="section">
+        <h2 data-title-name="Q & A">よくある質問</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <h3 class="faq-question">無料プランでもすべての機能を使えますか？</h3>
+                <div class="faq-answer">無料プランでも基本的な機能は利用可能ですが、一部機能を制限しております。詳しくは料金プランをご確認ください。</div>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">作成できるフォーム数に制限はありますか？</h3>
+                <div class="faq-answer">作成できるフォーム数に制限はありません。ただし、1つのフォームで利用できる項目数に制限があります
+                    有料プランでは無制限にフォームを作成できます。</div>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">スマートフォンからも利用できますか？</h3>
+                <div class="faq-answer">申込フォームはPC・タブレット・スマートフォンすべてに対応しています。
+                    ただし、管理画面はPCからしか利用出来ません。スマートフォンなどの画面幅が狭い端末では正しく表示されない事があります</div>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">CSVダウンロードはいつでも可能ですか？</h3>
+                <div class="faq-answer">管理画面からいつでもCSV形式でデータをダウンロードできます。
+                    フィルタや期間指定も可能です</div>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">途中で有料プランに変更できますか？</h3>
+                <div class="faq-answer">はい、管理画面からいつでもアップグレード可能です。
+                    データはそのまま引き継がれます。</div>
+            </div>
         </div>
     </div>
 
     <div class="cta">
         <a href="{{ route('user_register') }}">今すぐ無料で始める</a>
     </div>
+
+{{--    <div class="section">--}}
+{{--        <h2 data-title-name="CONTACT">お問い合わせ</h2>--}}
+{{--        <div class=""></div>--}}
+{{--    </div>--}}
+
 </div>
 
 <footer>
-    © 2025 アンケート作成アプリ All Rights Reserved.
+    © 2026 アンケート作成アプリ フォームメーカー All Rights Reserved.
 </footer>
 
 </body>
+
+
+<script>
+    document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            const answer = btn.nextElementSibling;
+            answer.classList.toggle('open');
+        });
+    });
+</script>
 </html>
+

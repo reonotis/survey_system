@@ -18,6 +18,7 @@ export default defineConfig({
                 'resources/js/form/type_a.js',
                 'resources/js/form/type_b.js',
                 'resources/js/form/type_c.js',
+                'resources/js/form/type_d.js',
                 'resources/js/user/app.js',
                 'resources/js/user/form/analytics/analytics.jsx',
                 'resources/js/user/form/form_application.js',

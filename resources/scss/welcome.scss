@@ -1,0 +1,227 @@
+body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Helvetica Neue", Arial, sans-serif;
+    background: #f7fbff;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(135deg, #d8edf6, #b5f1bd);
+    color: #222;
+    text-align: center;
+    padding: 80px 0 0;
+
+    & > h1 {
+        font-size: 42px;
+        margin: 0;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    & > p {
+        font-size: 20px;
+        margin-top: 20px;
+        opacity: 0.95;
+    }
+
+    & > .hero-img {
+        width: 100%;
+        height: 500px;
+        overflow: hidden;
+
+        & > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 45%;
+            display: block;
+        }
+    }
+}
+
+.container {
+    width: 100%;
+    margin: auto;
+}
+
+.section {
+    position: relative;
+    margin: 120px 0 150px;
+    padding: 60px 0;
+
+    & > h2 {
+        position: relative;
+        text-align: center;
+        font-size: 60px;
+        font-weight: 700;
+        color: #40576e;
+        line-height: 1;
+        padding: 16px 0 0;
+        margin: 0 0 50px;
+        z-index: 1;
+
+        &::before {
+            content: attr(data-title-name);
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%) translateY(0.10em);
+            font-size: 160px;
+            font-weight: 700;
+            color: rgba(159, 159, 159, 0.24);
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+            line-height: 1;
+            z-index: -1;
+            pointer-events: none;
+        }
+    }
+
+}
+
+/** 機能一覧 **/
+.features {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+
+    & h3 {
+        position: relative;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    & > .feature-box {
+        background: linear-gradient(135deg, #dde9f6, #eaffe9,#fff1f1);
+
+        & > .feature-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 0;
+
+            & > .feature-text {
+                flex: 1;
+            }
+
+            & > .feature-image {
+                text-align: center;
+
+                & > img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 12px;
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+                }
+            }
+        }
+
+        &:nth-child(even) .feature-content {
+            flex-direction: row-reverse;
+        }
+    }
+}
+
+
+
+/** よくある質問 **/
+
+
+
+
+/* FAQ全体 */
+.faq-list {
+    border-top: 1px solid #ddd;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    .faq-item {
+        border-bottom: 1px solid #ddd;
+        padding: 1rem 0;
+
+        > h3 {
+            position: relative;
+            width: calc(100% - 40px);
+            margin: 0;
+            padding: 20px 40px 10px 10px;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+
+            &::after {
+                content: "＋";
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 22px;
+                color: #666;
+            }
+            &.active::after {
+                content: "－";
+            }
+        }
+
+    }
+
+    /* 回答 */
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        font-size: 15px;
+        line-height: 1.7;
+        color: #444;
+        padding: 0 10px;
+        transition: all 0.3s ease;
+
+        &.open {
+            max-height: 300px;
+            padding: 00px 10px 20px;
+        }
+    }
+}
+
+
+
+
+.cta {
+    text-align: center;
+    margin: 60px 0;
+
+    a {
+        display: inline-block;
+        background: linear-gradient(135deg, #1d88c8, #3baf4e);
+        padding: 18px 40px;
+        color: #fff;
+        font-size: 22px;
+        font-weight: bold;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 0 6px 18px rgba(46, 146, 255, 0.3);
+        transition: 0.3s;
+
+        &:hover {
+            transform: translateY(-3px);
+            transition: 2s;
+            background: #1b89ec;
+            background: linear-gradient(135deg, #3baf4e, #1d88c8);
+        }
+    }
+}
+
+footer {
+    background: #dff2ff;
+    padding: 20px;
+    text-align: center;
+    color: #4c4c4c;
+    margin-top: 80px;
+}
