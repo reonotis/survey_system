@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { AnalyticsData } from './AnalyticsData';
 import { AnalyticsRow } from './AnalyticsRow';
 import { SettingModal } from './SettingModal';
 import {

@@ -28,6 +28,7 @@ export default defineConfig({
                 'resources/js/user/form/message_setting.js',
                 'resources/js/user/form/register_item_setting.js',
                 'resources/scss/user/form/item_setting.scss',
+                'resources/scss/welcome.scss',
             ],
             refresh: [
                 'resources/views/**',
