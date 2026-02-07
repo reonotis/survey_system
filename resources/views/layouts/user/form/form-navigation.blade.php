@@ -8,7 +8,8 @@
         <a href="{{ route('user_form_item_setting', ['form_setting' => $form_setting->id]) }}"
            class="@if($number === \App\Consts\UserConst::FORM_NAV_ITEM_SETTING) active @endif">項目編集</a>
 
-        <a href="" class="">ユーザー</a>
+        <a href="{{ route('user_form_member_list', ['form_setting' => $form_setting->id]) }}"
+           class="@if($number === \App\Consts\UserConst::FORM_NAV_ITEM_MEMBER) active @endif">メンバー編集</a>
 
         <a href="{{ route('user_form_application_list', ['form_setting' => $form_setting->id]) }}"
            class="@if($number === 4) active @endif">回答</a>

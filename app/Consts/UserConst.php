@@ -8,7 +8,7 @@ class UserConst
     // ナビゲーションメニュー
     public const FORM_NAV_BASIC_SETTING = 1; // 基本設定
     public const FORM_NAV_ITEM_SETTING = 2; // 項目設定
-    public const FORM_NAV_ITEM_USER = 3; // ユーザー
+    public const FORM_NAV_ITEM_MEMBER = 3; // ユーザー
     public const FORM_NAV_ITEM_APPLICATION = 4; // 回答
 
 

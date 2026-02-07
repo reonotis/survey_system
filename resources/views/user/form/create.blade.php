@@ -11,7 +11,6 @@
     {{-- ぱんくず --}}
     <x-slot name="breadcrumbs">
         <ol class="custom-container">
-            <li><a href="{{ route('user_dashboard') }}" class="anchor-link">ダッシュボード</a></li>
             <li><a href="{{ route('user_form_create') }}" class="anchor-link">応募フォーム作成</a></li>
         </ol>
     </x-slot>

@@ -14,6 +14,7 @@ use App\Http\Controllers\User\FormMessageSettingController;
 use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
 use App\Http\Controllers\User\PreviewController;
+use App\Http\Controllers\User\MemberSettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {
@@ -37,6 +38,10 @@ Route::prefix('user')->group(function () {
             return view('user.dashboard');
         })->name('user_dashboard');
 
+        Route::get('/contact', function () {
+            return view('user.contact');
+        })->name('user_contact');
+
         // アンケート
         Route::prefix('form_setting')->group(function () {
             Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_form_get_form_list');
@@ -47,7 +52,7 @@ Route::prefix('user')->group(function () {
             Route::get('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'index'])->name('user_form_basic_setting');
             Route::post('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'update'])->name('user_form_basic_setting_update');
 
-           // メッセージ設定
+            // メッセージ設定
             Route::get('/{form_setting}/message-setting', [FormMessageSettingController::class, 'index'])->name('user_form_message_setting');
             Route::post('/{form_setting}/message-setting', [FormMessageSettingController::class, 'update'])->name('user_form_message_setting_update');
 
@@ -69,6 +74,10 @@ Route::prefix('user')->group(function () {
             Route::post('/{form_setting}/draft-item-save', [FormItemSettingController::class, 'draftItemSave'])->name('user_form_draft_item_save');
             Route::post('/{form_setting}/draft-item-delete', [FormItemSettingController::class, 'draftItemDelete'])->name('user_form_draft_item_delete');
             Route::post('/{form_setting}/save-form-items', [FormItemSettingController::class, 'saveFormItems'])->name('user_form_save_form_items');
+
+
+            // TODO メンバー
+            Route::get('/{form_setting}/member-list', [MemberSettingController::class, 'index'])->name('user_form_member_list');
 
 
             // 応募者一覧
