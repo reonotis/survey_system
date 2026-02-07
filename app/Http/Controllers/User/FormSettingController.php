@@ -24,14 +24,6 @@ class FormSettingController extends UserController
     }
 
     /**
-     * @return View
-     */
-    public function index(): View
-    {
-        return view('user.form.list');
-    }
-
-    /**
      * Get form data for DataTables via Ajax.
      */
     public function getFormData(Request $request): JsonResponse

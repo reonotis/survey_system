@@ -39,7 +39,6 @@ Route::prefix('user')->group(function () {
 
         // アンケート
         Route::prefix('form_setting')->group(function () {
-            Route::get('/list', [FormSettingController::class, 'index'])->name('user_form_index'); // 応募フォーム一覧
             Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_form_get_form_list');
             Route::get('/create', [FormSettingController::class, 'create'])->name('user_form_create');
             Route::post('/register', [FormSettingController::class, 'store'])->name('user_form_register');

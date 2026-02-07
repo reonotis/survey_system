@@ -10,25 +10,13 @@
 
     {{-- 画面名 --}}
     <x-slot name="page_name">
-        {{ $form_setting->title }} - 項目設定
+        <div class="flex-between-center gap-2">
+            <div class="page-name">{{ $form_setting->title }} - 項目設定 </div>
+            @include('layouts.user.form.form-navigation', ['number' => \App\Consts\UserConst::FORM_NAV_ITEM_SETTING])
+        </div>
     </x-slot>
-
-    {{-- ぱんくず --}}
-    <x-slot name="breadcrumbs">
-        <ol class="custom-container">
-            <li><a href="{{ route('user_dashboard') }}" class="anchor-link">ダッシュボード</a></li>
-            <li><a href="{{ route('user_form_index') }}" class="anchor-link">応募フォーム一覧</a></li>
-            <li><a href="{{ route('user_form_basic_setting', ['form_setting' => $form_setting->id]) }}"
-                   class="anchor-link">{{ $form_setting->title }} - 基本設定</a></li>
-            <li><a href="" class="anchor-link">項目設定</a></li>
-        </ol>
-    </x-slot>
-
 
     <div class="custom-container py-4">
-        @include('layouts.user.form.form-setting-navigation', ['number' => \App\Consts\UserConst::NAV_MANU_FORM_ITEM_SETTING])
-
-        <div class="mx-auto py-8">
 
             <div class="flex-center-center mb-4 gap-4">
                 <form method="POST"
@@ -79,7 +67,6 @@
                 window.draftItemDeleteUrl = @json(route('user_form_draft_item_delete', ['form_setting' => $form_setting->id]));
 
             </script>
-        </div>
     </div>
 
 </x-user-app-layout>

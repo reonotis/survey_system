@@ -6,18 +6,11 @@
 
     {{-- 画面名 --}}
     <x-slot name="page_name">
-        {{ $form_setting->title }} - 基本設定
+        <div class="flex-between-center gap-2">
+            <div class="page-name">{{ $form_setting->title }} - 基本設定 </div>
+            @include('layouts.user.form.form-navigation', ['number' => \App\Consts\UserConst::FORM_NAV_BASIC_SETTING])
+        </div>
     </x-slot>
-
-    {{-- ぱんくず --}}
-    <x-slot name="breadcrumbs">
-        <ol class="custom-container">
-            <li><a href="{{ route('user_dashboard') }}" class="anchor-link">ダッシュボード</a></li>
-            <li><a href="{{ route('user_form_index') }}" class="anchor-link">応募フォーム一覧</a></li>
-            <li><a href="" class="anchor-link">{{ $form_setting->title }} - 基本設定</a></li>
-        </ol>
-    </x-slot>
-
 
     <div class="custom-container py-4">
         @include('layouts.user.form.form-setting-navigation', ['number' => \App\Consts\UserConst::NAV_MANU_BASIC_SETTING])
@@ -71,7 +64,7 @@
                         <x-input-text type="number" name="max_applications"
                                       :error="$errors->has('max_applications')"
                                       :value="old('max_applications', $form_setting->max_applications)"
-                                      />
+                        />
                     </div>
                 </div>
 

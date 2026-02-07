@@ -6,18 +6,10 @@
 
     {{-- 画面名 --}}
     <x-slot name="page_name">
-        {{ $form_setting->title }} - メッセージ設定
-    </x-slot>
-
-    {{-- ぱんくず --}}
-    <x-slot name="breadcrumbs">
-        <ol class="custom-container">
-            <li><a href="{{ route('user_dashboard') }}" class="anchor-link">ダッシュボード</a></li>
-            <li><a href="{{ route('user_form_index') }}" class="anchor-link">応募フォーム一覧</a></li>
-            <li><a href="{{ route('user_form_basic_setting', ['form_setting' => $form_setting->id]) }}"
-                   class="anchor-link">{{ $form_setting->title }} - 基本設定</a></li>
-            <li><a href="" class="anchor-link">メッセージ設定</a></li>
-        </ol>
+        <div class="flex-between-center gap-2">
+            <div class="page-name">{{ $form_setting->title }} - メッセージ設定 </div>
+            @include('layouts.user.form.form-navigation', ['number' => \App\Consts\UserConst::FORM_NAV_BASIC_SETTING])
+        </div>
     </x-slot>
 
 

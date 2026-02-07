@@ -28,8 +28,13 @@
                 <div class="custom-container">
                     <div class="flex-between-center py-2">
                         <div>
-                            <a href="#" class="text-white text-xl font-semibold">アンケートシステム - 管理者</a>
+                            <a href="{{ route('user_dashboard') }}" class="text-white text-xl font-semibold">フォームメーカー - 管理者</a>
                         </div>
+
+                        <div class="flex-center-center gap-2">
+                            <a href="{{ route('user_dashboard') }}" class="btn">フォーム</a>
+                        </div>
+
                         <div>
                             <form method="POST" action="{{ route('user_logout') }}" class="inline">
                                 @csrf
@@ -42,16 +47,10 @@
                 </div>
             </header>
 
-            @isset($breadcrumbs)
-                <div class="breadcrumbs">
-                    {{ $breadcrumbs }}
-                </div>
-            @endisset
-
             @isset($page_name)
-                <div class="page-name">
+                <div class="page-name-navigation">
                     <div class="custom-container">
-                        <p class="">{{ $page_name }}</p>
+                        {{ $page_name }}
                     </div>
                 </div>
             @endisset

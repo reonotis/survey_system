@@ -75,7 +75,10 @@ trait AnalyticsTrait
     {
         return match ($analytics_widget->item_type) {
             FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
-            FormItem::ITEM_TYPE_CHECKBOX => $this->getCheckboxCircleData($analytics_widget),
+            FormItem::ITEM_TYPE_CHECKBOX,
+            FormItem::ITEM_TYPE_RADIO,
+            FormItem::ITEM_TYPE_SELECT_BOX
+                => $this->getCheckboxCircleData($analytics_widget),
             default => ['調整中'],
         };
     }
@@ -88,7 +91,10 @@ trait AnalyticsTrait
     {
         return match ($analytics_widget->item_type) {
             FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
-            FormItem::ITEM_TYPE_CHECKBOX => $this->getCheckboxCircleData($analytics_widget),
+            FormItem::ITEM_TYPE_CHECKBOX,
+            FormItem::ITEM_TYPE_RADIO,
+            FormItem::ITEM_TYPE_SELECT_BOX
+                => $this->getCheckboxCircleData($analytics_widget),
             default => ['調整中'],
         };
     }
