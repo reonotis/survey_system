@@ -27,6 +27,10 @@
                     <div class="item-title">管理名</div>
                     <div class="item-contents">
                         <x-input-text name="form_name" class="w-full"/>
+
+                        <div class="support-msg">
+                            ※他フォーム等とタイトル名が重複する場合に、フォーム一覧画面でメンバーが分かりやすい名前を作成してください
+                        </div>
                     </div>
                 </div>
                 <div class="item-row">

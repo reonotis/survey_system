@@ -28,6 +28,7 @@ class FormSettingService
     {
         $select = [
             'id',
+            'form_name',
             'title',
             'start_date',
             'end_date',

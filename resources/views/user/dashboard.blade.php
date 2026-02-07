@@ -12,6 +12,11 @@
                 <input type="text" name="status" id="status" class="input-box w-60" placeholder="状態"/>
                 <button type="button" class="btn">検索</button>
             </div>
+
+            <div class="flex-start-center gap-4">
+                <a href="{{ route('user_form_create') }}" class="btn">新しいフォームを作成</a>
+            </div>
+
         </div>
 
         <div class="mb-8">
