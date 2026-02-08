@@ -5,16 +5,10 @@
 
     {{-- 画面名 --}}
     <x-slot name="page_name">
-        応募フォーム一覧
+        <div class="flex-between-center gap-2">
+            <div class="page-name">フォーム作成</div>
+        </div>
     </x-slot>
-
-    {{-- ぱんくず --}}
-    <x-slot name="breadcrumbs">
-        <ol class="custom-container">
-            <li><a href="{{ route('user_form_create') }}" class="anchor-link">応募フォーム作成</a></li>
-        </ol>
-    </x-slot>
-
 
     <div class="custom-container py-4">
 

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
             }, {
                 data: 'id',
-                title: 'フォーム設定',
+                title: '設定/管理',
                 orderable: false,
                 createdCell: function (td, cellData, rowData, row, col) {
                     td.classList.add('dt-center');
@@ -46,14 +46,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, {
                 data: 'id',
-                title: '申込一覧 / 分析',
+                title: '複製',
                 orderable: false,
                 createdCell: function (td, cellData, rowData, row, col) {
                     td.classList.add('dt-center');
                 },
                 render: function(data, type, row) {
-                    const url = (showUrlTemplate || '').replace('__ID__', data);
-                    return '<a href="' + url + '" class="btn min">確認</a>';
+                    return '<a href="" class="btn min">複製</a>';
+                }
+            }, {
+                data: 'id',
+                title: '削除',
+                orderable: false,
+                createdCell: function (td, cellData, rowData, row, col) {
+                    td.classList.add('dt-center');
+                },
+                render: function(data, type, row) {
+                    return '<a href="" class="btn min">削除</a>';
                 }
             }
         ]
