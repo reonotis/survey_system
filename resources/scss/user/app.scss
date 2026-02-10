@@ -245,6 +245,130 @@ div.dt-container {
     }
 }
 
+// ドロップダウンチェックボックス
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+
+    & > .dropdown-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        & > .dropdown-input {
+            padding-right: 30px;
+            border: 1px solid #ae5f10;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        & > .dropdown-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #858585;
+            cursor: pointer;
+        }
+    }
+
+    & > .dropdown-list {
+        min-width: 100%;
+        display: none;
+        position: absolute;
+        width: fit-content;
+        background: white;
+        border: 1px solid #cccccc;
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 200;
+
+        & label {
+            display: flex;
+            padding: 5px;
+            cursor: pointer;
+
+            &:hover {
+                background: #dfe4ef;
+            }
+        }
+    }
+
+
+
+}
+
+// チェックボックス
+.custom-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    user-select: none;
+    position: relative;
+
+    & input[type='checkbox'] {
+        display: none;
+        &:checked + .checkmark {
+            background: #31318f;
+            &::after {
+                display: block;
+            }
+        }
+    }
+
+
+    & input[type='checkbox']:disabled ~ .checkmark {
+        background: #7f91b1;
+        border-color: #7f91b1;
+        cursor: not-allowed;
+        opacity: 0.8;
+    }
+    & input[type='checkbox']:disabled:checked ~ .checkmark {
+        background: #7f91b1;
+    }
+    & input[type='checkbox']:disabled:checked ~ .checkbox-label {
+        cursor: not-allowed;
+    }
+    & input[type='checkbox']:checked ~ .checkbox-label {
+        color: green;
+    }
+    & .checkmark {
+        flex: 0 0 20px;
+        width: 20px !important;
+        height: 20px;
+        border: solid 1px #333333;
+        border-radius: 4px;
+        background-color: #fff;
+        display: inline-block;
+        position: relative;
+        margin-top: 2px;
+        &::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            width: 8px;
+            height: 16px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+            display: none;
+        }
+    }
+    & .checkbox-label {
+        flex: 1 1 0;
+        min-width: 0;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+        color: #999;
+
+    }
+
+
+}
+
 // チェックボックス
 .checkbox-content {
     padding: 0 .25rem;

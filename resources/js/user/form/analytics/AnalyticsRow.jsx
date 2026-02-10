@@ -61,13 +61,7 @@ export function AnalyticsRow({ analyticsData, openCreateWidgetSettingModal, onRo
                                 type="button"
                                 onClick={handleDeleteRow}
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M4 6h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M6 6l1 15a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M10 11v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M14 11v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                </svg>
+                                <img src="/icon/delete.svg" width="20" height="20" alt="" aria-hidden="true" />
                             </button>
                         </div>
                     </div>

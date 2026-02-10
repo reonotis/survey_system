@@ -6,6 +6,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
 use App\Http\Requests\Owner\FormSettingRegisterRequest;
+use App\Models\FormSetting;
+use App\Service\ApplicationsService;
 use App\Service\FormSettingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -15,12 +17,17 @@ use Yajra\DataTables\Facades\DataTables;
 
 class FormSettingController extends UserController
 {
+    private FormSettingService $form_setting_service;
+
     /**
-     *
+     * コンストラクタ
      */
-    public function __construct()
-    {
+    public function __construct(
+        FormSettingService $form_setting_service,
+    )    {
         parent::__construct();
+
+        $this->form_setting_service = $form_setting_service;
     }
 
     /**
@@ -28,7 +35,7 @@ class FormSettingController extends UserController
      */
     public function getFormData(Request $request): JsonResponse
     {
-        $form_query = (new FormSettingService())->getFormListQuery($this->my_user->id);
+        $form_query = $this->form_setting_service->getFormListQuery($this->my_user->id);
 
         return DataTables::of($form_query)
             ->addColumn('period', function ($form) {
@@ -60,7 +67,7 @@ class FormSettingController extends UserController
         try {
             $param = $request->validated();
             $param['created_by_user'] = $this->my_user->id;
-            $form_setting =  (new FormSettingService())->create(
+            $form_setting = $this->form_setting_service->create(
                 $param,
                 request()->getHost()
             );
@@ -68,6 +75,21 @@ class FormSettingController extends UserController
         } catch (\Exception $error) {
             \Log::error($error->getMessage());
             return redirect()->back()->with('error', ['新しいフォームの作成に失敗しました']);
+        }
+    }
+
+    /**
+     * @param FormSetting $form_setting
+     * @return RedirectResponse
+     */
+    public function delete(FormSetting $form_setting): RedirectResponse
+    {
+        try {
+            $this->form_setting_service->delete($form_setting);
+            return redirect()->back()->with('success', ['フォームを削除しました。']);
+        } catch (\Exception $error) {
+            \Log::error($error->getMessage());
+            return redirect()->back()->with('error', ['フォームの削除に失敗しました']);
         }
     }
 

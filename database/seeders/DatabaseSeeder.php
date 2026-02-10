@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,11 +18,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        DB::table('users')->truncate();
+        DB::table('admins')->truncate();
+        DB::table('form_settings')->truncate();
+        DB::table('form_items')->truncate();
+
         $this->call([
             UserSeeder::class,
             AdminSeeder::class,
-            OwnerSeeder::class,
-            FormSeeder::class,
+//            OwnerSeeder::class,
+            FormSettingSeeder::class,
+            FormItemsSeeder::class,
         ]);
     }
 }

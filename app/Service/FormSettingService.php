@@ -4,11 +4,20 @@ namespace App\Service;
 
 use App\Models\FormSetting;
 use App\Models\FormItem;
+use App\Repositories\FormSettingRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class FormSettingService
 {
+    private FormSettingRepository $form_setting_repository;
+
+    public function __construct(
+        FormSettingRepository $form_setting_repository,
+    ) {
+        $this->form_setting_repository = $form_setting_repository;
+    }
+
     /**
      * @param string $route_name
      * @return FormSetting|null
@@ -27,19 +36,21 @@ class FormSettingService
     public function getFormListQuery(int $user_id = null): Builder
     {
         $select = [
-            'id',
-            'form_name',
-            'title',
-            'start_date',
-            'end_date',
-            'publication_status',
-            'created_at',
+            'form_settings.id',
+            'form_settings.form_name',
+            'form_settings.title',
+            'form_settings.start_date',
+            'form_settings.end_date',
+            'form_settings.publication_status',
+            'form_settings.created_by_user',
+            'users.name AS owner_name',
+            'form_settings.created_at',
         ];
 
         $query = FormSetting::select($select)
+            ->where('host_name',  request()->getHost())
+            ->join('users', 'users.id', '=', 'form_settings.created_by_user')
             ->withCount('applications');
-
-        $query->where('host_name',  request()->getHost());
 
         if ($user_id) {
             $query->where('created_by_user', $user_id);
@@ -122,6 +133,15 @@ class FormSettingService
     public function update(FormSetting $form_setting, array $param)
     {
         return $form_setting->update($param);
+    }
+
+    /**
+     * @param FormSetting $form_setting
+     * @return bool
+     */
+    public function delete(FormSetting $form_setting): bool
+    {
+        return $this->form_setting_repository->delete($form_setting);
     }
 
 }

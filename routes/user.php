@@ -47,6 +47,7 @@ Route::prefix('user')->group(function () {
             Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_form_get_form_list');
             Route::get('/create', [FormSettingController::class, 'create'])->name('user_form_create');
             Route::post('/register', [FormSettingController::class, 'store'])->name('user_form_register');
+            Route::post('/{form_setting}/delete', [FormSettingController::class, 'delete'])->name('user_form_delete');
 
             // 基本設定
             Route::get('/{form_setting}/basic-setting', [FormBasicSettingController::class, 'index'])->name('user_form_basic_setting');

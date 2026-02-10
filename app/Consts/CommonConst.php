@@ -1,9 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Consts;
 
 class CommonConst
 {
+    public const FLG_OFF = 0;
+    public const FLG_ON = 1;
+    public const FLG_LIST = [
+        self::FLG_OFF => '有効',
+        self::FLG_ON => '無効',
+    ];
+
+
     public const GRAPH_TYPE_TOTAL = 1;
     public const GRAPH_TYPE_RATE = 2;
     public const GRAPH_TYPE_CIRCLE = 3;
