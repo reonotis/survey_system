@@ -17,7 +17,7 @@ class MailService
      */
     public function sendContactMail(array $request): void
     {
-        Mail::to('admin@example.com')
+        Mail::to('fujisawa@reonotis.jp') // TODO envにする事
             ->send(new ContactMail(
                 Auth::guard('user')->user()->name,
                 Auth::guard('user')->user()->email,
