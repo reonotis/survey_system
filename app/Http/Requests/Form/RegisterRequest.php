@@ -282,25 +282,27 @@ class RegisterRequest extends FormRequest
         $post_code_use_type = $details['post_code_use_type'] ?? CommonConst::POST_CODE_DISABLED;
         $address_separate_type = $details['address_separate_type'] ?? 1;
 
-        $roles = [
-        ];
+        $rules = [];
 
-        if ($form_item->field_required) {
-            if ($post_code_use_type == CommonConst::POST_CODE_ENABLED) {
-                $roles['zip21'][] = 'required';
-                $roles['zip22'][] = 'required';
-            }
+        // 必須項目にしているか否か
+        $required_rule = ($form_item->field_required)? 'required': 'nullable';
 
-            if ($address_separate_type == CommonConst::ADDRESS_SEPARATE) {
-                $roles['pref21'][] = 'required';
-                $roles['address21'][] = 'required';
-                $roles['street21'][] = 'required';
-            } else {
-                $roles['address'][] = 'required';
-            }
+        // 郵便番号がある場合
+        if ($post_code_use_type == CommonConst::POST_CODE_ENABLED) {
+            $rules['zip21'] = [$required_rule, 'digits:3'];
+            $rules['zip22'] = [$required_rule, 'digits:4'];
         }
 
-        return $roles;
+        // 住所の項目を分けるか否か
+        if ($address_separate_type == CommonConst::ADDRESS_SEPARATE) {
+            $rules['pref21'][] = $required_rule;
+            $rules['address21'][] = $required_rule;
+            $rules['street21'][] = $required_rule;
+        } else {
+            $rules['address'][] = $required_rule;
+        }
+
+        return $rules;
     }
 
     /**

@@ -11,6 +11,7 @@ use App\Http\Controllers\User\FormBasicSettingController;
 use App\Http\Controllers\User\FormDesignSettingController;
 use App\Http\Controllers\User\FormItemSettingController;
 use App\Http\Controllers\User\FormMailSettingController;
+use App\Http\Controllers\User\MailTemplateController;
 use App\Http\Controllers\User\FormMessageSettingController;
 use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
@@ -41,6 +42,9 @@ Route::prefix('user')->group(function () {
 
         // フォーム一覧を取得
         Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_get_form_list');
+
+        // メールテンプレート
+        Route::get('/mail-template', [MailTemplateController::class, 'index'])->name('user_mail_template');
 
         // 問い合わせ
         Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');
