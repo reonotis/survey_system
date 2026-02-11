@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Consts\CommonConst;
 use App\Traits\FormReplaceTrait;
-use App\Models\FormItem;
+use App\Mail\ContactMail;
 use App\Models\FormSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -12,6 +12,18 @@ use Illuminate\Support\Facades\Mail;
 class MailService
 {
     use FormReplaceTrait;
+
+    /**
+     */
+    public function sendContactMail(array $request): void
+    {
+        Mail::to('admin@example.com')
+            ->send(new ContactMail(
+                Auth::guard('user')->user()->name,
+                Auth::guard('user')->user()->email,
+                $request['message'],
+            ));
+    }
 
     /**
      * 通知メールを送信する

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\User\Auth\RegisteredUserController;
 use App\Http\Controllers\User\Auth\UserAuthController;
+use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\FormAnalyticsController;
 use App\Http\Controllers\User\FormApplicationController;
 use App\Http\Controllers\User\FormBasicSettingController;
@@ -41,9 +42,9 @@ Route::prefix('user')->group(function () {
         // フォーム一覧を取得
         Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_get_form_list');
 
-        Route::get('/contact', function () {
-            return view('user.contact');
-        })->name('user_contact');
+        // 問い合わせ
+        Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');
+        Route::post('/contact', [ContactController::class, 'send'])->name('user_contact_send');
 
         // アンケート
         Route::prefix('form_setting')->group(function () {
