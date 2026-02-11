@@ -31,10 +31,15 @@ class FormSettingService
 
     /**
      * @param int|null $user_id
+     * @param string|null $form_name 管理名（部分一致）
+     * @param array<int, int>|null $publication_statuses 状態（公開/非公開）
      * @return Builder
      */
-    public function getFormListQuery(int $user_id = null): Builder
-    {
+    public function getFormListQuery(
+        int $user_id = null,
+        ?string $form_name = null,
+        array $publication_statuses
+    ): Builder {
         $select = [
             'form_settings.id',
             'form_settings.form_name',
@@ -52,8 +57,16 @@ class FormSettingService
             ->join('users', 'users.id', '=', 'form_settings.created_by_user')
             ->withCount('applications');
 
-        if ($user_id) {
+        if ($user_id !== null) {
             $query->where('created_by_user', $user_id);
+        }
+
+        if ($form_name !== null && $form_name !== '') {
+            $query->where('form_settings.form_name', 'like', '%' . $form_name . '%');
+        }
+
+        if ($publication_statuses) {
+            $query->whereIn('form_settings.publication_status', $publication_statuses);
         }
 
         return $query;

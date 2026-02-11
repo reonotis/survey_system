@@ -38,13 +38,15 @@ Route::prefix('user')->group(function () {
             return view('user.dashboard');
         })->name('user_dashboard');
 
+        // フォーム一覧を取得
+        Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_get_form_list');
+
         Route::get('/contact', function () {
             return view('user.contact');
         })->name('user_contact');
 
         // アンケート
         Route::prefix('form_setting')->group(function () {
-            Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_form_get_form_list');
             Route::get('/create', [FormSettingController::class, 'create'])->name('user_form_create');
             Route::post('/register', [FormSettingController::class, 'store'])->name('user_form_register');
             Route::post('/{form_setting}/delete', [FormSettingController::class, 'delete'])->name('user_form_delete');

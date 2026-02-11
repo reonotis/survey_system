@@ -24,7 +24,7 @@
 
                 <x-input-drop-down-checkbox name="status[]" id="status" placeholder="状態"
                     :options="$options" :values="old('status', [])"/>
-                <button type="button" class="btn">検索</button>
+                <button type="button" id="form_list_search_btn" class="btn">検索</button>
             </div>
 
             <div class="flex-start-center gap-4">
@@ -35,23 +35,12 @@
 
         <div class="mb-8">
             <table class="list-tbl" id="form_list_tbl"
-                   data-url="{{ route('user_form_get_form_list') }}"
+                   data-url="{{ route('user_get_form_list') }}"
                    data-form-setting-url="{{ route('user_form_basic_setting', ['form_setting' => '__ID__']) }}"
                    data-show-url="{{ route('user_form_application_list', ['form_setting' => '__ID__']) }}"
                    data-delete-url="{{ route('user_form_delete', ['form_setting' => '__ID__']) }}">
             </table>
         </div>
-
-{{--        @if(!$is_client_domain)--}}
-{{--            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">--}}
-{{--                <h5 class="text-xl font-semibold text-gray-900 mb-3">応募フォーム作成</h5>--}}
-{{--                <p class="text-gray-600 mb-4">新しく応募フォームの作成を行います。</p>--}}
-{{--                <a href="{{ route('user_form_create') }}" class="btn">--}}
-{{--                    管理画面へ--}}
-{{--                </a>--}}
-{{--            </div>--}}
-{{--        @endif--}}
-
 
     </div>
 </x-user-app-layout>

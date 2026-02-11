@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class FormSettingController extends UserController
@@ -35,7 +36,14 @@ class FormSettingController extends UserController
      */
     public function getFormData(Request $request): JsonResponse
     {
-        $form_query = $this->form_setting_service->getFormListQuery($this->my_user->id);
+        $form_name = $request->input('form_name');
+        $status = $request->input('status', []);
+
+        $form_query = $this->form_setting_service->getFormListQuery(
+            $this->my_user->id,
+            $form_name,
+            $status
+        );
 
         return DataTables::of($form_query)
             ->addColumn('period', function ($form) {
@@ -45,6 +53,9 @@ class FormSettingController extends UserController
             })
             ->addColumn('count', function ($form) {
                 return $form->applications_count . '件';
+            })
+            ->addColumn('publication_status_text', function ($form) {
+                return FormSetting::PUBLICATION_STATUS_LIST[$form->publication_status];
             })
             ->make(true);
     }

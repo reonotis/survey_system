@@ -8,13 +8,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const showUrlTemplate = table.data('show-url');
     const deleteUrlTemplate = table.data('delete-url');
 
-    table.DataTable({
+    const dataTable = table.DataTable({
         ...defaultDataTableConfig,
         ajax: {
             url: table.data('url'),
             type: 'POST',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content')
+            data: function (d) {
+                const formName = $('#form_name').val() || '';
+                const statusValues = $('input[name="status[]"]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                return {
+                    ...d,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    form_name: formName,
+                    status: statusValues
+                };
             }
         },
         columns: [
@@ -25,6 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: 'period',
                 title: '期間',
                 orderable: false,
+            }, {
+                data: 'publication_status_text',
+                name: 'publication_status',
+                title: '状態',
+                orderable: true,
             }, {
                 data: 'count',
                 name: 'count',
@@ -48,16 +62,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     const url = (formSettingURL || '').replace('__ID__', data);
                     return '<a href="' + url + '" class="btn min">設定</a>';
                 }
-            }, {
-                data: 'id',
-                title: '複製',
-                orderable: false,
-                createdCell: function (td, cellData, rowData, row, col) {
-                    td.classList.add('dt-center');
-                },
-                render: function(data, type, row) {
-                    return '<a href="" class="btn min">複製</a>';
-                }
+            // }, {
+            //     data: 'id',
+            //     title: '複製',
+            //     orderable: false,
+            //     createdCell: function (td, cellData, rowData, row, col) {
+            //         td.classList.add('dt-center');
+            //     },
+            //     render: function(data, type, row) {
+            //         return '<a href="" class="btn min">複製</a>';
+            //     }
             }, {
                 data: 'id',
                 title: '削除',
@@ -76,6 +90,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         ]
+    });
+
+    $('#form_list_search_btn').on('click', function () {
+        dataTable.ajax.reload();
     });
 
     table.on('click', '.js-delete-form', function(e) {
