@@ -57,6 +57,9 @@ class FormSettingController extends UserController
             ->addColumn('publication_status_text', function ($form) {
                 return FormSetting::PUBLICATION_STATUS_LIST[$form->publication_status];
             })
+            ->addColumn('plan', function ($form) {
+                return $form->has_active_subscription ? 'Pro版' : '無料版';
+            })
             ->make(true);
     }
 

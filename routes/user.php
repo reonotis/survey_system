@@ -42,7 +42,7 @@ Route::prefix('user')->group(function () {
             return view('user.dashboard');
         })->name('user_dashboard');
 
-        // フォーム一覧を取得
+        // フォームリストを取得
         Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_get_form_list');
 
         // メールテンプレート

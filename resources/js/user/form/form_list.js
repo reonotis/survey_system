@@ -5,7 +5,6 @@ import { DropdownCheckboxHandler } from '../../common/DropdownCheckboxHandler.js
 document.addEventListener('DOMContentLoaded', function() {
     const table = $('#form_list_tbl');
     const formSettingURL = table.data('form-setting-url');
-    const showUrlTemplate = table.data('show-url');
     const deleteUrlTemplate = table.data('delete-url');
 
     const dataTable = table.DataTable({
@@ -50,6 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: 'owner_name',
                 name: 'owner_name',
                 title: 'フォームオーナー',
+                orderable: false,
+            }, {
+                data: 'plan',
+                name: 'plan',
+                title: 'プラン',
                 orderable: false,
             }, {
                 data: 'id',
