@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\ItemType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
- * @property int $item_type
+ * @property ItemType $item_type
  * @property string $item_title
  * @property bool $field_required
  * @property string|null $long_text
@@ -40,6 +41,7 @@ class FormItemDraft extends Model
     protected $casts = [
         'value_list' => 'array',
         'details' => 'array',
+        'item_type' => ItemType::class,
     ];
 
 }

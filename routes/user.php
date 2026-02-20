@@ -15,8 +15,10 @@ use App\Http\Controllers\User\MailTemplateController;
 use App\Http\Controllers\User\FormMessageSettingController;
 use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
+use App\Http\Controllers\User\FormBillingController;
 use App\Http\Controllers\User\PreviewController;
 use App\Http\Controllers\User\MemberSettingController;
+use Laravel\Cashier\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {
@@ -101,6 +103,12 @@ Route::prefix('user')->group(function () {
 
             // 当選設定
             Route::get('/{form_setting}/winning-setting', [FormWinningSettingController::class, 'index'])->name('user_form_winning_setting');
+
+
+            // 課金関連
+            Route::post('/{form_setting}/billing/checkout', [FormBillingController::class, 'checkout'])->name('user_form_billing_checkout');
+            Route::get('/{form_setting}/billing/success', [FormBillingController::class, 'success'])->name('user_form_billing_checkout_success');
+            Route::get('/{form_setting}/billing/cancel', [FormBillingController::class, 'cancel'])->name('user_form_billing_checkout_cancel');
 
 
             // プレビュー

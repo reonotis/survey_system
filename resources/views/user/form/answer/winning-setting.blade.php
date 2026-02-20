@@ -1,7 +1,6 @@
 <x-user-app-layout>
 
     @push('scripts')
-        @vite('resources/js/user/form/mail_setting.js')
     @endpush
 
     {{-- 画面名 --}}
@@ -17,7 +16,11 @@
         @include('layouts.user.form.navigation', ['number' => \App\Consts\UserConst::NAV_MANU_WINNING_SETTING])
 
         <div class="mx-auto py-8" style="width: 800px;">
-            この機能は現在作成中です
+                この機能は現在作成中です
+{{--            @if($form_setting->isPaid())--}}
+{{--            @else--}}
+{{--                @include('layouts.user.form.plan-update')--}}
+{{--            @endif--}}
 
         </div>
     </div>

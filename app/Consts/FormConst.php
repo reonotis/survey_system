@@ -2,36 +2,36 @@
 
 namespace App\Consts;
 
-use App\Models\FormItem;
+use App\Enums\ItemType;
 
 class FormConst
 {
     public const DEFAULT_ATTRIBUTE_TITLE = [
-        FormItem::ITEM_TYPE_TEL => 'tel',
-        FormItem::ITEM_TYPE_GENDER => 'gender',
-        FormItem::ITEM_TYPE_TERMS => 'terms',
-        FormItem::ITEM_TYPE_CHECKBOX => 'checkbox',
-        FormItem::ITEM_TYPE_RADIO => 'radio',
+        ItemType::TEL->value => 'tel',
+        ItemType::GENDER->value => 'gender',
+        ItemType::TERMS->value => 'terms',
+        ItemType::CHECKBOX->value => 'checkbox',
+        ItemType::RADIO->value => 'radio',
     ];
 
     /**
      */
     public const ATTRIBUTE_LIST = [
-        FormItem::ITEM_TYPE_NAME => [
+        ItemType::NAME->value => [
             'sei' => '苗字',
             'mei' => '名前',
             'name' => 'お名前',
         ],
-        FormItem::ITEM_TYPE_KANA => [
+        ItemType::KANA->value => [
             'sei_kana' => 'ミョウジ',
             'mei_kana' => 'ナマエ',
             'kana' => 'ナマエ',
         ],
-        FormItem::ITEM_TYPE_EMAIL => [
+        ItemType::EMAIL->value => [
             'email.*' => 'メールアドレス',
             'email_confirm.*' => '確認用メールアドレス',
         ],
-        FormItem::ITEM_TYPE_ADDRESS => [
+        ItemType::ADDRESS->value => [
             'zip21' => '郵便番号上3桁',
             'zip22' => '郵便番号下4桁',
             'pref21' => '都道府県',

@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+
+        // フォーム課金用の価格ID
+        'form_price_id' => env('STRIPE_FORM_PRICE_ID'),
+    ],
+
 ];

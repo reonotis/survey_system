@@ -7,7 +7,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\UserController;
 use App\Models\FormItem;
 use App\Models\FormSetting;
-use App\Service\ApplicationsService;
 use App\Service\FormItemService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -59,8 +58,8 @@ class FormItemSettingController extends UserController
         return view('user.form.item.item-setting', [
             'form_setting' => $form_setting,
             'draft_form_items' => $form_setting->draftFormItems,
-            'all_form_item_list' => FormItem::ITEM_TYPE_LIST, // 項目名の一覧
             'upper_limit_item_type' => FormItem::ITEM_TYPE_UPPER_LIMIT, // 登録できる項目の上限値
+            'upper_limit_item_count' => 3, // 登録できる項目の上限値
         ]);
     }
 

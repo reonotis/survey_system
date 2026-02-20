@@ -42,8 +42,7 @@
             </div>
 
             <script>
-
-                window.allFormItemList = @json($all_form_item_list);
+                window.allFormItemListEnum = @json(\App\Enums\ItemType::options());
                 window.draftFormItems = @json($draft_form_items);
                 window.upperLimitItemType = @json($upper_limit_item_type);
                 window.itemTypeList = @json(\App\Models\FormItem::ITEM_TYPE_LIST);

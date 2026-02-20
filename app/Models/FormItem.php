@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Enums\ItemType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $form_setting_id
  * @property int|null $form_item_id
- * @property int $item_type
+ * @property ItemType $item_type
  * @property bool $field_required
  * @property string|null $item_title
  * @property array|null $value_list
@@ -23,50 +26,35 @@ class FormItem extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const ITEM_TYPE_NAME = 1;
-    const ITEM_TYPE_KANA = 2;
-    const ITEM_TYPE_EMAIL = 3;
-    const ITEM_TYPE_TEL = 4;
-    const ITEM_TYPE_GENDER = 5;
-    const ITEM_TYPE_ADDRESS = 6;
-    const ITEM_TYPE_TEXT = 31;
-    const ITEM_TYPE_TEXTAREA = 32;
-    const ITEM_TYPE_CHECKBOX = 34;
-    const ITEM_TYPE_RADIO = 35;
-    const ITEM_TYPE_SELECT_BOX = 36;
-    const ITEM_TYPE_SLIDER = 37;
-    const ITEM_TYPE_TERMS = 51;
-    const ITEM_TYPE_PRECAUTIONS = 52;
-
     // 項目名の一覧
     const ITEM_TYPE_LIST = [
-        self::ITEM_TYPE_NAME => 'お名前',
-        self::ITEM_TYPE_KANA => 'ヨミ',
-        self::ITEM_TYPE_EMAIL => 'メールアドレス',
-        self::ITEM_TYPE_TEL => '電話番号',
-        self::ITEM_TYPE_GENDER => '性別',
-        self::ITEM_TYPE_ADDRESS => '住所',
-//        self::ITEM_TYPE_TEXT => 'テキスト（短文）',
-//        self::ITEM_TYPE_TEXTAREA => 'テキスト（長文）',
-        self::ITEM_TYPE_CHECKBOX => 'チェックボックス',
-        self::ITEM_TYPE_RADIO => 'ラジオボタン',
-        self::ITEM_TYPE_SELECT_BOX => 'セレクトボックス',
-        self::ITEM_TYPE_TERMS => '利用規約',
-        self::ITEM_TYPE_PRECAUTIONS => '注意事項',
+        ItemType::NAME->value => 'お名前',
+        ItemType::KANA->value => 'ヨミ',
+        ItemType::EMAIL->value => 'メールアドレス',
+        ItemType::TEL->value => '電話番号',
+        ItemType::GENDER->value => '性別',
+        ItemType::ADDRESS->value => '住所',
+//        ItemType::TEXT->value => 'テキスト（短文）',
+//        ItemType::TEXTAREA->value => 'テキスト（長文）',
+        ItemType::CHECKBOX->value => 'チェックボックス',
+        ItemType::RADIO->value => 'ラジオボタン',
+        ItemType::SELECT_BOX->value => 'セレクトボックス',
+        ItemType::TERMS->value => '利用規約',
+        ItemType::PRECAUTIONS->value => '注意事項',
     ];
 
     // 登録できる項目の上限値
     const ITEM_TYPE_UPPER_LIMIT = [
-        self::ITEM_TYPE_NAME => 1,
-        self::ITEM_TYPE_KANA => 1,
-        self::ITEM_TYPE_EMAIL => 1,
-        self::ITEM_TYPE_TEL => 1,
-        self::ITEM_TYPE_GENDER => 1,
-        self::ITEM_TYPE_ADDRESS => 1,
-        self::ITEM_TYPE_CHECKBOX => 5,
-        self::ITEM_TYPE_RADIO => 5,
-        self::ITEM_TYPE_TERMS => 1,
-        self::ITEM_TYPE_PRECAUTIONS => 1,
+        ItemType::NAME->value => 1,
+        ItemType::KANA->value => 1,
+        ItemType::EMAIL->value => 1,
+        ItemType::TEL->value => 1,
+        ItemType::GENDER->value => 1,
+        ItemType::ADDRESS->value => 1,
+        ItemType::CHECKBOX->value => 5,
+        ItemType::RADIO->value => 5,
+        ItemType::TERMS->value => 1,
+        ItemType::PRECAUTIONS->value => 1,
     ];
 
     /**
@@ -89,6 +77,7 @@ class FormItem extends Model
     protected $casts = [
         'value_list' => 'array',
         'details' => 'array',
+        'item_type' => ItemType::class,
     ];
 
 }

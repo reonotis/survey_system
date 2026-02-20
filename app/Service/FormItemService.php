@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Consts\CommonConst;
+use App\Enums\ItemType;
 use App\Models\FormItem;
 use App\Models\FormItemDraft;
 use App\Models\FormSetting;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -18,21 +20,21 @@ class FormItemService
     {
         // 詳細の初期値
         $details = match ($item_type) {
-            FormItem::ITEM_TYPE_NAME => ['name_separate_type' => CommonConst::NAME_SEPARATE],
-            FormItem::ITEM_TYPE_KANA => ['kana_separate_type' => CommonConst::KANA_SEPARATE],
-            FormItem::ITEM_TYPE_EMAIL => ['confirm_type' => CommonConst::EMAIL_CONFIRM_ENABLED],
-            FormItem::ITEM_TYPE_TEL => ['hyphen_type' => CommonConst::TEL_HYPHEN_USE],
-            FormItem::ITEM_TYPE_GENDER => ['gender_list' => [1, 2]],
-            FormItem::ITEM_TYPE_ADDRESS => ['use_post_code_type' => CommonConst::POST_CODE_DISABLED, 'address_separate_type' => CommonConst::ADDRESS_SEPARATE],
-            FormItem::ITEM_TYPE_CHECKBOX => ['max_count' => null],
-            FormItem::ITEM_TYPE_TERMS => ['label_name' => '同意する'],
+            ItemType::NAME->value => ['name_separate_type' => CommonConst::NAME_SEPARATE],
+            ItemType::KANA->value => ['kana_separate_type' => CommonConst::KANA_SEPARATE],
+            ItemType::EMAIL->value => ['confirm_type' => CommonConst::EMAIL_CONFIRM_ENABLED],
+            ItemType::TEL->value => ['hyphen_type' => CommonConst::TEL_HYPHEN_USE],
+            ItemType::GENDER->value => ['gender_list' => [1, 2]],
+            ItemType::ADDRESS->value => ['use_post_code_type' => CommonConst::POST_CODE_DISABLED, 'address_separate_type' => CommonConst::ADDRESS_SEPARATE],
+            ItemType::CHECKBOX->value => ['max_count' => null],
+            ItemType::TERMS->value => ['label_name' => '同意する'],
             default => [],
         };
 
         return FormItemDraft::create([
             'form_setting_id' => $form_setting_id,
             'item_type' => $item_type,
-            'field_required' => in_array($item_type, [FormItem::ITEM_TYPE_TERMS,]),
+            'field_required' => in_array($item_type, [ItemType::TERMS->value,]), // 利用規約 の時は必須にする
             'details' => $details,
             'long_text' => $this->setLongText($item_type),
             'sort' => $sort,
@@ -46,12 +48,16 @@ class FormItemService
     private function setLongText(int $item_type): ?string
     {
         return match ($item_type) {
-            FormItem::ITEM_TYPE_TERMS => '利用規約が入ります。利用規約が入ります。',
-            FormItem::ITEM_TYPE_PRECAUTIONS => '注意事項が入ります。注意事項が入ります。',
+            ItemType::TERMS->value => '利用規約が入ります。利用規約が入ります。',
+            ItemType::PRECAUTIONS->value => '注意事項が入ります。注意事項が入ります。',
             default => null,
         };
     }
 
+    /**
+     * @param array $records
+     * @return mixed
+     */
     public function insertDraft(array $records)
     {
         return FormItemDraft::insert($records);
@@ -98,6 +104,11 @@ class FormItemService
         $form_setting->save();
     }
 
+    /**
+     * @param int $form_item_drafts_id
+     * @param int $sort
+     * @return bool
+     */
     public function sortChangeDraft(int $form_item_drafts_id, int $sort): bool
     {
         return FormItemDraft::where('id', $form_item_drafts_id)
@@ -106,6 +117,10 @@ class FormItemService
                 ]) > 0;
     }
 
+    /**
+     * @param array $param
+     * @return mixed
+     */
     public function create(array $param)
     {
         return FormItem::create($param);
@@ -149,19 +164,19 @@ class FormItemService
      */
     private function makeUpdateParamReact(FormItemDraft $form_item, string $target_key, $target_value): array
     {
-        return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_NAME => $this->makeUpdateParamForName($form_item, $target_key, $target_value),
-            FormItem::ITEM_TYPE_KANA => $this->makeUpdateParamForKana($form_item, $target_key, $target_value),
-            FormItem::ITEM_TYPE_EMAIL => $this->makeUpdateParamForEmail($form_item, $target_key, $target_value),
-            FormItem::ITEM_TYPE_TEL => $this->makeUpdateParamForTel($form_item, $target_key, $target_value),
-            FormItem::ITEM_TYPE_GENDER => $this->makeUpdateParamForGender($form_item, $target_key, $target_value),
-            FormItem::ITEM_TYPE_ADDRESS => $this->makeUpdateParamForAddress($form_item, $target_key, $target_value),
+        return match ($form_item->item_type->value) {
+            ItemType::NAME->value => $this->makeUpdateParamForName($form_item, $target_key, $target_value),
+            ItemType::KANA->value => $this->makeUpdateParamForKana($form_item, $target_key, $target_value),
+            ItemType::EMAIL->value => $this->makeUpdateParamForEmail($form_item, $target_key, $target_value),
+            ItemType::TEL->value => $this->makeUpdateParamForTel($form_item, $target_key, $target_value),
+            ItemType::GENDER->value => $this->makeUpdateParamForGender($form_item, $target_key, $target_value),
+            ItemType::ADDRESS->value => $this->makeUpdateParamForAddress($form_item, $target_key, $target_value),
 
-            FormItem::ITEM_TYPE_CHECKBOX,
-            FormItem::ITEM_TYPE_RADIO,
-            FormItem::ITEM_TYPE_SELECT_BOX,
-            FormItem::ITEM_TYPE_TERMS,
-            FormItem::ITEM_TYPE_PRECAUTIONS => $this->makeUpdateParamDefault($target_key, $target_value),
+            ItemType::CHECKBOX->value,
+            ItemType::RADIO->value,
+            ItemType::SELECT_BOX->value,
+            ItemType::TERMS->value,
+            ItemType::PRECAUTIONS->value => $this->makeUpdateParamDefault($target_key, $target_value),
             default => [],
         };
     }

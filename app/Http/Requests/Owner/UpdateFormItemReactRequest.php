@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Owner;
 
-use App\Models\FormItem;
-use App\Consts\CommonConst;
+use App\Enums\ItemType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Validation\Validator;
 
 /**
@@ -84,7 +84,7 @@ class UpdateFormItemReactRequest extends FormRequest
     private function makeRulesByItemType(int $item_type): array
     {
         return match($item_type) {
-            FormItem::ITEM_TYPE_EMAIL => $this->makeRulesForEmail(),
+            ItemType::EMAIL->value => $this->makeRulesForEmail(),
             default => [],
         };
     }

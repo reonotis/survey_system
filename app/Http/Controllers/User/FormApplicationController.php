@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Consts\CommonConst;
+use App\Enums\ItemType;
 use App\Http\Controllers\UserController;
 use App\Models\FormItem;
 use App\Models\FormSetting;
@@ -91,11 +92,10 @@ class FormApplicationController extends UserController
 
         // 選択式項目の列を動的に追加
         foreach ($form_items as $form_item) {
-            if (in_array($form_item->item_type, [FormItem::ITEM_TYPE_CHECKBOX, FormItem::ITEM_TYPE_RADIO, FormItem::ITEM_TYPE_SELECT_BOX])) {
+            if (in_array($form_item->item_type->value, [ItemType::CHECKBOX->value, ItemType::RADIO->value, ItemType::SELECT_BOX->value])) {
                 $column_key = 'form_item_' . $form_item->id;
                 $data_table->addColumn($column_key, function ($application) use ($form_item) {
                     $subs = $application->applicationSubs->where('form_item_id', $form_item->id);
-
                     // チェックボックスは複数回答の可能性があるのでカンマ区切り
                     return $subs->pluck('answer_text')->filter()->implode(', ');
                 });
@@ -144,10 +144,10 @@ class FormApplicationController extends UserController
                     return null;
                 }
 
-                $dataKey = $this->resolveColumnKey($form_item->item_type);
+                $dataKey = $this->resolveColumnKey($form_item->item_type->value);
 
                 // ラジオボタン、チェックボックス、セレクトボックスの場合はform_item_{id}をキーとして使用
-                if (!$dataKey && in_array($form_item->item_type, [FormItem::ITEM_TYPE_RADIO, FormItem::ITEM_TYPE_CHECKBOX, FormItem::ITEM_TYPE_SELECT_BOX])) {
+                if (!$dataKey && in_array($form_item->item_type->value, [ItemType::RADIO->value, ItemType::CHECKBOX->value, ItemType::SELECT_BOX->value])) {
                     $dataKey = 'form_item_' . $form_item->id;
                 }
 
@@ -155,12 +155,12 @@ class FormApplicationController extends UserController
                     return [
                         'data' => $form_item->item_type,
                         'name' => $form_item->item_type,
-                        'title' => $form_item->item_title ?? FormItem::ITEM_TYPE_LIST[$form_item->item_type],
+                        'title' => $form_item->item_title ?? $form_item->item_type->label(),
                         'defaultContent' => '',
                     ];
                 }
 
-                $title = $form_item->item_title ?: (FormItem::ITEM_TYPE_LIST[$form_item->item_type] ?? '項目');
+                $title = $form_item->item_title ?: $form_item->item_type->label();
 
                 return [
                     'data' => $dataKey,
@@ -183,12 +183,12 @@ class FormApplicationController extends UserController
     private function resolveColumnKey(int $item_type): ?string
     {
         return match ($item_type) {
-            FormItem::ITEM_TYPE_NAME => 'full_name',
-            FormItem::ITEM_TYPE_KANA => 'full_kana',
-            FormItem::ITEM_TYPE_EMAIL => 'email',
-            FormItem::ITEM_TYPE_TEL => 'tel',
-            FormItem::ITEM_TYPE_GENDER => 'gender',
-            FormItem::ITEM_TYPE_ADDRESS => 'address',
+            ItemType::NAME->value => 'full_name',
+            ItemType::KANA->value => 'full_kana',
+            ItemType::EMAIL->value => 'email',
+            ItemType::TEL->value => 'tel',
+            ItemType::GENDER->value => 'gender',
+            ItemType::ADDRESS->value => 'address',
             default => null,
         };
     }

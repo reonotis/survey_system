@@ -19,7 +19,7 @@
                         <tr>
                             <td class="p-4">
                                 @php
-                                    $item_title = App\Models\FormItem::ITEM_TYPE_LIST[$form_item->item_type];
+                                    $item_title = $form_item->item_type->label();
                                     if($form_item->item_title) {
                                         $item_title = $form_item->item_title;
                                     }

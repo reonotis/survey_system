@@ -14,9 +14,14 @@ export function useDraftFormItems(initialItems = []) {
             return acc;
         }, {});
 
-        // 追加可能な item_type のみ返す
-        return Object.entries(window.allFormItemList)
-            .filter(([type]) => {
+        const allItemsEnum = Array.isArray(window.allFormItemListEnum)
+            ? window.allFormItemListEnum
+            : [];
+
+        // enum 情報 (value / label) を元に、追加可能な item_type のみ返す
+        return allItemsEnum
+            .filter(({ value }) => {
+                const type = String(value);
                 const limit = window.upperLimitItemType[type];
 
                 // 上限未定義なら無制限として許可
@@ -27,15 +32,18 @@ export function useDraftFormItems(initialItems = []) {
                 const usedCount = usedCountByType[type] || 0;
                 return usedCount < limit;
             })
-            .map(([type, label]) => ({
-                itemType: type,
-                label,
-            }));
+            .map(({ value, label }) => {
+                const type = String(value);
+                return {
+                    itemType: type,
+                    label,
+                };
+            });
     };
 
     /** 追加可能な項目一覧 */
     const addableItems = useMemo(() => {
-        return createAddableItems(draftFormItems);
+        return createAddableItems();
     }, [draftFormItems]);
 
     /** 項目を追加した時の処理 */

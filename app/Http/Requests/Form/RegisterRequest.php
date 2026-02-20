@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Form;
 
+use App\Enums\ItemType;
 use App\Consts\CommonConst;
 use App\Consts\FormConst;
 use App\Models\FormItem;
 use App\Models\FormSetting;
-use App\Repositories\ApplicationSubRepository;
 use App\Service\FormSettingService;
 use App\Service\ApplicationsService;
 use Illuminate\Foundation\Http\FormRequest;
@@ -85,15 +87,15 @@ class RegisterRequest extends FormRequest
      */
     private function makeAttributesByItemType(FormItem $form_item): array
     {
-        return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_NAME,
-            FormItem::ITEM_TYPE_KANA,
-            FormItem::ITEM_TYPE_EMAIL,
-            FormItem::ITEM_TYPE_ADDRESS,
+        return match ($form_item->item_type->value) {
+            ItemType::NAME->value,
+            ItemType::KANA->value,
+            ItemType::EMAIL->value,
+            ItemType::ADDRESS->value,
                 => $this->makeAttributesForName($form_item),
-            FormItem::ITEM_TYPE_CHECKBOX => $this->makeAttributesForSelectionItem($form_item, 'checkbox_'),
-            FormItem::ITEM_TYPE_RADIO => $this->makeAttributesForSelectionItem($form_item, 'radio_'),
-            FormItem::ITEM_TYPE_SELECT_BOX => $this->makeAttributesForSelectionItem($form_item, 'select_box_'),
+            ItemType::CHECKBOX->value => $this->makeAttributesForSelectionItem($form_item, 'checkbox_'),
+            ItemType::RADIO->value => $this->makeAttributesForSelectionItem($form_item, 'radio_'),
+            ItemType::SELECT_BOX->value => $this->makeAttributesForSelectionItem($form_item, 'select_box_'),
 
             default => $this->makeAttributesDefault($form_item),
         };
@@ -106,7 +108,7 @@ class RegisterRequest extends FormRequest
      */
     private function makeAttributesForName(FormItem $form_item): array
     {
-        return FormConst::ATTRIBUTE_LIST[$form_item->item_type];
+        return FormConst::ATTRIBUTE_LIST[$form_item->item_type->value];
     }
 
     /**
@@ -118,7 +120,7 @@ class RegisterRequest extends FormRequest
     private function makeAttributesForSelectionItem(FormItem $form_item, string $type_name): array
     {
         $request_key_name = $type_name . $form_item->id;
-        $item_title_name = ($form_item->item_title) ?? FormItem::ITEM_TYPE_LIST[$form_item->item_type];
+        $item_title_name = ($form_item->item_title) ?? $form_item->item_type->label();
 
         return  [
             $request_key_name => $item_title_name,
@@ -133,8 +135,8 @@ class RegisterRequest extends FormRequest
      */
     private function makeAttributesDefault(FormItem $form_item): array
     {
-        $item_title_name = ($form_item->item_title) ?? FormItem::ITEM_TYPE_LIST[$form_item->item_type];
-        $item_title_list[FormConst::DEFAULT_ATTRIBUTE_TITLE[$form_item->item_type]] = $item_title_name;
+        $item_title_name = ($form_item->item_title) ?? $form_item->item_type->label();
+        $item_title_list[FormConst::DEFAULT_ATTRIBUTE_TITLE[$form_item->item_type->value]] = $item_title_name;
 
         return $item_title_list;
     }
@@ -146,17 +148,17 @@ class RegisterRequest extends FormRequest
      */
     private function makeRulesByItemType(FormItem $form_item): array
     {
-        return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_NAME => $this->makeRulesForName($form_item),
-            FormItem::ITEM_TYPE_KANA => $this->makeRulesForKana($form_item),
-            FormItem::ITEM_TYPE_EMAIL => $this->makeRulesForEmail($form_item),
-            FormItem::ITEM_TYPE_TEL => $this->makeRulesForTel($form_item),
-            FormItem::ITEM_TYPE_GENDER => $this->makeRulesForGender($form_item),
-            FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress($form_item),
-            FormItem::ITEM_TYPE_TERMS => $this->makeRulesForTerms($form_item),
-            FormItem::ITEM_TYPE_CHECKBOX => $this->makeRulesForCheckbox($form_item),
-            FormItem::ITEM_TYPE_RADIO => $this->makeRulesForSelection($form_item,  'radio_'),
-            FormItem::ITEM_TYPE_SELECT_BOX => $this->makeRulesForSelection($form_item,  'select_box_'),
+        return match ($form_item->item_type->value) {
+            ItemType::NAME->value => $this->makeRulesForName($form_item),
+            ItemType::KANA->value => $this->makeRulesForKana($form_item),
+            ItemType::EMAIL->value => $this->makeRulesForEmail($form_item),
+            ItemType::TEL->value => $this->makeRulesForTel($form_item),
+            ItemType::GENDER->value => $this->makeRulesForGender($form_item),
+            ItemType::ADDRESS->value => $this->makeRulesForAddress($form_item),
+            ItemType::TERMS->value => $this->makeRulesForTerms($form_item),
+            ItemType::CHECKBOX->value => $this->makeRulesForCheckbox($form_item),
+            ItemType::RADIO->value => $this->makeRulesForSelection($form_item,  'radio_'),
+            ItemType::SELECT_BOX->value => $this->makeRulesForSelection($form_item,  'select_box_'),
             default => [],
         };
     }

@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="flex-center-center gap-2">
-                            <a href="{{ route('user_dashboard') }}" class="btn">フォーム</a>
+                            <a href="{{ route('user_dashboard') }}" class="btn">フォーム一覧</a>
                             <a href="{{ route('user_mail_template') }}" class="btn">メールテンプレート</a>
                             <a href="{{ route('user_contact') }}" class="btn">問い合わせ</a>
                         </div>

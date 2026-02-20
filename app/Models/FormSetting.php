@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Collection;
+use Laravel\Cashier\Billable;
 
 /**
  * @property int $id
@@ -26,7 +29,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class FormSetting extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Billable;
 
     const PUBLICATION_STATUS_DISABLE = 0;
     const PUBLICATION_STATUS_ENABLE = 1;
@@ -121,4 +124,30 @@ class FormSetting extends Model
         );
     }
 
+    /**
+     * 課金履歴（過去含むすべて）
+     */
+    public function subscription()
+    {
+        return $this->hasMany(FormSubscription::class);
+    }
+
+    /**
+     * 現在有効な契約（最新1件）
+     */
+    public function activeSubscription()
+    {
+        return $this->hasOne(FormSubscription::class)
+            ->where('status', 'active')
+            ->where(function ($q) {
+                $q->whereNull('current_period_end')
+                    ->orWhere('current_period_end', '>', now());
+            })
+            ->latest();
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->activeSubscription()->exists();
+    }
 }

@@ -30,6 +30,8 @@ function buildColumns(dynamicColumns) {
             defaultContent: col.defaultContent ?? ''
         });
     }
+
+    console.log(columns)
     return columns;
 }
 

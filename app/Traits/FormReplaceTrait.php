@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
+use App\Enums\ItemType;
 use App\Consts\CommonConst;
 use App\Models\FormItem;
 
@@ -15,8 +18,8 @@ trait FormReplaceTrait
     public function makeReplaceData(FormItem $form_item, $request_data): array
     {
         return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_NAME => $this->getReplaceDataByName($form_item, $request_data),
-            FormItem::ITEM_TYPE_EMAIL => $this->getReplaceDataByEmail($request_data),
+            ItemType::NAME->value => $this->getReplaceDataByName($form_item, $request_data),
+            ItemType::EMAIL->value => $this->getReplaceDataByEmail($request_data),
             default => [],
         };
     }

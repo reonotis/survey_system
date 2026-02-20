@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enums\ItemType;
 use App\Models\Application;
 use App\Models\ApplicationSub;
 use App\Models\FormSetting;
 use App\Models\FormItem;
-use App\Repositories\AnalyticsDashboardRowRepository;
-use App\Repositories\AnalyticsDashboardWidgetRepository;
 use App\Repositories\ApplicationRepository;
 use App\Repositories\ApplicationSubRepository;
-use App\Repositories\FormItemRepository;
 use App\Traits\FormParamChangerTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -72,13 +70,13 @@ class ApplicationsService
      */
     private function makeParamByItemType(FormItem $form_item, array $request_data): array
     {
-        return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_NAME => $this->makeParamForName($form_item->details, $request_data),
-            FormItem::ITEM_TYPE_KANA => $this->makeParamForKana($form_item->details, $request_data),
-            FormItem::ITEM_TYPE_EMAIL => $this->makeParamForEmail($request_data),
-            FormItem::ITEM_TYPE_TEL => $this->makeParamForTel($request_data),
-            FormItem::ITEM_TYPE_GENDER => $this->makeParamForGender($request_data),
-            FormItem::ITEM_TYPE_ADDRESS => $this->makeParamForAddress($form_item->details, $request_data),
+        return match ($form_item->item_type->value) {
+            ItemType::NAME->value => $this->makeParamForName($form_item->details, $request_data),
+            ItemType::KANA->value => $this->makeParamForKana($form_item->details, $request_data),
+            ItemType::EMAIL->value => $this->makeParamForEmail($request_data),
+            ItemType::TEL->value => $this->makeParamForTel($request_data),
+            ItemType::GENDER->value => $this->makeParamForGender($request_data),
+            ItemType::ADDRESS->value => $this->makeParamForAddress($form_item->details, $request_data),
 
             default => [],
         };
@@ -92,10 +90,10 @@ class ApplicationsService
      */
     private function applicationSubRecord(int $application_id, FormItem $form_item, array $request_data): array
     {
-        return match ($form_item->item_type) {
-            FormItem::ITEM_TYPE_CHECKBOX => $this->makeParamForCheckbox($application_id, $form_item, $request_data),
-            FormItem::ITEM_TYPE_RADIO => $this->makeParamForSelection($application_id, $form_item, $request_data, 'radio_'),
-            FormItem::ITEM_TYPE_SELECT_BOX => $this->makeParamForSelection($application_id, $form_item, $request_data, 'select_box_'),
+        return match ($form_item->item_type->value) {
+            ItemType::CHECKBOX->value => $this->makeParamForCheckbox($application_id, $form_item, $request_data),
+            ItemType::RADIO->value => $this->makeParamForSelection($application_id, $form_item, $request_data, 'radio_'),
+            ItemType::SELECT_BOX->value => $this->makeParamForSelection($application_id, $form_item, $request_data, 'select_box_'),
             default => [],
         };
     }

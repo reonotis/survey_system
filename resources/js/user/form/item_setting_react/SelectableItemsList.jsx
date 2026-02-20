@@ -16,16 +16,20 @@ function SelectableItemsList({ addableItems, onAddItem }) {
             <h3 className="title-label">追加可能項目</h3>
 
             <div className="space-y-2">
-                {addableItems?.length > 0 ? (
-                    addableItems.map(item => (
-                        <AddItem
-                            key={item.itemType}
-                            item={item}
-                            isSelected={selectedItemType === item.itemType}
-                            onSelect={() => setSelectedItemType(item.itemType)}
-                            onAdd={handleAddItemWithReset}
-                        />
-                    ))
+                {addableItems && addableItems.length > 0 ? (
+                    addableItems.map((item) => {
+                        const type = String(item.itemType);
+
+                        return (
+                            <AddItem
+                                key={type}
+                                item={item}
+                                isSelected={selectedItemType === type}
+                                onSelect={() => setSelectedItemType(type)}
+                                onAdd={handleAddItemWithReset}
+                            />
+                        );
+                    })
                 ) : (
                     <p className="text-sm text-gray-500 text-center py-4">
                         追加可能な項目がありません

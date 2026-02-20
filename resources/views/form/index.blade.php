@@ -26,43 +26,43 @@
                         @if($form_item->item_title)
                             {{ $form_item->item_title }}
                         @else
-                            {{ App\Models\FormItem::ITEM_TYPE_LIST[$form_item->item_type] }}
+                            {{ $form_item->item_type->label() }}
                         @endif
                     </div>
 
                     <div class="item-content">
-                        @switch($form_item->item_type)
-                            @case(App\Models\FormItem::ITEM_TYPE_NAME)
+                        @switch($form_item->item_type->value)
+                            @case(App\Enums\ItemType::NAME->value)
                                 @include('form.components.name')
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_KANA)
+                            @case(App\Enums\ItemType::KANA->value)
                                 @include('form.components.kana')
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_EMAIL)
+                            @case(App\Enums\ItemType::EMAIL->value)
                                 @include('form.components.email')
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_TEL)
+                            @case(App\Enums\ItemType::TEL->value)
                                 @include('form.components.tel')
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_GENDER)
+                            @case(App\Enums\ItemType::GENDER->value)
                                 @include('form.components.gender')
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_ADDRESS)
+                            @case(App\Enums\ItemType::ADDRESS->value)
                                 @include('form.components.address')
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_CHECKBOX)
+                            @case(App\Enums\ItemType::CHECKBOX->value)
                                 @include('form.components.checkbox', ['selected_count' => $selected_count])
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_RADIO)
+                            @case(App\Enums\ItemType::RADIO->value)
                                 @include('form.components.radio', ['selected_count' => $selected_count])
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_SELECT_BOX)
+                            @case(App\Enums\ItemType::SELECT_BOX->value)
                                 @include('form.components.select', ['selected_count' => $selected_count])
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_TERMS)
+                            @case(App\Enums\ItemType::TERMS->value)
                                 @include('form.components.terms', ['form_item' => $form_item])
                                 @break
-                            @case(App\Models\FormItem::ITEM_TYPE_PRECAUTIONS)
+                            @case(App\Enums\ItemType::PRECAUTIONS->value)
                                 @include('form.components.precautions', ['form_item' => $form_item])
                                 @break
                             @default

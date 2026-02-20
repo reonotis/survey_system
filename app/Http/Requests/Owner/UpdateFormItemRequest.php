@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Owner;
 
+use App\Enums\ItemType;
 use App\Models\FormItem;
 use App\Consts\CommonConst;
 use Illuminate\Foundation\Http\FormRequest;
@@ -47,14 +48,14 @@ class UpdateFormItemRequest extends FormRequest
     private function makeRulesByItemType(int $item_type): array
     {
         return match($item_type) {
-            FormItem::ITEM_TYPE_NAME => $this->makeRulesForName(),
-            FormItem::ITEM_TYPE_KANA => $this->makeRulesForKana(),
-            FormItem::ITEM_TYPE_EMAIL => $this->makeRulesForEmail(),
-            FormItem::ITEM_TYPE_TEL => $this->makeRulesForTel(),
-            FormItem::ITEM_TYPE_GENDER => $this->makeRulesForGender(),
-            FormItem::ITEM_TYPE_ADDRESS => $this->makeRulesForAddress(),
-            FormItem::ITEM_TYPE_CHECKBOX => $this->makeRulesForCheckbox(),
-            FormItem::ITEM_TYPE_TERMS => $this->makeRulesForTerms(),
+            ItemType::NAME->value => $this->makeRulesForName(),
+            ItemType::KANA->value => $this->makeRulesForKana(),
+            ItemType::EMAIL->value => $this->makeRulesForEmail(),
+            ItemType::TEL->value => $this->makeRulesForTel(),
+            ItemType::GENDER->value => $this->makeRulesForGender(),
+            ItemType::ADDRESS->value => $this->makeRulesForAddress(),
+            ItemType::CHECKBOX->value => $this->makeRulesForCheckbox(),
+            ItemType::TERMS->value => $this->makeRulesForTerms(),
             default => [],
         };
     }

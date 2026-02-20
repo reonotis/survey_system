@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
+use App\Enums\ItemType;
 use App\Consts\CommonConst;
 use App\Models\AnalyticsDashboardWidget;
 use App\Models\FormItem;
@@ -57,12 +60,12 @@ trait AnalyticsTrait
     private function getRateData(AnalyticsDashboardWidget $analytics_widget, $total_count): string|float
     {
         return match ($analytics_widget->item_type) {
-            FormItem::ITEM_TYPE_NAME => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'name'),
-            FormItem::ITEM_TYPE_KANA => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'kana'),
-            FormItem::ITEM_TYPE_EMAIL => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'email'),
-            FormItem::ITEM_TYPE_TEL => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'tel'),
-            FormItem::ITEM_TYPE_GENDER => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'gender'),
-            FormItem::ITEM_TYPE_ADDRESS => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'address'),
+            ItemType::NAME->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'name'),
+            ItemType::KANA->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'kana'),
+            ItemType::EMAIL->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'email'),
+            ItemType::TEL->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'tel'),
+            ItemType::GENDER->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'gender'),
+            ItemType::ADDRESS->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'address'),
             default => '調整中',
         };
     }
@@ -74,10 +77,10 @@ trait AnalyticsTrait
     private function getCircleData(AnalyticsDashboardWidget $analytics_widget): array
     {
         return match ($analytics_widget->item_type) {
-            FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
-            FormItem::ITEM_TYPE_CHECKBOX,
-            FormItem::ITEM_TYPE_RADIO,
-            FormItem::ITEM_TYPE_SELECT_BOX
+            ItemType::GENDER->value => $this->getGenderData($analytics_widget),
+            ItemType::CHECKBOX->value,
+            ItemType::RADIO->value,
+            ItemType::SELECT_BOX->value
                 => $this->getCheckboxCircleData($analytics_widget),
             default => ['調整中'],
         };
@@ -90,10 +93,10 @@ trait AnalyticsTrait
     private function getVerticalData(AnalyticsDashboardWidget $analytics_widget): array
     {
         return match ($analytics_widget->item_type) {
-            FormItem::ITEM_TYPE_GENDER => $this->getGenderData($analytics_widget),
-            FormItem::ITEM_TYPE_CHECKBOX,
-            FormItem::ITEM_TYPE_RADIO,
-            FormItem::ITEM_TYPE_SELECT_BOX
+            ItemType::GENDER->value => $this->getGenderData($analytics_widget),
+            ItemType::CHECKBOX->value,
+            ItemType::RADIO->value,
+            ItemType::SELECT_BOX->value
                 => $this->getCheckboxCircleData($analytics_widget),
             default => ['調整中'],
         };
