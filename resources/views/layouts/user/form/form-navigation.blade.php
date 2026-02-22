@@ -5,16 +5,16 @@
     <div class="form-navigation">
 
         <a href="{{ route('user_form_basic_setting', ['form_setting' =>  $form_setting->id]) }}"
-           class="@if($number === \App\Consts\UserConst::FORM_NAV_BASIC_SETTING) active @endif">基本設定</a>
+           class="btn @if($number === \App\Consts\UserConst::FORM_NAV_BASIC_SETTING) active @endif">基本設定</a>
 
         <a href="{{ route('user_form_item_setting', ['form_setting' => $form_setting->id]) }}"
-           class="@if($number === \App\Consts\UserConst::FORM_NAV_ITEM_SETTING) active @endif">項目編集</a>
+           class="btn @if($number === \App\Consts\UserConst::FORM_NAV_ITEM_SETTING) active @endif">項目編集</a>
 
         <a href="{{ route('user_form_member_list', ['form_setting' => $form_setting->id]) }}"
-           class="@if($number === \App\Consts\UserConst::FORM_NAV_ITEM_MEMBER) active @endif">メンバー編集</a>
+           class="btn @if($number === \App\Consts\UserConst::FORM_NAV_ITEM_MEMBER) active @endif">メンバー編集</a>
 
         <a href="{{ route('user_form_application_list', ['form_setting' => $form_setting->id]) }}"
-           class="@if($number === 4) active @endif">回答</a>
+           class="btn @if($number === 4) active @endif">回答</a>
 
     </div>
 </div>

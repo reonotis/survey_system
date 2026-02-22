@@ -18,7 +18,6 @@ use App\Http\Controllers\User\FormWinningSettingController;
 use App\Http\Controllers\User\FormBillingController;
 use App\Http\Controllers\User\PreviewController;
 use App\Http\Controllers\User\MemberSettingController;
-use Laravel\Cashier\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {

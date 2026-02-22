@@ -5,7 +5,7 @@
 
     <div class="custom-container py-4">
 
-        <div class="mx-auto my-16" style="width: 800px;">
+        <div class="contents-area mx-auto my-16" style="width: 800px;">
 
             <form method="POST" action="{{ route('user_contact_send') }}">
                 @csrf

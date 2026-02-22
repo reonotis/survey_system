@@ -16,19 +16,17 @@
     <div class="custom-container py-4">
         @include('layouts.user.form.form-setting-navigation', ['number' => \App\Consts\UserConst::NAV_MANU_DESIGN_SETTING])
 
-        <div class="mx-auto py-8" style="width: 900px;">
+        <div class="contents-area mx-auto p-4" style="width: 900px;">
             <form method="POST" action="">
                 @csrf
-                <div class="mx-auto py-8" style="width: 800px;">
-                    <div class="item-row">
-                        <div class="item-title">デザインタイプ</div>
-                        <div class="item-contents flex-start-center">
-                            <x-input-radio
-                                name="design_type"
-                                :options="\App\Consts\CommonConst::DESIGN_TYPE_LIST"
-                                :checked="$form_setting->design_type"
-                            />
-                        </div>
+                <div class="item-row">
+                    <div class="item-title">デザインタイプ</div>
+                    <div class="item-contents flex-start-center">
+                        <x-input-radio
+                            name="design_type"
+                            :options="\App\Consts\CommonConst::DESIGN_TYPE_LIST"
+                            :checked="$form_setting->design_type"
+                        />
                     </div>
                 </div>
 

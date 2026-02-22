@@ -30,7 +30,7 @@
                 <div class="custom-container">
                     <div class="flex-between-center py-2">
                         <div>
-                            <a href="{{ route('user_dashboard') }}" class="text-white text-xl font-semibold">フォームメーカー - 管理者</a>
+                            <a href="{{ route('user_dashboard') }}" class="text-xl font-semibold">フォームメーカー - 管理者</a>
                         </div>
 
                         <div class="flex-center-center gap-2">
