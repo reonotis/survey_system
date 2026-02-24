@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class FormBasicSettingController extends UserController
 {

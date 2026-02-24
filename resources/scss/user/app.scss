@@ -136,14 +136,14 @@ header {
     transition: right .2s;
 
     &.success {
-        background-color: #dbefff;
-        color: #1976D2;
-        border: 2px solid #1976D2;
+        background-color: #59bf49;
+        color: #fff;
+        border: 2px solid #3bbd27;
     }
 
     &.error {
-        background-color: #ffe7e5;
-        color: #f44336;
+        background-color: #d15145;
+        color: #fff;
         border: 2px solid #d32f2f;
     }
 

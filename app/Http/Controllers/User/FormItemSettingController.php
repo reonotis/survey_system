@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
+use App\Http\Requests\User\SaveFormItemsRequest;
 use App\Http\Requests\User\DraftItemDeleteRequest;
 use App\Models\FormItem;
 use App\Models\FormSetting;
@@ -236,9 +237,10 @@ class FormItemSettingController extends UserController
 
     /**
      * @param FormSetting $form_setting
+     * @param SaveFormItemsRequest $request
      * @return RedirectResponse
      */
-    public function saveFormItems(FormSetting $form_setting): RedirectResponse
+    public function saveFormItems(FormSetting $form_setting, SaveFormItemsRequest $request): RedirectResponse
     {
         try {
             // 編集中の項目を取得

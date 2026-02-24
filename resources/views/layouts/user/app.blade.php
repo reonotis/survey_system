@@ -42,7 +42,7 @@
                         <div>
                             <form method="POST" action="{{ route('user_logout') }}" class="inline">
                                 @csrf
-                                <button type="submit" class="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-white rounded transition duration-150 ease-in-out">
+                                <button type="submit" class="btn">
                                     ログアウト
                                 </button>
                             </form>

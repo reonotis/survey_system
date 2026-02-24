@@ -20,5 +20,17 @@
             </div>
         @endforeach
     @endif
+
+    @if ($errors->has('custom_error'))
+        @foreach ($errors->get('custom_error') as $message)
+            <div class="session-message error" data-message-index="{{ $loop->index }}">
+                <span>{{ $message }}</span>
+                <button type="button" class="session-close">
+                    <span>&times;</span>
+                </button>
+            </div>
+        @endforeach
+    @endif
+
 </div>
 
