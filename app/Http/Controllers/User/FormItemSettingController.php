@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
+use App\Http\Requests\User\DraftItemDeleteRequest;
 use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Service\FormItemService;
@@ -145,8 +146,7 @@ class FormItemSettingController extends UserController
 
             $item_type = $request->item_type;
 
-            $form_item_service = app(FormItemService::class);
-            $form_item_draft = $form_item_service->addDraft(
+            $form_item_draft = $this->form_item_service->addDraft(
                 $form_setting->id,
                 (int)$item_type,
                 $new_sort
@@ -171,11 +171,9 @@ class FormItemSettingController extends UserController
     public function draftSortChange(FormSetting $form_setting, Request $request): JsonResponse
     {
         try {
-            $form_item_service = app(FormItemService::class);
-
             $sort = 1;
             foreach ($request->item_ids as $form_item_drafts_id) {
-                $form_item_service->sortChangeDraft((int)$form_item_drafts_id, $sort);
+                $this->form_item_service->sortChangeDraft((int)$form_item_drafts_id, $sort);
                 $sort++;
             }
 
@@ -196,8 +194,7 @@ class FormItemSettingController extends UserController
     public function draftItemSave(FormSetting $form_setting, Request $request): JsonResponse
     {
         try {
-            $form_item_service = app(FormItemService::class);
-            $form_item_service->updateByFormItem($request->item_id, $request->key, $request->value);
+            $this->form_item_service->updateByFormItem($request->item_id, $request->key, $request->value);
 
             return response()->json([
                 'message' => '更新完了',
@@ -213,16 +210,18 @@ class FormItemSettingController extends UserController
         }
     }
 
-    public function draftItemDelete(FormSetting $form_setting, Request $request): JsonResponse
+    /**
+     * @param FormSetting $form_setting
+     * @param DraftItemDeleteRequest $request
+     * @return JsonResponse
+     */
+    public function draftItemDelete(FormSetting $form_setting, DraftItemDeleteRequest $request): JsonResponse
     {
         try {
-            Log::error($request->all());
-
-            $form_item_service = app(FormItemService::class);
-            $form_item_service->deleteDraftItem((int)$request->item_id);
+            $this->form_item_service->deleteDraftItem($request->item_id);
 
             return response()->json([
-                'message' => '並び替え',
+                'message' => '削除しました',
                 'success' => true,
             ]);
         } catch (Exception $error) {
@@ -241,7 +240,6 @@ class FormItemSettingController extends UserController
      */
     public function saveFormItems(FormSetting $form_setting): RedirectResponse
     {
-        $form_item_service = app(FormItemService::class);
         try {
             // 編集中の項目を取得
             $draft_form_items = $form_setting->draftFormItems;
@@ -265,13 +263,13 @@ class FormItemSettingController extends UserController
                         'long_text' => $draft_form_item->long_text,
                         'sort' => $draft_form_item->sort,
                     ];
-                    $form_item_service->updateFormItemById($draft_form_item->form_item_id, $param);
+                    $this->form_item_service->updateFormItemById($draft_form_item->form_item_id, $param);
 
                     // 更新済み変数に追加しておく
                     $updated_ids[] = $draft_form_item->form_item_id;
                 } else {
                     // 既存の項目が無いので作成
-                    $form_item_service->create([
+                    $this->form_item_service->create([
                         'form_setting_id' => $draft_form_item->form_setting_id,
                         'item_type' => $draft_form_item->item_type,
                         'item_title' => $draft_form_item->item_title,

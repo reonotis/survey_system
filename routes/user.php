@@ -81,7 +81,6 @@ Route::prefix('user')->group(function () {
             Route::post('/{form_setting}/draft-add-item', [FormItemSettingController::class, 'draftAddItem'])->name('user_form_draft_add_item');
             Route::post('/{form_setting}/draft-sort-change', [FormItemSettingController::class, 'draftSortChange'])->name('user_form_draft_sort_change');
             Route::post('/{form_setting}/draft-item-save', [FormItemSettingController::class, 'draftItemSave'])->name('user_form_draft_item_save');
-            Route::post('/{form_setting}/draft-item-delete', [FormItemSettingController::class, 'draftItemDelete'])->name('user_form_draft_item_delete');
             Route::post('/{form_setting}/save-form-items', [FormItemSettingController::class, 'saveFormItems'])->name('user_form_save_form_items');
 
 

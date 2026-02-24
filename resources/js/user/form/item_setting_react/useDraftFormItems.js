@@ -145,7 +145,27 @@ export function useDraftFormItems(initialItems = []) {
                     item_id: itemId,
                 }),
             });
-
+            // 422（バリデーションエラー）など、エラー応答時も画面を再読み込みする
+            if (!response.ok) {
+                console.error('削除処理失敗', response.status);
+                try {
+                    const data = await response.json();
+                    if (data && data.errors) {
+                        // errors オブジェクト内の全メッセージを表示
+                        const messages = Object.values(data.errors)
+                            .flat()
+                            .join('\n');
+                        alert(messages || '削除処理に失敗しました。画面を再読み込みします。');
+                    } else if (data && data.message) {
+                        alert(data.message);
+                    } else {
+                        alert('削除処理に失敗しました。画面を再読み込みします。');
+                    }
+                } catch (e) {
+                    alert('削除処理に失敗しました。画面を再読み込みします。');
+                }
+                window.location.reload();
+            }
         } catch (error) {
             console.error('削除処理失敗', error);
             alert('削除処理に失敗しました。画面を再読み込みします。');

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
+ * @property int $form_setting_id
  * @property ItemType $item_type
  * @property string $item_title
  * @property bool $field_required

@@ -16,7 +16,7 @@
     <div class="custom-container py-4">
         @include('layouts.user.form.form-setting-navigation', ['number' => \App\Consts\UserConst::NAV_MANU_MESSAGE_SETTING])
 
-        <div class="contents-area mx-auto py-8" style="width: 900px;">
+        <div class="contents-area mx-auto p-4" style="width: 900px;">
 
             <form method="POST" action="">
                 @csrf
