@@ -117,7 +117,7 @@ class FormController extends Controller
         }
 
         // 非公開の場合
-        if ($form_setting->publication_status === FormSetting::PUBLICATION_STATUS_DISABLE) {
+        if ($form_setting->publication_status->isPrivate()) {
             return 2;
         }
 

@@ -25,7 +25,7 @@
                     <div class="item-contents flex-start-center">
                         <x-input-radio
                             name="notification_mail_flg"
-                            :options="\App\Consts\CommonConst::USE_TYPE_LIST"
+                            :options="\App\Enums\UseFlg::options()"
                             :checked="old('notification_mail_flg', $form_setting->mailSetting->notification_mail_flg?? 0)"
                         />
                     </div>
@@ -60,11 +60,11 @@
                 </div>
 
                 <div class="item-row">
-                    <div class="item-title">自動返信メール</div>
+                    <div class="item-title">自動返信メ1ール</div>
                     <div class="item-contents flex-start-center">
                         <x-input-radio
                             name="auto_reply_mail_flg"
-                            :options="\App\Consts\CommonConst::USE_TYPE_LIST"
+                            :options="\App\Enums\UseFlg::options()"
                             :checked="old('auto_reply_mail_flg', $form_setting->mailSetting->auto_reply_mail_flg?? 0)"
                         />
                     </div>

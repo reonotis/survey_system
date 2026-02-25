@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PublicationStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Cashier\Billable;
+
 
 /**
  * @property int $id
@@ -21,6 +24,10 @@ use Laravel\Cashier\Billable;
  * @property string $admin_email
  * @property int $is_draft_item
  * @property int $design_type
+ * @property Carbon $start_date
+ * @property Carbon $end_date
+ * @property PublicationStatus $publication_status
+ * @property ?int $max_applications
  *
  * @property Collection<int, FormItem> $formItems
  * @property Collection<int, FormItemDraft> $draftFormItems
@@ -32,11 +39,6 @@ class FormSetting extends Model
     use HasFactory, SoftDeletes, Billable;
 
     const PUBLICATION_STATUS_DISABLE = 0;
-    const PUBLICATION_STATUS_ENABLE = 1;
-    const PUBLICATION_STATUS_LIST = [
-        self::PUBLICATION_STATUS_DISABLE => '非公開',
-        self::PUBLICATION_STATUS_ENABLE => '公開',
-    ];
 
     const BILLING_STATUS_LIST = [
         0 => '未請求',
@@ -81,6 +83,7 @@ class FormSetting extends Model
             'start_date' => 'datetime',
             'end_date' => 'datetime',
             'max_applications' => 'integer',
+            'publication_status' => PublicationStatus::class,
         ];
     }
 

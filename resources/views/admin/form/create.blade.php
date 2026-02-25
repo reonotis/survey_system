@@ -49,14 +49,6 @@
                     <div class="item-row">
                         <div class="item-title">状態</div>
                         <div class="item-contents flex-start-center">
-                            <label>
-                                <input type="radio" name="publication_status" id="status_disable" value="{{ \App\Models\FormSetting::PUBLICATION_STATUS_DISABLE }}" checked>
-                                {{ \App\Models\FormSetting::PUBLICATION_STATUS_LIST[\App\Models\FormSetting::PUBLICATION_STATUS_DISABLE] }}
-                            </label>
-                            <label class="ml-6">
-                                <input type="radio" name="publication_status" id="status_enable" value="{{ \App\Models\FormSetting::PUBLICATION_STATUS_ENABLE }}">
-                                {{ \App\Models\FormSetting::PUBLICATION_STATUS_LIST[\App\Models\FormSetting::PUBLICATION_STATUS_ENABLE] }}
-                            </label>
                         </div>
                     </div>
 

@@ -26,7 +26,8 @@
                         <x-input-text name="title" class="w-full"
                                       :error="$errors->has('title')"
                                       :value="old('title', $form_setting->title)"
-                                      placeholder="title"/>
+                                      placeholder="バレンタインプレゼント申込フォーム"/>
+                        <x-input-error :messages="$errors->get('title')" class="mt-1" />
                     </div>
                 </div>
 
@@ -52,8 +53,8 @@
                     <div class="item-contents flex-start-center">
                         <x-input-radio
                             name="publication_status"
-                            :options="\App\Models\FormSetting::PUBLICATION_STATUS_LIST"
-                            :checked="$form_setting->publication_status"
+                            :options="\App\Enums\PublicationStatus::options()"
+                            :checked="$form_setting->publication_status->value"
                         />
                     </div>
                 </div>

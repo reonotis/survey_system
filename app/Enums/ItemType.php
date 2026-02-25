@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Enums\Traits\EnumTraits;
+
 enum ItemType: int
 {
+    use EnumTraits;
+
     case NAME = 1;
     case KANA = 2;
     case EMAIL = 3;
@@ -43,17 +47,5 @@ enum ItemType: int
             self::PRECAUTIONS => '注意事項',
         };
     }
-
-    public static function options(): array
-    {
-        return array_map(
-            fn(self $case) => [
-                'value' => $case->value,
-                'label' => $case->label(),
-            ],
-            self::cases()
-        );
-    }
-
 
 }

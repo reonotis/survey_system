@@ -35,7 +35,7 @@ class FormSettingController extends Controller
                 return $start_date . ' ～ ' . $end_date;
             })
             ->addColumn('publication_status_text', function ($form) {
-                return FormSetting::PUBLICATION_STATUS_LIST[$form->publication_status];
+                return $form->publication_status->label();
             })
             ->addColumn('billing_status_text', function ($form) {
                 return FormSetting::BILLING_STATUS_LIST[$form->billing_status];

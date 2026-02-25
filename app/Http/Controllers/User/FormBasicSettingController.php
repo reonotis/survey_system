@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
+use App\Http\Requests\User\BasicSettingUpdateRequest;
 use App\Models\FormSetting;
 use App\Service\FormSettingService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 
@@ -27,10 +29,10 @@ class FormBasicSettingController extends UserController
 
     /**
      * @param FormSetting $form_setting
-     * @param Request $request // TODO
+     * @param BasicSettingUpdateRequest $request
      * @return RedirectResponse
      */
-    public function update(FormSetting $form_setting, Request $request): RedirectResponse
+    public function update(FormSetting $form_setting, BasicSettingUpdateRequest $request): RedirectResponse
     {
         try {
             $service = app(FormSettingService::class);

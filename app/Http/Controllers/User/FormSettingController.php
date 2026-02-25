@@ -55,7 +55,7 @@ class FormSettingController extends UserController
                 return $form->applications_count . '件';
             })
             ->addColumn('publication_status_text', function ($form) {
-                return FormSetting::PUBLICATION_STATUS_LIST[$form->publication_status];
+                return $form->publication_status->label();
             })
             ->addColumn('plan', function ($form) {
                 return $form->has_active_subscription ? 'Pro版' : '無料版';
@@ -87,7 +87,7 @@ class FormSettingController extends UserController
             );
             return redirect()->route('user_form_basic_setting', ['form_setting' => $form_setting->id])->with('success', ['新しいフォームを作成しました。引き続き詳細設定を行って下さい']);
         } catch (\Exception $error) {
-            \Log::error($error->getMessage());
+            Log::error($error->getMessage());
             return redirect()->back()->with('error', ['新しいフォームの作成に失敗しました']);
         }
     }
@@ -102,7 +102,7 @@ class FormSettingController extends UserController
             $this->form_setting_service->delete($form_setting);
             return redirect()->back()->with('success', ['フォームを削除しました。']);
         } catch (\Exception $error) {
-            \Log::error($error->getMessage());
+            Log::error($error->getMessage());
             return redirect()->back()->with('error', ['フォームの削除に失敗しました']);
         }
     }

@@ -93,10 +93,6 @@ class CommonConst
     // 利用可否
     public const USE_TYPE_DISABLED = 0;
     public const USE_TYPE_ENABLED = 1;
-    public const USE_TYPE_LIST = [
-        self::USE_TYPE_DISABLED => '利用しない',
-        self::USE_TYPE_ENABLED => '利用する',
-    ];
 
     // 名前
     public const NAME_SEPARATE = 1;
@@ -163,10 +159,22 @@ class CommonConst
     public const DESIGN_TYPE_C = 3;
     public const DESIGN_TYPE_D = 4;
     public const DESIGN_TYPE_LIST = [
-        self::DESIGN_TYPE_A => 'タイプA',
-        self::DESIGN_TYPE_B => 'タイプB',
-        self::DESIGN_TYPE_C => 'タイプC',
-        self::DESIGN_TYPE_D => 'タイプD',
+        [
+            'value' => self::DESIGN_TYPE_A,
+            'label' => 'タイプA',
+        ],
+        [
+            'value' => self::DESIGN_TYPE_B,
+            'label' => 'タイプB',
+        ],
+        [
+            'value' => self::DESIGN_TYPE_C,
+            'label' => 'タイプC',
+        ],
+        [
+            'value' => self::DESIGN_TYPE_D,
+            'label' => 'タイプD',
+        ],
     ];
 
     // 分析画面、期間内応募選択肢
