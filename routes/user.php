@@ -18,6 +18,8 @@ use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
 use App\Http\Controllers\User\FormBillingController;
 use App\Http\Controllers\User\PreviewController;
+use App\Http\Controllers\User\TinymceController;
+use App\Http\Controllers\User\TinymceMailController;
 use App\Http\Controllers\User\MemberSettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +53,11 @@ Route::prefix('user')->group(function () {
         // 問い合わせ
         Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');
         Route::post('/contact', [ContactController::class, 'send'])->name('user_contact_send');
+
+        // HTMLメール
+        Route::get('/sample-mail', [TinymceController::class, 'index'])->name('user_sample_mail');
+        Route::post('/tinymce/upload', [TinymceController::class, 'upload'])->name('user_sample_mail_tinymce_upload');
+        Route::post('/tinymce/mail/send', [TinymceMailController::class, 'send'])->name('user_sample_mail_tinymce_send');
 
         // アンケート
         Route::prefix('form_setting')->group(function () {
