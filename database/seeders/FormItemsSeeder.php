@@ -48,7 +48,7 @@ class FormItemsSeeder extends Seeder
                     ],
                 ],
                 'details' => [
-                    'max_count' => 1,
+                    'max_count' => 2,
                 ],
                 'annotation_text' => null,
                 'long_text' => null,

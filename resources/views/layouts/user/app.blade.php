@@ -33,12 +33,7 @@
                             <a href="{{ route('user_dashboard') }}" class="text-xl font-semibold">フォームメーカー - 管理者</a>
                         </div>
 
-                        <div class="flex-center-center gap-2">
-                            <a href="{{ route('user_dashboard') }}" class="btn">フォーム一覧</a>
-                            <a href="{{ route('user_mail_template') }}" class="btn">メールテンプレート</a>
-                            <a href="{{ route('user_contact') }}" class="btn">問い合わせ</a>
-                        </div>
-
+                        @include('layouts.user.header-navigation')
                         <div>
                             <form method="POST" action="{{ route('user_logout') }}" class="inline">
                                 @csrf

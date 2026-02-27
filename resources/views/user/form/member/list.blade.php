@@ -6,7 +6,7 @@
     {{-- 画面名 --}}
     <x-slot name="page_name">
         <div class="flex-between-center gap-2">
-            <div class="page-name">{{ $form_setting->title }} - 項目設定 </div>
+            <div class="page-name">{{ $form_setting->title }} - メンバー編集 </div>
             @include('layouts.user.form.form-navigation', ['number' => \App\Consts\UserConst::FORM_NAV_ITEM_MEMBER])
         </div>
     </x-slot>

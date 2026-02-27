@@ -17,7 +17,10 @@
 
         <div class="flex-between-center mb-4">
             <div class="flex-start-center gap-4">
-                <button type="button" class="btn" >CSVダウンロード</button>
+                <form method="POST" action="{{ route('user_form_csv_download', ['form_setting' => $form_setting->id]) }}">
+                    @csrf
+                    <button type="submit" class="btn">CSVダウンロード</button>
+                </form>
             </div>
 
             <button type="button" class="btn" id="item_add_btn">項目表示設定</button>

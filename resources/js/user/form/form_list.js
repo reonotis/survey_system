@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         columns: [
             {
                 data: 'form_name',
-                title: '管理名',
+                title: 'フォーム名',
             }, {
                 data: 'period',
                 title: '期間',

@@ -6,6 +6,7 @@ use App\Http\Controllers\User\Auth\RegisteredUserController;
 use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\FormAnalyticsController;
+use App\Http\Controllers\User\CsvDownloadController;
 use App\Http\Controllers\User\FormApplicationController;
 use App\Http\Controllers\User\FormBasicSettingController;
 use App\Http\Controllers\User\FormDesignSettingController;
@@ -92,6 +93,7 @@ Route::prefix('user')->group(function () {
             Route::get('/{form_setting}/application-list', [FormApplicationController::class, 'show'])->name('user_form_application_list');
             Route::post('/{form_setting}/get-application-data', [FormApplicationController::class, 'getApplicationData'])->name('user_form_get_application_list');
             Route::post('/{form_setting}/update-display-items', [FormApplicationController::class, 'displayItemsUpdate'])->name('user_form_update_display_items');
+            Route::post('/{form_setting}/csv-download', [CsvDownloadController::class, 'download'])->name('user_form_csv_download');
 
             // 応募分析
             Route::get('/{form_setting}/analytics', [FormAnalyticsController::class, 'index'])->name('user_form_analytics');
@@ -111,7 +113,7 @@ Route::prefix('user')->group(function () {
 
             // プレビュー
             Route::get('/{form_setting}/preview', [PreviewController::class, 'index'])->name('user_form_preview');
-       });
+        });
 
     });
 
