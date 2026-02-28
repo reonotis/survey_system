@@ -14,7 +14,7 @@ class TinymceMailController extends UserController
 
     public function send(Request $request)
     {
-        Mail::raw($request->sample, function ($message) {
+        Mail::html($request->sample, function ($message) {
             $message->to('fujisawareon@yahoo.co.jp')
                 ->subject('テストメール');
         });
