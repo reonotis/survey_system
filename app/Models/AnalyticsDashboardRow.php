@@ -23,7 +23,7 @@ class AnalyticsDashboardRow extends Model
      *
      * @var string
      */
-            protected $table = 'analytics_dashboard_rows';
+    protected $table = 'analytics_dashboard_rows';
 
     /**
      * The attributes that are mass assignable.

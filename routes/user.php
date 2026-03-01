@@ -48,7 +48,12 @@ Route::prefix('user')->group(function () {
         Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_get_form_list');
 
         // メールテンプレート
-        Route::get('/mail-template', [MailTemplateController::class, 'index'])->name('user_mail_template');
+        Route::prefix('mail-template')->group(function () {
+            Route::get('/list', [MailTemplateController::class, 'index'])->name('user_mail_template_list');
+            Route::post('/get-list', [MailTemplateController::class, 'getMailTemplateList'])->name('user_mail_template_get_list');
+            Route::get('/upsert', [MailTemplateController::class, 'upsert'])->name('user_mail_template_upsert');
+            Route::post('/upsert-store', [MailTemplateController::class, 'store'])->name('user_mail_template_store');
+        });
 
         // 問い合わせ
         Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');

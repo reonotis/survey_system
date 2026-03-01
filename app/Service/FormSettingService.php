@@ -56,15 +56,6 @@ class FormSettingService
         $query = FormSetting::select($select)
             ->where('host_name',  request()->getHost())
             ->join('users', 'users.id', '=', 'form_settings.created_by_user')
-            ->addSelect([
-                'has_active_subscription' => DB::table('form_subscriptions')
-                    ->selectRaw('1')
-                    ->whereColumn('form_subscriptions.form_setting_id', 'form_settings.id')
-                    ->where('form_subscriptions.status', 'active')
-                    ->where('form_subscriptions.current_period_end', '>', now())
-                    ->whereNull('form_subscriptions.deleted_at')
-                    ->limit(1),
-            ])
             ->withCount('applications');
 
         if ($user_id !== null) {

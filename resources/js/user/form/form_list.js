@@ -51,11 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'フォームオーナー',
                 orderable: false,
             }, {
-                data: 'plan',
-                name: 'plan',
-                title: 'プラン',
-                orderable: false,
-            }, {
                 data: 'id',
                 title: '設定/管理',
                 orderable: false,

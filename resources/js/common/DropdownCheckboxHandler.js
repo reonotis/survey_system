@@ -5,7 +5,6 @@ export class DropdownCheckboxHandler {
     static setTextBox(id_name, checkbox_name) {
         // チェックしているラベルを取得してテキストボックスに記入する
         const exec = () => {
-            console.log(id_name, checkbox_name)
             // チェックが入っている要素を取得
             const checkedBoxes = document.querySelectorAll(
                 `input[name="${checkbox_name}"]:checked`
