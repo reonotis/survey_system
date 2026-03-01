@@ -32,18 +32,21 @@ class MailTemplateService
         return MailTemplate::find($id);
     }
 
-    public function getFormListQuery(int $user_id)
+    /**
+     * @param int $user_id
+     * @return mixed
+     */
+    public function getMailTemplateListQuery(int $user_id)
     {
-        $select = [
-            '*',
-        ];
+        return $this->mail_template_repository->getMailTemplateListQuery($user_id);
 
-        $query = MailTemplate::select($select)
-            ->where('created_by', $user_id);
-
-        return $query;
     }
 
+    /**
+     * @param MailTemplate $mail_template
+     * @param array $param
+     * @return bool
+     */
     public function update(MailTemplate $mail_template, array $param)
     {
         return $this->mail_template_repository->update($mail_template, $param);

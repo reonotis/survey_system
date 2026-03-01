@@ -10,6 +10,18 @@ use Illuminate\Database\Eloquent\Collection;
 class MailTemplateRepository
 {
 
+    public function getMailTemplateListQuery(int $user_id)
+    {
+        $select = [
+            '*',
+        ];
+
+        $query = MailTemplate::select($select)
+            ->where('created_by', $user_id);
+
+        return $query;
+    }
+
 
     public function update(MailTemplate $mail_template, array $param)
     {

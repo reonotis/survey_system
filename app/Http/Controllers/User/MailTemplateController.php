@@ -55,7 +55,7 @@ class MailTemplateController extends UserController
     public function getMailTemplateList(Request $request)
     {
 
-        $form_query = $this->mail_template_service->getFormListQuery(
+        $form_query = $this->mail_template_service->getMailTemplateListQuery(
             $this->my_user->id,
         );
 
