@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Collection;
-use Laravel\Cashier\Billable;
 
 
 /**
@@ -28,6 +27,7 @@ use Laravel\Cashier\Billable;
  * @property Carbon $end_date
  * @property PublicationStatus $publication_status
  * @property ?int $max_applications
+ * @property int $owner_user
  *
  * @property Collection<int, FormItem> $formItems
  * @property Collection<int, FormItemDraft> $draftFormItems
@@ -36,15 +36,7 @@ use Laravel\Cashier\Billable;
  */
 class FormSetting extends Model
 {
-    use HasFactory, SoftDeletes, Billable;
-
-    const PUBLICATION_STATUS_DISABLE = 0;
-
-    const BILLING_STATUS_LIST = [
-        0 => '未請求',
-        1 => '請求中',
-        2 => '入金確認済み',
-    ];
+    use HasFactory, SoftDeletes;
 
     protected $table = 'form_settings';
 
@@ -149,8 +141,4 @@ class FormSetting extends Model
             ->latest();
     }
 
-    public function isPaid(): bool
-    {
-        return $this->activeSubscription()->exists();
-    }
 }

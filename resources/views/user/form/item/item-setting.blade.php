@@ -43,15 +43,7 @@
 
 
 
-            @if($form_setting->isPaid())
-
-            @else
-                @if($form_setting->created_by_user === Auth::guard('user')->user()->id)
-                    @include('layouts.user.form.plan-update')
-                @else
-                    有料プランにする場合はこのformオーナーにプランのアップグレードを依頼してください
-                @endif
-            @endif
+            有料プランにする場合はこのformオーナーにプランのアップグレードを依頼してください
 
 
 

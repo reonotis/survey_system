@@ -51,5 +51,14 @@ class MailTemplateService
     {
         return $this->mail_template_repository->update($mail_template, $param);
     }
+
+    /**
+     * @param MailTemplate $mail_template
+     * @return bool
+     */
+    public function delete(MailTemplate $mail_template): bool
+    {
+        return $mail_template->delete();
+    }
 }
 

@@ -37,9 +37,6 @@ class FormSettingController extends Controller
             ->addColumn('publication_status_text', function ($form) {
                 return $form->publication_status->label();
             })
-            ->addColumn('billing_status_text', function ($form) {
-                return FormSetting::BILLING_STATUS_LIST[$form->billing_status];
-            })
 
             ->make(true);
     }

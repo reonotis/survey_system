@@ -4,6 +4,7 @@ import { defaultDataTableConfig } from '../../common/datatables.js';
 document.addEventListener('DOMContentLoaded', function() {
     const table = $('#template_list_tbl');
     const upsertURL = table.data('upsert-url');
+    const deleteUrlTemplate = table.data('delete-url');
 
     const dataTable = table.DataTable({
         ...defaultDataTableConfig,
@@ -59,6 +60,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     table.on('click', '.js-delete-form', function(e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        const deleteUrl = (deleteUrlTemplate || '').replace('__ID__', id);
+        if (!deleteUrl) return;
+
+        if (!window.confirm('本当に削除しますか？この操作は元に戻せません。')) {
+            return;
+        }
+
+        const form = $('<form>').attr({
+            method: 'POST',
+            action: deleteUrl
+        });
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: '_token',
+            value: $('meta[name="csrf-token"]').attr('content')
+        }));
+        form.appendTo('body').submit();
     });
 
 });

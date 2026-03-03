@@ -16,16 +16,7 @@
         @include('layouts.user.form.navigation', ['number' => \App\Consts\UserConst::NAV_MANU_WINNING_SETTING])
 
         <div class="mx-auto py-8">
-            @if($form_setting->isPaid())
                 この機能は現在作成中です
-            @else
-                @if($form_setting->created_by_user === Auth::guard('user')->user()->id)
-                    @include('layouts.user.form.plan-update')
-                @else
-                    有料プランにする場合はこのformオーナーにプランのアップグレードを依頼してください
-                @endif
-            @endif
-
         </div>
     </div>
 

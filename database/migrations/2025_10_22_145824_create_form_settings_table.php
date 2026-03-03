@@ -28,6 +28,7 @@ return new class extends Migration
             $table->tinyInteger('publication_status')->default(0)->comment('公開状態');
             $table->tinyInteger('design_type')->default(1)->comment('デザインタイプ');
             $table->boolean('is_draft_item')->default(0)->comment('項目を編集中か否か');
+            $table->unsignedInteger('owner_user')->comment('オーナー');
 
             $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'))->comment('作成日時');
             $table->unsignedInteger('created_by_admin')->nullable()->comment('作成者');

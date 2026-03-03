@@ -93,4 +93,22 @@ class MailTemplateController extends UserController
 
     }
 
+    /**
+     * @param MailTemplate $mail_template
+     * @param Request $request // TODO
+     * @return RedirectResponse
+     */
+    public function delete(MailTemplate $mail_template, Request $request): RedirectResponse
+    {
+        try {
+            $this->mail_template_service->delete($mail_template);
+
+            return redirect()->route('user_mail_template_list')->with('success', ['テンプレートを削除しました']);
+        } catch (\Exception $error) {
+            Log::error($error->getMessage());
+            return redirect()->back()->with('error', ['テンプレートの削除に失敗しました。']);
+        }
+
+    }
+
 }

@@ -53,6 +53,7 @@ Route::prefix('user')->group(function () {
             Route::post('/get-list', [MailTemplateController::class, 'getMailTemplateList'])->name('user_mail_template_get_list');
             Route::get('/upsert', [MailTemplateController::class, 'upsert'])->name('user_mail_template_upsert');
             Route::post('/upsert-store', [MailTemplateController::class, 'store'])->name('user_mail_template_store');
+            Route::post('/delete/{mail_template}', [MailTemplateController::class, 'delete'])->name('user_mail_template_delete');
         });
 
         // プラン課金関連

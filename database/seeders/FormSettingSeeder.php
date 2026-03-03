@@ -18,7 +18,7 @@ class FormSettingSeeder extends Seeder
         $host = request()->getHost();
         $now = Carbon::now();
 
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $records[] = [
                 'host_name' => $host,
                 'form_name' => "サンプルアンケート$i",
@@ -32,6 +32,7 @@ class FormSettingSeeder extends Seeder
                 'css_filename' => 'form-style.css',
                 'banner_filename' => 'form-banner.jpg',
                 'publication_status' => ($i === 1) ? 1 : 0,
+                'owner_user' => 1,
                 'created_by_user' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),

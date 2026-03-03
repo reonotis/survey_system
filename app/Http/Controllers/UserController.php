@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Consts\PlanConst;
+use App\Service\PlanService;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -16,32 +17,25 @@ class UserController extends Controller
     protected User $my_user;
     protected string $my_plan = PlanConst::FREE_PLAN;
 
-    //
+    /** @var PlanService $plan_service */
+    private PlanService $plan_service;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->my_user = Auth::guard('user')->user();
+        $this->plan_service = app(PlanService::class);
 
         // サブスクのプランを判定
-        $subscription = $this->getSubscription();
+        $subscription = $this->plan_service->getSubscription($this->my_user);
         $stripe_price = $subscription?->stripe_price;
-
-        $this->my_plan = match($stripe_price) {
-            'price_1T6CBR4jtTtelMpe0LtkEhP4' => PlanConst::LITE_PLAN,
-            'price_1T6CCV4jtTtelMpeblzVIlzH' => PlanConst::FULL_PLAN,
-            default => PlanConst::FREE_PLAN,
-        };
+        $this->my_plan = $this->plan_service->getPlan((string)$stripe_price);
     }
 
     public function getSubscription()
     {
-        $subscription = $this->my_user
-            ->subscriptions()
-            ->where('stripe_status', 'active')
-            ->first();
-
-        return $subscription;
+        return $this->plan_service->getSubscription($this->my_user);
     }
 
 }
