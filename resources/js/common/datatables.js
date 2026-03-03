@@ -6,6 +6,7 @@ import 'datatables.net-dt/css/dataTables.dataTables.css';
 export const japaneseLanguage = {
     "sProcessing": "処理中...",
     "sLengthMenu": "_MENU_ 件表示",
+    "sEmptyTable": "表示するデータがありません",
     "sZeroRecords": "データはありません",
     "sInfo": "_TOTAL_ 件中 _START_ から _END_ まで表示",
     "sInfoEmpty": "0 件中 0 から 0 まで表示",
