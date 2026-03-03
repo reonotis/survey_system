@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->timestamp('last_plan_changed_at')->nullable()->comment('プランを最後に更新した日時');
 
             $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'))->comment('作成日時');
             $table->unsignedBigInteger('created_by')->nullable()->comment('作成者');

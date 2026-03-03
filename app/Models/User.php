@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
+/**
+ * @property Carbon last_plan_changed_at
+ *
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes, Billable;
@@ -24,6 +29,7 @@ class User extends Authenticatable
         'email',
         'password',
         'host',
+        'last_plan_changed_at',
     ];
 
     /**
@@ -46,6 +52,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_plan_changed_at' => 'datetime',
         ];
     }
 }

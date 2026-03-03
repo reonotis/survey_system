@@ -16,11 +16,11 @@ use App\Http\Controllers\User\MailTemplateController;
 use App\Http\Controllers\User\FormMessageSettingController;
 use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
-use App\Http\Controllers\User\FormBillingController;
 use App\Http\Controllers\User\PreviewController;
 use App\Http\Controllers\User\TinymceController;
 use App\Http\Controllers\User\TinymceMailController;
 use App\Http\Controllers\User\MemberSettingController;
+use App\Http\Controllers\User\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {
@@ -54,6 +54,15 @@ Route::prefix('user')->group(function () {
             Route::get('/upsert', [MailTemplateController::class, 'upsert'])->name('user_mail_template_upsert');
             Route::post('/upsert-store', [MailTemplateController::class, 'store'])->name('user_mail_template_store');
         });
+
+        // プラン課金関連
+        Route::get('/subscription', [SubscriptionController::class, 'index'])->name('user_subscription_index');
+        Route::post('/subscription/create', [SubscriptionController::class, 'create'])->name('user_subscription_create');
+        Route::get('/subscription/success', [SubscriptionController::class, 'success'])->name('user_subscription_success');
+        Route::post('/subscription/change', [SubscriptionController::class, 'change'])->name('user_subscription_change');
+        Route::post('/subscription/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('user_subscription_unsubscribe');
+        Route::get('/billing', [SubscriptionController::class, 'billing'])->name('user_subscription_billing');
+
 
         // 問い合わせ
         Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');
@@ -116,11 +125,6 @@ Route::prefix('user')->group(function () {
             // 当選設定
             Route::get('/{form_setting}/winning-setting', [FormWinningSettingController::class, 'index'])->name('user_form_winning_setting');
 
-
-            // 課金関連
-            Route::post('/{form_setting}/billing/checkout', [FormBillingController::class, 'checkout'])->name('user_form_billing_checkout');
-            Route::get('/{form_setting}/billing/success', [FormBillingController::class, 'success'])->name('user_form_billing_checkout_success');
-            Route::get('/{form_setting}/billing/cancel', [FormBillingController::class, 'cancel'])->name('user_form_billing_checkout_cancel');
 
 
             // プレビュー

@@ -21,8 +21,6 @@ class DatabaseSeeder extends Seeder
 
         Schema::disableForeignKeyConstraints();
 
-        DB::table('subscriptions')->truncate();
-        DB::table('form_subscriptions')->truncate();
         DB::table('form_items')->truncate();
         DB::table('form_settings')->truncate();
         DB::table('users')->truncate();

@@ -20,3 +20,8 @@
     align-items: center;
 }
 
+.flex-end-center {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}

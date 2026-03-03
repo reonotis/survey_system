@@ -12,7 +12,6 @@
                        data-url="{{ route('user_mail_template_get_list') }}"
                        data-upsert-url="{{ route('user_mail_template_upsert') }}"
                 >
-                    <th>saaa</th>
                 </table>
             </div>
 
