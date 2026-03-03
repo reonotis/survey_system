@@ -42,8 +42,15 @@
             </div>
 
 
-
-            有料プランにする場合はこのformオーナーにプランのアップグレードを依頼してください
+            @if($form_plan === \App\Consts\PlanConst::FREE_PLAN)
+                <div class="flex-center-center my-4">
+                    @if($form_setting->owner_user === Auth::guard('user')->user()->id)
+                        機能を最大限利用する為には<a href="{{ route('user_subscription_index') }}" class="anchor-link">こちら</a>よりプランのアップグレードを検討ください
+                    @else
+                        有料プランにする場合はこのformオーナーにプランのアップグレードを依頼してください
+                    @endif
+                </div>
+            @endif
 
 
 

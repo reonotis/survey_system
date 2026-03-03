@@ -28,51 +28,31 @@ header {
 
 .anchor-link {
     color: #390000;
-    align-items: center;
     position: relative;
-    padding: .15rem .35rem;
-
-    // 常時うっすら下線
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    background-size: 100% 1px;
+    border-bottom: solid 1px #555;
+    padding: 0 5px;
 
     // 境界線（上・右）
     &::before {
         content: "";
         position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: linear-gradient(currentColor, currentColor) 0 0 / 0% 1px no-repeat, // top
-        linear-gradient(currentColor, currentColor) 100% 0 / 1px 0% no-repeat; // right
-        transition: background-size .18s ease;
+        height: 4px;
+        width: 0;
+        bottom: 0;
+        left: 0;
+        background: var(--main-color-2);
+        transition: .2s ease;
     }
 
-    // 境界線（左）
-    &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: linear-gradient(currentColor, currentColor) 0 100% / 1px 0% no-repeat; // left only
-        transition: background-size .18s ease .12s; // 左は少し遅らせる
-    }
-
-    &:hover,
-    &:focus-visible {
+    &:hover {
         background-size: 100% 1px; // 下線を少し太く
         outline: none;
 
         // 上・右を展開（下は描かない）
         &::before {
-            background-size: 100% 1px, 1px 100%;
+            width: 100%;
         }
 
-        // 遅延後に左を展開
-        &::after {
-            background-size: 1px 100%;
-        }
     }
 
 }

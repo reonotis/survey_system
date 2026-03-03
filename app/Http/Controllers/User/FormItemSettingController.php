@@ -58,6 +58,7 @@ class FormItemSettingController extends UserController
         }
 
         return view('user.form.item.item-setting', [
+            'form_plan' => $this->plan_service->getPlanByUser($form_setting->owner_user),
             'form_setting' => $form_setting,
             'draft_form_items' => $form_setting->draftFormItems,
             'upper_limit_item_type' => FormItem::ITEM_TYPE_UPPER_LIMIT, // 登録できる項目の上限値

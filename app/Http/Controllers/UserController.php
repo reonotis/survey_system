@@ -18,7 +18,7 @@ class UserController extends Controller
     protected string $my_plan = PlanConst::FREE_PLAN;
 
     /** @var PlanService $plan_service */
-    private PlanService $plan_service;
+    protected PlanService $plan_service;
 
     public function __construct()
     {
