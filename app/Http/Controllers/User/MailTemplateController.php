@@ -7,6 +7,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\UserController;
 use App\Models\MailTemplate;
 use App\Service\MailTemplateService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -108,6 +109,19 @@ class MailTemplateController extends UserController
             Log::error($error->getMessage());
             return redirect()->back()->with('error', ['テンプレートの削除に失敗しました。']);
         }
+
+    }
+
+    /**
+     * @param MailTemplate $mail_template
+     * @return JsonResponse
+     */
+    public function getTemplate(MailTemplate $mail_template): JsonResponse
+    {
+        return response()->json([
+            'subject' => $mail_template->subject,
+            'body' => $mail_template->body,
+        ]);
 
     }
 

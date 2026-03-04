@@ -54,7 +54,15 @@ Route::prefix('user')->group(function () {
             Route::get('/upsert', [MailTemplateController::class, 'upsert'])->name('user_mail_template_upsert');
             Route::post('/upsert-store', [MailTemplateController::class, 'store'])->name('user_mail_template_store');
             Route::post('/delete/{mail_template}', [MailTemplateController::class, 'delete'])->name('user_mail_template_delete');
+            Route::post('/get-template/{mail_template}', [MailTemplateController::class, 'getTemplate'])->name('user_mail_template_get');
         });
+
+        // HTMLメール
+        Route::post('/tinymce/image/upload', [TinymceController::class, 'upload'])->name('user_mail_image_upload');
+
+        // 問い合わせ
+        Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');
+        Route::post('/contact', [ContactController::class, 'send'])->name('user_contact_send');
 
         // プラン課金関連
         Route::get('/subscription', [SubscriptionController::class, 'index'])->name('user_subscription_index');
@@ -63,16 +71,6 @@ Route::prefix('user')->group(function () {
         Route::post('/subscription/change', [SubscriptionController::class, 'change'])->name('user_subscription_change');
         Route::post('/subscription/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('user_subscription_unsubscribe');
         Route::get('/billing', [SubscriptionController::class, 'billing'])->name('user_subscription_billing');
-
-
-        // 問い合わせ
-        Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');
-        Route::post('/contact', [ContactController::class, 'send'])->name('user_contact_send');
-
-        // HTMLメール
-        Route::get('/sample-mail', [TinymceController::class, 'index'])->name('user_sample_mail');
-        Route::post('/tinymce/upload', [TinymceController::class, 'upload'])->name('user_sample_mail_tinymce_upload');
-        Route::post('/tinymce/mail/send', [TinymceMailController::class, 'send'])->name('user_sample_mail_tinymce_send');
 
         // アンケート
         Route::prefix('form_setting')->group(function () {

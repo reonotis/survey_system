@@ -19,6 +19,13 @@ header {
     color: var(--main-font-color);
 }
 
+h3 {
+    padding: 0.25rem;
+    background: var(--main-color);
+    color: var(--main-color-5);
+    font-weight: bold;
+}
+
 .custom-container {
     width: 95%;
     max-width: 1800px;
@@ -265,6 +272,12 @@ div.dt-container {
     &::placeholder {
         color: #ccc;
     }
+
+}
+
+// セレクトボックス
+select.input-box {
+    padding-right: 2.5rem;
 }
 
 // ドロップダウンチェックボックス

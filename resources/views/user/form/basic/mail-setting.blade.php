@@ -20,71 +20,86 @@
             <form method="POST" action="">
                 @csrf
 
-                <div class="item-row">
-                    <div class="item-title">通知メール</div>
-                    <div class="item-contents flex-start-center">
-                        <x-input-radio
-                            name="notification_mail_flg"
-                            :options="\App\Enums\UseFlg::options()"
-                            :checked="old('notification_mail_flg', $form_setting->mailSetting->notification_mail_flg?? 0)"
-                        />
+                <div>
+                    <h3 class="mb-2">通知メール</h3>
+                    <div class="item-row">
+                        <div class="item-contents flex-start-center">
+                            <x-input-radio
+                                name="notification_mail_flg"
+                                :options="\App\Enums\UseFlg::options()"
+                                :checked="old('notification_mail_flg', $form_setting->mailSetting->notification_mail_flg?? 0)"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div class="item-row" id="notification_mail_address_row"
-                     @if(is_null($form_setting->mailSetting) ||  $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
-                    <div class="item-title">通知メール送信先</div>
-                    <div class="item-contents flex-start-center">
-                        <x-input-text name="notification_mail_address" class="w-full"
-                                      :error="$errors->has('notification_mail_address')"
-                                      :value="old('notification_mail_address', $form_setting->mailSetting->notification_mail_address?? '')"
-                                      placeholder="応募がありました"/>
+                    <div class="item-row" id="notification_mail_address_row"
+                         @if(is_null($form_setting->mailSetting) ||  $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
+                        <div class="item-title">通知メール送信先</div>
+                        <div class="item-contents flex-start-center">
+                            <x-input-text name="notification_mail_address" class="w-full"
+                                          :error="$errors->has('notification_mail_address')"
+                                          :value="old('notification_mail_address', $form_setting->mailSetting->notification_mail_address?? '')"
+                                          placeholder="応募がありました"/>
+                        </div>
                     </div>
-                </div>
-                <div class="item-row" id="notification_mail_title_row"
-                     @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
-                    <div class="item-title">通知メール題名</div>
-                    <div class="item-contents flex-start-center">
-                        <x-input-text name="notification_mail_title" class="w-full"
-                                      :error="$errors->has('notification_mail_title')"
-                                      :value="old('notification_mail_title', $form_setting->mailSetting->notification_mail_title?? '')"
-                                      placeholder="応募がありました"/>
+                    <div class="item-row" id="notification_mail_title_row"
+                         @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
+                        <div class="item-title">通知メール題名</div>
+                        <div class="item-contents flex-start-center">
+                            <x-input-text name="notification_mail_title" class="w-full"
+                                          :error="$errors->has('notification_mail_title')"
+                                          :value="old('notification_mail_title', $form_setting->mailSetting->notification_mail_title?? '')"
+                                          placeholder="応募がありました"/>
+                        </div>
                     </div>
-                </div>
-                <div class="item-row" id="notification_mail_message_row"
-                     @if(is_null($form_setting->mailSetting) ||  $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
-                    <div class="item-title">通知メール文言</div>
-                    <div class="item-contents flex-start-center">
-                        <textarea name="notification_mail_message" id="" class="input-box w-full"
-                                  rows="15">{{ $form_setting->mailSetting->notification_mail_message?? '' }}</textarea>
+                    <div class="item-row" id="notification_mail_message_row"
+                         @if(is_null($form_setting->mailSetting) ||  $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
+                        <div class="item-title">通知メール文言</div>
+                        <div class="item-contents flex-start-center">
+                            <textarea name="notification_mail_message" id="" class="input-box w-full"
+                                      rows="15">{{ $form_setting->mailSetting->notification_mail_message?? '' }}</textarea>
+                        </div>
                     </div>
                 </div>
 
-                <div class="item-row">
-                    <div class="item-title">自動返信メ1ール</div>
-                    <div class="item-contents flex-start-center">
-                        <x-input-radio
-                            name="auto_reply_mail_flg"
-                            :options="\App\Enums\UseFlg::options()"
-                            :checked="old('auto_reply_mail_flg', $form_setting->mailSetting->auto_reply_mail_flg?? 0)"
-                        />
+                <div class="my-8">
+                    <h3 class="mb-2">自動返信メール</h3>
+                    <div class="item-row">
+                        <div class="item-contents flex-start-center">
+                            <x-input-radio
+                                name="auto_reply_mail_flg"
+                                :options="\App\Enums\UseFlg::options()"
+                                :checked="old('auto_reply_mail_flg', $form_setting->mailSetting->auto_reply_mail_flg?? 0)"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div class="item-row" id="auto_reply_mail_title_row"
-                     @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->auto_reply_mail_flg == 0) style="display:none;" @endif>
-                    <div class="item-title">自動返信メール題名</div>
-                    <div class="item-contents flex-start-center">
-                        <x-input-text name="auto_reply_mail_title" class="w-full"
-                                      :error="$errors->has('auto_reply_mail_title')"
-                                      :value="old('auto_reply_mail_title', $form_setting->mailSetting->auto_reply_mail_title?? '')"
-                                      placeholder="ご応募頂きありがとうございます"/>
+                    <div class="item-row" id="auto_reply_mail_template"
+                         @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->auto_reply_mail_flg == 0) style="display:none;" @endif>
+                        <div class="item-title">テンプレート選択</div>
+                        <div class="item-contents flex-start-center">
+                            <x-input-select name="auto_reply_mail_template"
+                                            class="w-full"
+                                            :options="$mail_template_list"
+                                            :error="$errors->has('auto_reply_mail_template')"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div class="item-row" id="auto_reply_mail_message_row"
-                     @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->auto_reply_mail_flg == 0) style="display:none;" @endif>
-                    <div class="item-title">自動返信メール文言</div>
-                    <div class="item-contents flex-start-center">
-                        <textarea name="auto_reply_mail_message" id="" class="input-box w-full"
-                                  rows="15">{{ $form_setting->mailSetting->auto_reply_mail_message?? '' }}</textarea>
+                    <div class="item-row" id="auto_reply_mail_title_row"
+                         @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->auto_reply_mail_flg == 0) style="display:none;" @endif>
+                        <div class="item-title">自動返信メール題名</div>
+                        <div class="item-contents flex-start-center">
+                            <x-input-text name="auto_reply_mail_title" class="w-full"
+                                          :error="$errors->has('auto_reply_mail_title')"
+                                          :value="old('auto_reply_mail_title', $form_setting->mailSetting->auto_reply_mail_title?? '')"
+                                          placeholder="ご応募頂きありがとうございます"/>
+                        </div>
+                    </div>
+                    <div class="item-row" id="auto_reply_mail_message_row"
+                         @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->auto_reply_mail_flg == 0) style="display:none;" @endif>
+                        <div class="item-title">自動返信メール文言</div>
+                        <div class="item-contents flex-start-center">
+                            <textarea name="auto_reply_mail_message" id="auto_reply_mail_message" class="input-box w-full"
+                                      rows="15">{{ $form_setting->mailSetting->auto_reply_mail_message?? '' }}</textarea>
+                        </div>
                     </div>
                 </div>
 

@@ -5,20 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
-use Illuminate\View\View;
 
 class TinymceController extends UserController
 {
-
-    /**
-     * @return View
-     */
-    public function index(): View
-    {
-        return view('user.sample-mail', [
-        ]);
-    }
-
 
     /**
      */

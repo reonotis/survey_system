@@ -1,7 +1,7 @@
 <x-user-app-layout>
 
     @push('scripts')
-        @vite('resources/js/user/form/mail_template.js')
+        @vite('resources/js/user/mail_template/upsert.js')
     @endpush
 
     <div class="custom-container py-4">

@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\MailTemplate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class MailTemplateRepository
 {
 
-    public function getMailTemplateListQuery(int $user_id)
+    /**
+     * @param int $user_id
+     * @return Builder
+     */
+    public function getMailTemplateListQuery(int $user_id): Builder
     {
         $select = [
             '*',

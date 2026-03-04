@@ -1,16 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
 use App\Models\FormSetting;
 use App\Service\FormMailSettingService;
+use App\Service\MailTemplateService;
+use App\Traits\InputSettingTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class FormMailSettingController extends UserController
 {
+    use InputSettingTrait;
+
+    private MailTemplateService $mail_template_service;
+
+    /**
+     * コンストラクタ
+     */
+    public function __construct(MailTemplateService $mail_template_service)
+    {
+        parent::__construct();
+        $this->mail_template_service = $mail_template_service;
+    }
+
     /**
      * @param FormSetting $form_setting
      * @return View
@@ -19,8 +36,15 @@ class FormMailSettingController extends UserController
     {
         $form_setting->load('mailSetting');
 
+        $mail_template_collection = $this->mail_template_service->getMailTemplateList(
+            $this->my_user->id,
+        );
+
+        $mail_template_list = $this->makeSectionItemsByCollection($mail_template_collection, false, 'template_name', null);
+
         return view('user.form.basic.mail-setting', [
             'form_setting' => $form_setting,
+            'mail_template_list' => $mail_template_list,
         ]);
     }
 

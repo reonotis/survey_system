@@ -28,9 +28,7 @@ class UserController extends Controller
         $this->plan_service = app(PlanService::class);
 
         // サブスクのプランを判定
-        $subscription = $this->plan_service->getSubscription($this->my_user);
-        $stripe_price = $subscription?->stripe_price;
-        $this->my_plan = $this->plan_service->getPlan((string)$stripe_price);
+        $this->my_plan = $this->plan_service->getPlanByUser($this->my_user->id);
     }
 
     public function getSubscription()

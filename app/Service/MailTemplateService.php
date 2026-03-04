@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Models\FormSetting;
 use App\Models\MailTemplate;
 use App\Repositories\MailTemplateRepository;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class MailTemplateService
 {
@@ -34,12 +33,22 @@ class MailTemplateService
 
     /**
      * @param int $user_id
-     * @return mixed
+     * @return Collection<int, MailTemplate>
      */
-    public function getMailTemplateListQuery(int $user_id)
+    public function getMailTemplateList(int $user_id): Collection
+    {
+        $query = $this->mail_template_repository->getMailTemplateListQuery($user_id);
+
+        return $query->get();
+    }
+
+    /**
+     * @param int $user_id
+     * @return Builder
+     */
+    public function getMailTemplateListQuery(int $user_id): Builder
     {
         return $this->mail_template_repository->getMailTemplateListQuery($user_id);
-
     }
 
     /**
