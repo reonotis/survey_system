@@ -8,10 +8,16 @@ initTinymce({
     height: 500,
 });
 
+initTinymce({
+    selector: 'textarea[name="notification_mail_message"]',
+    height: 500,
+});
+
 $(document).ready(function() {
 
     // 通知メールで「利用する」(値:1)を選択したときにを表示
     [
+        '#notification_mail_template',
         '#notification_mail_title_row',
         '#notification_mail_message_row',
         '#notification_mail_address_row'
@@ -33,48 +39,80 @@ $(document).ready(function() {
     });
 
 });
+
+
 // テンプレート選択時にAPIから取得
-const templateSelect = document.querySelector('[name="auto_reply_mail_template"]');
+const notificationTemplateSelect = document.querySelector('[name="notification_mail_template"]');
+const autoReplyTemplateSelect = document.querySelector('[name="auto_reply_mail_template"]');
+notificationTemplateSelect.addEventListener('change', function () {
+    const templateId = this.value;
+    if (!templateId) return;
+    fetch(`/user/mail-template/get-template/${templateId}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content'),
+            'Accept': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
 
-if (templateSelect) {
+            const titleInput = document.querySelector('[name="notification_mail_title"]');
+            const messageTextarea = document.querySelector('[name="notification_mail_message"]');
 
-    templateSelect.addEventListener('change', function () {
-
-        const templateId = this.value;
-        if (!templateId) return;
-
-        fetch(`/user/mail-template/get-template/${templateId}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute('content'),
-                'Accept': 'application/json'
+            if (titleInput) {
+                titleInput.value = data.subject ?? '';
             }
+
+            if (messageTextarea) {
+                messageTextarea.value = data.body ?? '';
+            }
+            if (window.tinymce) {
+                const editor = tinymce.get(messageTextarea.id);
+                if (editor) {
+                    editor.setContent(data.body ?? '');
+                }
+            }
+
         })
-            .then(res => res.json())
-            .then(data => {
+        .catch(() => alert('テンプレート取得に失敗しました'));
+});
 
-                const titleInput = document.querySelector('[name="auto_reply_mail_title"]');
-                const messageTextarea = document.querySelector('[name="auto_reply_mail_message"]');
+autoReplyTemplateSelect.addEventListener('change', function () {
+    const templateId = this.value;
+    if (!templateId) return;
+    fetch(`/user/mail-template/get-template/${templateId}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content'),
+            'Accept': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
 
-                if (titleInput) {
-                    titleInput.value = data.subject ?? '';
+            const titleInput = document.querySelector('[name="auto_reply_mail_title"]');
+            const messageTextarea = document.querySelector('[name="auto_reply_mail_message"]');
+
+            if (titleInput) {
+                titleInput.value = data.subject ?? '';
+            }
+
+            if (messageTextarea) {
+                messageTextarea.value = data.body ?? '';
+            }
+            if (window.tinymce) {
+                const editor = tinymce.get(messageTextarea.id);
+                if (editor) {
+                    editor.setContent(data.body ?? '');
                 }
+            }
 
-                if (messageTextarea) {
-                    messageTextarea.value = data.body ?? '';
-                }
-                if (window.tinymce) {
-                    const editor = tinymce.get(messageTextarea.id);
-                    if (editor) {
-                        editor.setContent(data.body ?? '');
-                    }
-                }
+        })
+        .catch(() => alert('テンプレート取得に失敗しました'));
+});
 
-            })
-            .catch(() => alert('テンプレート取得に失敗しました'));
-
-    });
-
-}

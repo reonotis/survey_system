@@ -31,6 +31,17 @@
                             />
                         </div>
                     </div>
+                    <div class="item-row" id="notification_mail_template"
+                         @if(is_null($form_setting->mailSetting) ||  $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
+                        <div class="item-title">テンプレート選択</div>
+                        <div class="item-contents flex-start-center">
+                            <x-input-select name="notification_mail_template"
+                                            class="w-full"
+                                            :options="$mail_template_list"
+                                            :error="$errors->has('notification_mail_template')"
+                            />
+                        </div>
+                    </div>
                     <div class="item-row" id="notification_mail_address_row"
                          @if(is_null($form_setting->mailSetting) ||  $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
                         <div class="item-title">通知メール送信先</div>

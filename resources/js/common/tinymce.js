@@ -40,21 +40,24 @@ const baseOptions = {
     width: "100%",
     height: 400,
 
+    relative_urls: false, // 相対URLに変換しない
+    remove_script_host: false, // ドメインを削除しない
+    convert_urls: true, // URL変換機能は有効
+
     /* 共通スキン設定（アプリ側で CSS を当てる想定） */
     skin: false,
     content_css: false,
-};
 
-/**
- * シンプルな TinyMCE 初期化
- * @param {Object} options tinymce.init に渡すオプション
- */
-export function initTinymce(options = {}) {
-    return tinymce.init({
-        ...baseOptions,
-        ...options,
-    });
-}
+    /* 使用プラグイン */
+    plugins: "link lists table image",
+
+    /* ツールバー構成 */
+    toolbar: "undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image table",
+
+    /* 画像アップロード  */
+    images_upload_credentials: true,
+    images_upload_handler: imageUploadHandler,
+};
 
 /**
  * TinyMCE 用の画像アップロードハンドラ（Laravel 用）
@@ -87,15 +90,12 @@ export function imageUploadHandler(blobInfo) {
 }
 
 /**
- * 画像アップロード付き TinyMCE 初期化
- * 画像アップロードが必要な画面はこちらを使う
+ * TinyMCE 初期化
  * @param {Object} options tinymce.init に渡すオプション
  */
-export function initTinymceWithImageUpload(options = {}) {
+export function initTinymce(options = {}) {
     return tinymce.init({
         ...baseOptions,
-        images_upload_credentials: true,
-        images_upload_handler: imageUploadHandler,
         ...options,
     });
 }

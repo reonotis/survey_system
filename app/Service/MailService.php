@@ -36,7 +36,7 @@ class MailService
         }
 
         $body = $this->replacePlaceholders($form_setting, $request_data, $form_setting->mailSetting->notification_mail_message);
-        Mail::raw($body, function ($message) use ($form_setting) {
+        Mail::html($body, function ($message) use ($form_setting) {
             $message
                 ->to($form_setting->mailSetting->notification_mail_address)
                 ->subject($form_setting->mailSetting->notification_mail_title ?? '通知メール');
@@ -57,7 +57,7 @@ class MailService
 
         $to_email = $request_data['email'];
 
-        Mail::raw($body, function ($message) use ($form_setting, $to_email) {
+        Mail::html($body, function ($message) use ($form_setting, $to_email) {
             $message
                 ->to($to_email)
                 ->subject($form_setting->mailSetting->auto_reply_mail_title ?? '自動返信メール');

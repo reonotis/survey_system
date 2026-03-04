@@ -1,6 +1,6 @@
-import tinymce, { initTinymceWithImageUpload } from "../../common/tinymce.js";
+import tinymce, { initTinymce } from "../../common/tinymce.js";
 
-initTinymceWithImageUpload({
+initTinymce({
     /* 対象 */
     selector: ".tinymce", // このclassを持つtextareaをエディタ化
 
