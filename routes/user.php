@@ -5,21 +5,21 @@ declare(strict_types=1);
 use App\Http\Controllers\User\Auth\RegisteredUserController;
 use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\ContactController;
-use App\Http\Controllers\User\FormAnalyticsController;
 use App\Http\Controllers\User\CsvDownloadController;
+use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\FormAnalyticsController;
 use App\Http\Controllers\User\FormApplicationController;
 use App\Http\Controllers\User\FormBasicSettingController;
 use App\Http\Controllers\User\FormDesignSettingController;
 use App\Http\Controllers\User\FormItemSettingController;
 use App\Http\Controllers\User\FormMailSettingController;
-use App\Http\Controllers\User\MailTemplateController;
 use App\Http\Controllers\User\FormMessageSettingController;
 use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
+use App\Http\Controllers\User\MailTemplateController;
+use App\Http\Controllers\User\MemberSettingController;
 use App\Http\Controllers\User\PreviewController;
 use App\Http\Controllers\User\TinymceController;
-use App\Http\Controllers\User\TinymceMailController;
-use App\Http\Controllers\User\MemberSettingController;
 use App\Http\Controllers\User\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,11 +40,8 @@ Route::prefix('user')->group(function () {
     Route::middleware(['auth.custom:user', 'belongs_host', 'access_form_setting'])->group(function () {
         Route::post('/logout', [UserAuthController::class, 'logout'])->name('user_logout');
 
-        Route::get('/dashboard', function () {
-            return view('user.dashboard');
-        })->name('user_dashboard');
-
-        // フォームリストを取得
+        // ダッシュボード
+        Route::get('/dashboard', DashboardController::class)->name('user_dashboard');
         Route::post('/get-form-list', [FormSettingController::class, 'getFormData'])->name('user_get_form_list');
 
         // メールテンプレート
@@ -56,7 +53,6 @@ Route::prefix('user')->group(function () {
             Route::post('/delete/{mail_template}', [MailTemplateController::class, 'delete'])->name('user_mail_template_delete');
             Route::post('/get-template/{mail_template}', [MailTemplateController::class, 'getTemplate'])->name('user_mail_template_get');
         });
-
         // HTMLメール
         Route::post('/tinymce/image/upload', [TinymceController::class, 'upload'])->name('user_mail_image_upload');
 
@@ -64,7 +60,7 @@ Route::prefix('user')->group(function () {
         Route::get('/contact', [ContactController::class, 'index'])->name('user_contact');
         Route::post('/contact', [ContactController::class, 'send'])->name('user_contact_send');
 
-        // プラン課金関連
+        // プラン関連
         Route::get('/subscription', [SubscriptionController::class, 'index'])->name('user_subscription_index');
         Route::post('/subscription/create', [SubscriptionController::class, 'create'])->name('user_subscription_create');
         Route::get('/subscription/success', [SubscriptionController::class, 'success'])->name('user_subscription_success');
@@ -72,7 +68,7 @@ Route::prefix('user')->group(function () {
         Route::post('/subscription/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('user_subscription_unsubscribe');
         Route::get('/billing', [SubscriptionController::class, 'billing'])->name('user_subscription_billing');
 
-        // アンケート
+        // フォーム
         Route::prefix('form_setting')->group(function () {
             Route::get('/create', [FormSettingController::class, 'create'])->name('user_form_create');
             Route::post('/register', [FormSettingController::class, 'store'])->name('user_form_register');

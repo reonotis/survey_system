@@ -41,78 +41,63 @@ $(document).ready(function() {
 });
 
 
-// テンプレート選択時にAPIから取得
-const notificationTemplateSelect = document.querySelector('[name="notification_mail_template"]');
-const autoReplyTemplateSelect = document.querySelector('[name="auto_reply_mail_template"]');
-notificationTemplateSelect.addEventListener('change', function () {
-    const templateId = this.value;
-    if (!templateId) return;
-    fetch(`/user/mail-template/get-template/${templateId}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute('content'),
-            'Accept': 'application/json'
-        }
-    })
-        .then(res => res.json())
-        .then(data => {
+// テンプレート選択時にAPIから取得（共通処理）
+function setupMailTemplateSelect({
+    selectName,
+    titleName,
+    messageName,
+}) {
+    const select = document.querySelector(`[name="${selectName}"]`);
+    if (!select) {
+        return;
+    }
 
-            const titleInput = document.querySelector('[name="notification_mail_title"]');
-            const messageTextarea = document.querySelector('[name="notification_mail_message"]');
+    select.addEventListener('change', function () {
+        const templateId = this.value;
+        if (!templateId) return;
 
-            if (titleInput) {
-                titleInput.value = data.subject ?? '';
+        fetch(`/user/mail-template/get-template/${templateId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute('content'),
+                'Accept': 'application/json'
             }
-
-            if (messageTextarea) {
-                messageTextarea.value = data.body ?? '';
-            }
-            if (window.tinymce) {
-                const editor = tinymce.get(messageTextarea.id);
-                if (editor) {
-                    editor.setContent(data.body ?? '');
-                }
-            }
-
         })
-        .catch(() => alert('テンプレート取得に失敗しました'));
+            .then(res => res.json())
+            .then(data => {
+                const titleInput = document.querySelector(`[name="${titleName}"]`);
+                const messageTextarea = document.querySelector(`[name="${messageName}"]`);
+
+                if (titleInput) {
+                    titleInput.value = data.subject ?? '';
+                }
+
+                if (messageTextarea) {
+                    messageTextarea.value = data.body ?? '';
+                }
+
+                if (window.tinymce && messageTextarea && messageTextarea.id) {
+                    const editor = tinymce.get(messageTextarea.id);
+                    if (editor) {
+                        editor.setContent(data.body ?? '');
+                    }
+                }
+            })
+            .catch(() => alert('テンプレート取得に失敗しました'));
+    });
+}
+
+setupMailTemplateSelect({
+    selectName: 'notification_mail_template',
+    titleName: 'notification_mail_title',
+    messageName: 'notification_mail_message',
 });
 
-autoReplyTemplateSelect.addEventListener('change', function () {
-    const templateId = this.value;
-    if (!templateId) return;
-    fetch(`/user/mail-template/get-template/${templateId}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute('content'),
-            'Accept': 'application/json'
-        }
-    })
-        .then(res => res.json())
-        .then(data => {
-
-            const titleInput = document.querySelector('[name="auto_reply_mail_title"]');
-            const messageTextarea = document.querySelector('[name="auto_reply_mail_message"]');
-
-            if (titleInput) {
-                titleInput.value = data.subject ?? '';
-            }
-
-            if (messageTextarea) {
-                messageTextarea.value = data.body ?? '';
-            }
-            if (window.tinymce) {
-                const editor = tinymce.get(messageTextarea.id);
-                if (editor) {
-                    editor.setContent(data.body ?? '');
-                }
-            }
-
-        })
-        .catch(() => alert('テンプレート取得に失敗しました'));
+setupMailTemplateSelect({
+    selectName: 'auto_reply_mail_template',
+    titleName: 'auto_reply_mail_title',
+    messageName: 'auto_reply_mail_message',
 });
 
