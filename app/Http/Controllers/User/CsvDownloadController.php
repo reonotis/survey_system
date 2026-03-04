@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Consts\CommonConst;
+use App\Enums\ItemType;
 use App\Http\Controllers\UserController;
+use App\Models\Application;
 use App\Models\FormSetting;
 use App\Service\ApplicationsService;
-use App\Service\DisplayFormItemService;
-use App\Enums\ItemType;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -19,50 +19,27 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class CsvDownloadController extends UserController
 {
     private ApplicationsService $applications_service;
-    private DisplayFormItemService $display_form_item_service;
 
     /**
      * コンストラクタ
      */
-    public function __construct(
-        ApplicationsService    $applications_service,
-        DisplayFormItemService $display_form_item_service,
-    )
+    public function __construct(ApplicationsService $applications_service)
     {
         parent::__construct();
 
         $this->applications_service = $applications_service;
-        $this->display_form_item_service = $display_form_item_service;
     }
 
     /**
      * 応募一覧のCSVダウンロード
+     * @param FormSetting $form_setting
+     * @return StreamedResponse
      */
     public function download(FormSetting $form_setting): StreamedResponse
     {
-        $form_setting->load('formItems');
-        $form_items_id_ids = $form_setting->formItems->pluck('id')->all();
-
-        $display_columns = $this->buildDisplayColumns($form_setting, $form_items_id_ids);
-
-        dd($display_columns);
-
-        // 先頭に申込日時の列を追加
-        array_unshift($display_columns, [
-            'data' => 'created_at_text',
-            'name' => 'created_at',
-            'title' => '申込日時',
-            'defaultContent' => '',
-        ]);
+        $display_columns = $this->buildDisplayColumns($form_setting);
 
         $query = $this->applications_service->getFormListQuery($form_setting->id, []);
-
-        $file_name = sprintf(
-            'applications_%d_%s.csv',
-            $form_setting->id,
-            now()->format('YmdHis')
-        );
-
         $callback = function () use ($query, $display_columns) {
             $handle = fopen('php://output', 'w');
 
@@ -70,7 +47,7 @@ class CsvDownloadController extends UserController
             fwrite($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
             // ヘッダー行
-            $headers = [];
+            $headers[] = '申込日時';
             foreach ($display_columns as $column) {
                 $headers[] = $column['title'] ?? '';
             }
@@ -78,49 +55,26 @@ class CsvDownloadController extends UserController
 
             // データ行
             $query->chunk(500, function ($applications) use ($handle, $display_columns) {
+                // 申込レコードをループ
                 foreach ($applications as $application) {
                     $row = [];
+                    // 1列目は申込日時
+                    $row[] = $application->created_at->format('Y-m-d H:i:s');
 
+                    // 2列目以降の項目作成
                     foreach ($display_columns as $column) {
-                        $key = $column['data'] ?? '';
+                        $row[] = match ($column['item_type']) {
+                            ItemType::NAME->value => $this->makeName($application),
+                            ItemType::KANA->value => $this->makeKana($application),
+                            ItemType::EMAIL->value => $application->email,
+                            ItemType::GENDER->value => CommonConst::GENDER_LIST[$application->gender] ?? '',
+                            ItemType::ADDRESS->value => ($application->post_code ?? '') . ($application->address ?? ''),
 
-                        if ($key === 'created_at_text') {
-                            $row[] = optional($application->created_at)->format('Y-m-d H:i:s') ?? '';
-                            continue;
-                        }
-
-                        if ($key === 'full_name') {
-                            $parts = array_filter([$application->name, $application->name_last]);
-                            $row[] = trim(implode(' ', $parts));
-                            continue;
-                        }
-
-                        if ($key === 'full_kana') {
-                            $parts = array_filter([$application->kana, $application->kana_last]);
-                            $row[] = trim(implode(' ', $parts));
-                            continue;
-                        }
-
-                        if ($key === 'gender') {
-                            $row[] = CommonConst::GENDER_LIST[$application->gender] ?? '';
-                            continue;
-                        }
-
-                        if ($key === 'address') {
-                            $row[] = ($application->post_code ?? '') . ($application->address ?? '');
-                            continue;
-                        }
-
-                        if (Str::startsWith($key, 'form_item_')) {
-                            $form_item_id = (int)str_replace('form_item_', '', $key);
-                            $subs = $application->applicationSubs->where('form_item_id', $form_item_id);
-                            $row[] = $subs->pluck('answer_text')->filter()->implode(', ');
-                            continue;
-                        }
-
-                        $row[] = $application->{$key} ?? '';
+                            ItemType::RADIO->value,
+                            ItemType::CHECKBOX->value,
+                            ItemType::SELECT_BOX->value => $this->makeSelectValue($application, $column['form_item_id']),
+                        };
                     }
-
                     fputcsv($handle, $row);
                 }
             });
@@ -130,7 +84,7 @@ class CsvDownloadController extends UserController
 
         return response()->streamDownload(
             $callback,
-            $file_name,
+            sprintf('%s_%s.csv', $form_setting->form_name, now()->format('YmdHis')), // ファイル名
             [
                 'Content-Type' => 'text/csv; charset=UTF-8',
             ]
@@ -138,71 +92,55 @@ class CsvDownloadController extends UserController
     }
 
     /**
-     * 応募一覧表示と同じ列構成を作成
-     *
+     * 列構成を作成
      * @param FormSetting $form_setting
-     * @param array $display_item_ids
-     * @return array<int, array<string, string>>
+     * @return array
      */
-    private function buildDisplayColumns(FormSetting $form_setting, array $display_item_ids): array
+    private function buildDisplayColumns(FormSetting $form_setting): array
     {
-        $form_items = $form_setting->formItems->keyBy('id');
-
-        $data = collect($display_item_ids)
-            ->map(function ($itemId) use ($form_items) {
-                $form_item = $form_items->get($itemId);
-
-                if (!$form_item) {
-                    return null;
-                }
-
-                $dataKey = $this->resolveColumnKey($form_item->item_type->value);
-
-                // ラジオボタン、チェックボックス、セレクトボックスの場合はform_item_{id}をキーとして使用
-                if (!$dataKey && in_array($form_item->item_type->value, [ItemType::RADIO->value, ItemType::CHECKBOX->value, ItemType::SELECT_BOX->value])) {
-                    $dataKey = 'form_item_' . $form_item->id;
-                }
-
-                if (!$dataKey) {
-                    return [
-                        'data' => $form_item->item_type,
-                        'name' => $form_item->item_type,
-                        'title' => $form_item->item_title ?? $form_item->item_type->label(),
-                        'defaultContent' => '',
-                    ];
-                }
-
-                $title = $form_item->item_title ?: $form_item->item_type->label();
-
-                return [
-                    'data' => $dataKey,
-                    'name' => $dataKey,
-                    'title' => $title,
-                    'defaultContent' => '',
-                ];
-            })
-            ->filter()
-            ->values()
-            ->all();
-
-        return $data;
+        $column_data = [];
+        foreach ($form_setting->formItems as $form_item) {
+            $column_data[] = [
+                'form_item_id' => $form_item->id,
+                'item_type' => $form_item->item_type->value,
+                'title' => $form_item->item_title ?: $form_item->item_type->label(),
+            ];
+        }
+        return $column_data;
     }
 
     /**
-     * @param int $item_type
-     * @return string|null
+     * 名前列の値を作成する
+     * @param Application $application
+     * @return string
      */
-    private function resolveColumnKey(int $item_type): ?string
+    private function makeName(Application $application): string
     {
-        return match ($item_type) {
-            ItemType::NAME->value => 'full_name',
-            ItemType::KANA->value => 'full_kana',
-            ItemType::EMAIL->value => 'email',
-            ItemType::TEL->value => 'tel',
-            ItemType::GENDER->value => 'gender',
-            ItemType::ADDRESS->value => 'address',
-            default => null,
-        };
+        $parts = array_filter([$application->name, $application->name_last]);
+        return trim(implode(' ', $parts));
+    }
+
+    /**
+     * ヨミ列の値を作成する
+     * @param Application $application
+     * @return string
+     */
+    private function makeKana(Application $application): string
+    {
+        $parts = array_filter([$application->kana, $application->kana_last]);
+        return trim(implode(' ', $parts));
+    }
+
+    /**
+     * 選択肢の値を作成する
+     * @param Application $application
+     * @param int $form_item_id
+     * @return string
+     */
+    private function makeSelectValue(Application $application, int $form_item_id): string
+    {
+        $subs = $application->applicationSubs->where('form_item_id', $form_item_id);
+        return $subs->pluck('answer_text')->filter()->implode(', ');
     }
 
 }

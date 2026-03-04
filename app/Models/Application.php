@@ -17,6 +17,7 @@ use Illuminate\Support\Collection;
  * @property string $admin_email
  *
  * @property Collection<int, FormItem> $formItems
+ * @property Collection<int, ApplicationSub> $applicationSubs
  */
 class Application extends Model
 {

@@ -1,7 +1,6 @@
 <x-user-app-layout>
 
     @push('scripts')
-        @vite('resources/js/user/form/mail_setting.js')
     @endpush
 
     {{-- 画面名 --}}

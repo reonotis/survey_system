@@ -49,7 +49,7 @@
 
         /* 共通ウィジェット */
         .widget {
-            background: #ffefed;
+            background: white;
             border: solid 1px #1f4f78;
             border-radius: 6px;
             display: flex;
@@ -58,12 +58,14 @@
             grid-auto-rows: minmax(80px, auto);
 
             &.add-widget {
+                background: var(--main-color-4);
                 border: dashed 3px #999;
             }
 
             & .widget-title {
                 padding: .25rem 1rem;
-                background: #ffd1d1;
+                background: var(--main-color);
+                color: var(--main-color-5);
                 border-radius: 6px 6px 0 0;
                 border-bottom: solid 1px #333;
                 font-weight: bold;
