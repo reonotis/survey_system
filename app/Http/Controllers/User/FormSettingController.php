@@ -7,7 +7,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\UserController;
 use App\Http\Requests\Owner\FormSettingRegisterRequest;
 use App\Models\FormSetting;
-use App\Service\ApplicationsService;
 use App\Service\FormSettingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

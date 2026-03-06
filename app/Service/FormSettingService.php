@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Models\FormSetting;
-use App\Models\FormItem;
 use App\Repositories\FormSettingRepository;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class FormSettingService
 {
@@ -31,13 +30,13 @@ class FormSettingService
     }
 
     /**
-     * @param int|null $user_id
+     * @param int $user_id
      * @param string|null $form_name 管理名（部分一致）
      * @param array<int, int>|null $publication_statuses 状態（公開/非公開）
      * @return Builder
      */
     public function getFormListQuery(
-        int $user_id = null,
+        int $user_id,
         ?string $form_name = null,
         array $publication_statuses
     ): Builder {
@@ -54,13 +53,17 @@ class FormSettingService
         ];
 
         $query = FormSetting::select($select)
-            ->where('host_name',  request()->getHost())
-            ->join('users', 'users.id', '=', 'form_settings.created_by_user')
+            ->where('host_name', request()->getHost())
+            ->leftJoin('form_setting_user', function ($join) {
+                $join->on('form_settings.id', '=', 'form_setting_user.form_setting_id')
+                    ->whereNull('form_setting_user.deleted_at');
+            })
+            ->join('users', 'users.id', '=', 'form_settings.owner_user')
+            ->where(function ($q) use ($user_id) {
+                $q->where('form_settings.owner_user', $user_id)
+                    ->orWhere('form_setting_user.user_id', $user_id);
+            })
             ->withCount('applications');
-
-        if ($user_id !== null) {
-            $query->where('created_by_user', $user_id);
-        }
 
         if ($form_name !== null && $form_name !== '') {
             $query->where('form_settings.form_name', 'like', '%' . $form_name . '%');
@@ -96,47 +99,6 @@ class FormSettingService
             'created_by_admin' => $param['created_by_admin'] ?? null,
             'created_by_user' => $param['created_by_user'] ?? null,
         ]);
-    }
-
-    /**
-     * 登録可能な項目の一覧を返す。
-     * @param Collection $formItems
-     * @return array
-     */
-    public function getSelectableItemList(FormSetting $form_setting)
-    {
-        $form_items = $form_setting->formItems;
-        $draft_form_items = $form_setting->draftFormItems;
-        $merged = $form_items
-            ->merge($draft_form_items)
-            ->sortBy('sort')
-            ->values(); // インデックスを振り直す
-
-        return $merged;
-
-        // 現在登録されている各 item_type の件数を集計
-        $current_counts_type = $form_items
-            ->pluck('item_type')
-            ->countBy()
-            ->toArray();
-
-        // 全ての項目候補と上限値を取得
-        $all_form_item_list = FormItem::ITEM_TYPE_LIST;
-        $upper_limit_item_type = FormItem::ITEM_TYPE_UPPER_LIMIT;
-
-        // 上限に達していない型のみを残す
-        $available = [];
-        foreach ($all_form_item_list as $type => $label) {
-            $limit = $upper_limit_item_type[$type] ?? null;  // null → 無制限
-            $current_count = $current_counts_type[$type] ?? 0;
-
-            // 無制限、または未達なら選択可
-            if ($limit === null || $current_count < $limit) {
-                $available[$type] = $label;
-            }
-        }
-
-        return $available;
     }
 
     /**

@@ -17,9 +17,11 @@
                 <button type="button" id="form_list_search_btn" class="btn">検索</button>
             </div>
 
-            <div class="flex-start-center gap-4">
-                <a href="{{ route('user_form_create') }}" class="btn">新しいフォームを作成</a>
-            </div>
+            @if($can_create_form)
+                <div class="flex-start-center gap-4">
+                    <a href="{{ route('user_form_create') }}" class="btn">新しいフォームを作成</a>
+                </div>
+            @endif
 
         </div>
 

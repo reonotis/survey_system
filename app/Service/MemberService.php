@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Consts\PlanConst;
@@ -56,7 +58,7 @@ class MemberService
     public function canInviteMember(string $form_plan, int $member_count): bool
     {
         // 上限値
-        $limit = PlanConst::UPPER_COUNT[$form_plan];
+        $limit = PlanConst::UPPER_INVITE_MEMBER_COUNT[$form_plan];
 
         // 上限なし ※ FULLプランの場合
         if ($limit === null) {

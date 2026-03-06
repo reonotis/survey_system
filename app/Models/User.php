@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +18,7 @@ use Laravel\Cashier\Billable;
  * @property string $name
  * @property string $email
  * @property Carbon $last_plan_changed_at
- *
+ * @property Collection<int, FormSetting> $myForm
  */
 class User extends Authenticatable
 {
@@ -58,4 +60,16 @@ class User extends Authenticatable
             'last_plan_changed_at' => 'datetime',
         ];
     }
+
+    /**
+     * @return HasMany
+     */
+    public function myForm(): HasMany
+    {
+        return $this->hasMany(
+            FormSetting::class,
+            'owner_user',
+        );
+    }
+
 }
