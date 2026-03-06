@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Models\FormSetting;
+use App\Repositories\FormSettingUserRepository;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +26,22 @@ class EnsureAccessFormSetting
             return $next($request);
         }
 
+        /** @var FormSetting $form_setting */
         $form_setting = $request->route('form_setting');
         if ($form_setting === null) {
             return $next($request);
         }
 
-        if (Auth::guard('user')->user()->id === $form_setting->created_by_user) {
+       $user = Auth::guard('user')->user();
+
+        // フォームのオーナーであればOK
+        if ($user->id === $form_setting->owner_user) {
+            return $next($request);
+        }
+
+        // 招待されていればOK
+        $exist_relation = app(FormSettingUserRepository::class)->checkRelation($user->id, $form_setting->id);
+        if ($exist_relation) {
             return $next($request);
         }
 
