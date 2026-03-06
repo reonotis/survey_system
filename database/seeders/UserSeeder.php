@@ -30,6 +30,18 @@ class UserSeeder extends Seeder
                 'host' => $host,
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+            ],[
+                'name' => 'ユーザー3',
+                'email' => 'user3@test.jp',
+                'host' => $host,
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ],[
+                'name' => 'ユーザー4',
+                'email' => 'user4@test.jp',
+                'host' => $host,
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
             ]
         ]);
     }

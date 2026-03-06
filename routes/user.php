@@ -103,6 +103,9 @@ Route::prefix('user')->group(function () {
 
             // TODO メンバー
             Route::get('/{form_setting}/member-list', [MemberSettingController::class, 'index'])->name('user_form_member_list');
+            Route::post('/{form_setting}/get-member-list', [MemberSettingController::class, 'getMember'])->name('user_form_member_get_list');
+            Route::post('/{form_setting}/invite-member', [MemberSettingController::class, 'inviteMember'])->name('user_form_member_invite');
+            Route::post('/{form_setting}/delete-member/{user}', [MemberSettingController::class, 'deleteMember'])->name('user_form_member_delete');
 
 
             // 応募者一覧

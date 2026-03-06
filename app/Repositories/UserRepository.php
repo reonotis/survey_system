@@ -15,6 +15,24 @@ class UserRepository
     }
 
     /**
+     * @param string $email
+     * @return User|null
+     */
+    public function getByEmail(string $email): ?User
+    {
+        return User::where('email', $email)->first();
+    }
+
+    /**
+     * @param array $param
+     * @return User
+     */
+    public function create(array $param): User
+    {
+        return User::create($param);
+    }
+
+    /**
      * @param User $user
      * @param array $param
      * @return bool

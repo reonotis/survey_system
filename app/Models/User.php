@@ -12,7 +12,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
 /**
- * @property Carbon last_plan_changed_at
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property Carbon $last_plan_changed_at
  *
  */
 class User extends Authenticatable

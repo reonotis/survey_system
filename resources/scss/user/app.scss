@@ -273,6 +273,10 @@ div.dt-container {
         color: #ccc;
     }
 
+    &.error {
+        border-color: red;
+        background: #fdeeee;
+    }
 }
 
 // セレクトボックス

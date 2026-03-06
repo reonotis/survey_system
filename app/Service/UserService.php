@@ -9,12 +9,34 @@ use App\Repositories\UserRepository;
 
 class UserService
 {
-
     private UserRepository $user_repository;
 
+    /**
+     * コンストラクタ
+     */
     public function __construct(UserRepository $user_repository)
     {
         $this->user_repository = $user_repository;
+    }
+
+    /**
+     * @param string $email
+     * @return User|null
+     */
+    public function getByEmail(string $email): ?User
+    {
+        return $this->user_repository->getByEmail($email);
+    }
+
+    /**
+     * @param array $param
+     * @return User|null
+     */
+    public function create(array $param): ?User
+    {
+        $param['host'] = request()->getHost();
+
+        return $this->user_repository->create($param);
     }
 
     /**

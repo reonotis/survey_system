@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Consts\CommonConst;
+use App\Consts\MailConst;
 use App\Traits\FormReplaceTrait;
 use App\Mail\ContactMail;
+use App\Mail\InviteMemberFirstRegister;
+use App\Mail\InviteMember;
 use App\Models\FormSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -23,6 +28,45 @@ class MailService
                 Auth::guard('user')->user()->email,
                 $request['message'],
             ));
+    }
+
+    /**
+     * @param int $type
+     * @param array $param
+     * @return void
+     */
+    public function sendMailPattern(int $type, array $param): void
+    {
+        match ($type) {
+            MailConst::INVITE_MEMBER_FIRST_REGISTER => $this->sendInviteFirstRegisterMail($param),
+            MailConst::INVITE_MEMBER => $this->sendInviteMail($param),
+            default => null,
+        };
+    }
+
+    /**
+     * @param array $param
+     * @return void
+     */
+    private function sendInviteFirstRegisterMail(array $param): void
+    {
+        Mail::to($param['to_mail_address'])->send(new InviteMemberFirstRegister(
+            $param['to_mail_address'],
+            $param['form_name'],
+            $param['owner_name'],
+            $param['password'],
+        ));
+    }
+
+    /**
+     * @param array $param
+     */
+    private function sendInviteMail(array $param): void
+    {
+        Mail::to($param['to_mail_address'])->send(new InviteMember(
+            $param['form_name'],
+            $param['owner_name'],
+        ));
     }
 
     /**
