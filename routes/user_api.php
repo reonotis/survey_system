@@ -10,6 +10,7 @@ Route::prefix('user')->middleware('auth.api:user')->group(function () {
         Route::post('/{form_setting}/register-form-item', [FormItemSettingController::class, 'registerFormItem'])->name('user_api_register_form_item');
 
         Route::post('/{form_setting}/draft-item-delete', [FormItemSettingController::class, 'draftItemDelete'])->name('user_form_draft_item_delete');
+        Route::post('/{form_setting}/draft-add-item', [FormItemSettingController::class, 'draftAddItem'])->name('user_form_draft_add_item');
 
     });
 });

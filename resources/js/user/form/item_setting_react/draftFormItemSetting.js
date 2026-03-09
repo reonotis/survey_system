@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-export function useDraftFormItems(initialItems = []) {
+export function draftFormItemSetting(initialItems = []) {
 
     /** 設定中の項目一覧 */
     const [draftFormItems, setDraftFormItems] = useState(initialItems);

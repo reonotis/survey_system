@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import SelectableItemsList from './SelectableItemsList';
 import CurrentItemsList from './CurrentItemsList';
 import ItemDetailPanel from './ItemDetailPanel';
-import { useDraftFormItems } from './useDraftFormItems';
+import { draftFormItemSetting } from './draftFormItemSetting';
 
 function ItemSettingReact() {
     const {
@@ -15,7 +15,7 @@ function ItemSettingReact() {
         updateItemLocalValue,
         saveItemValue,
         itemDelete,
-    } = useDraftFormItems(window.draftFormItems ?? []);
+    } = draftFormItemSetting(window.draftFormItems ?? []);
 
     return (
         <div className="flex gap-2 mt-4">

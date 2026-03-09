@@ -7,6 +7,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\UserController;
 use App\Http\Requests\User\SaveFormItemsRequest;
 use App\Http\Requests\User\DraftItemDeleteRequest;
+use App\Http\Requests\User\AddDraftItemRequest;
 use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Service\FormItemService;
@@ -139,7 +140,7 @@ class FormItemSettingController extends UserController
      * @param Request $request
      * @return JsonResponse
      */
-    public function draftAddItem(FormSetting $form_setting, Request $request): JsonResponse
+    public function draftAddItem(FormSetting $form_setting, AddDraftItemRequest $request): JsonResponse
     {
         try {
             $draft_items = $form_setting->draftFormItems;

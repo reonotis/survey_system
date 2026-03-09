@@ -2,7 +2,6 @@ import React from 'react';
 
 function AddItem({ item, isSelected, onSelect, onAdd }) {
 
-    // 仮の Ajax 処理
     const handleAdd = async (e) => {
         e.stopPropagation(); // ← 親の onClick(onSelect) を止める
 
@@ -18,8 +17,26 @@ function AddItem({ item, isSelected, onSelect, onAdd }) {
                 }),
             });
 
-            // 仮レスポンス処理
-            const data = await response.json();
+            const data = await response.json().catch(() => null);
+
+            // バリデーションエラーなど、失敗時のメッセージ表示
+            if (!response.ok) {
+                let message = '追加に失敗しました';
+
+                if (data) {
+                    if (data.errors) {
+                        const messages = Object.values(data.errors).flat();
+                        if (messages.length > 0) {
+                            message = messages.join('\n');
+                        }
+                    } else if (data.message) {
+                        message = data.message;
+                    }
+                }
+
+                alert(message);
+                return;
+            }
 
             // 返却された項目を追加
             onAdd(data.form_item_draft);
