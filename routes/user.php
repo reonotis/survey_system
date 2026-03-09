@@ -18,6 +18,7 @@ use App\Http\Controllers\User\FormSettingController;
 use App\Http\Controllers\User\FormWinningSettingController;
 use App\Http\Controllers\User\MailTemplateController;
 use App\Http\Controllers\User\MemberSettingController;
+use App\Http\Controllers\User\NameSettingController;
 use App\Http\Controllers\User\PreviewController;
 use App\Http\Controllers\User\TinymceController;
 use App\Http\Controllers\User\SubscriptionController;
@@ -37,8 +38,12 @@ Route::prefix('user')->group(function () {
     Route::post('/login', [UserAuthController::class, 'login']);
 
     // 認証が必要なルート
-    Route::middleware(['auth.custom:user', 'belongs_host', 'access_form_setting'])->group(function () {
+    Route::middleware(['auth.custom:user', 'belongs_host', 'access_form_setting', 'first_register'])->group(function () {
         Route::post('/logout', [UserAuthController::class, 'logout'])->name('user_logout');
+
+        // 初回名前設定画面
+        Route::get('/name-setting', [NameSettingController::class, 'index'])->name('user_name_setting');
+        Route::post('/name-setting-update', [NameSettingController::class, 'update'])->name('user_name_setting_update');
 
         // ダッシュボード
         Route::get('/dashboard', DashboardController::class)->name('user_dashboard');

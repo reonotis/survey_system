@@ -94,6 +94,7 @@ class FormSettingService
             'max_applications' => $param['max_applications'] ?? null,
             'image_directory' => $param['image_directory'] ?? null,
             'css_filename' => $param['css_filename'] ?? null,
+            'owner_user' => $param['owner_user'],
             'banner_filename' => $param['banner_filename'] ?? null,
             'publication_status' => $param['publication_status'] ?? 0,
             'created_by_admin' => $param['created_by_admin'] ?? null,

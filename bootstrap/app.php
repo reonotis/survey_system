@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'not_client' => \App\Http\Middleware\NotClientMiddleware::class,
             'belongs_host' => \App\Http\Middleware\EnsureBelongsToHost ::class,
             'access_form_setting' => \App\Http\Middleware\EnsureAccessFormSetting ::class,
+            'first_register' => \App\Http\Middleware\FirstRegisterSetting ::class,
         ]);
 
         // APIルートにもセッションベースの認証を可能にするため、必要なミドルウェアを追加

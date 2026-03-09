@@ -58,6 +58,7 @@ class FormSetting extends Model
         'css_filename',
         'banner_filename',
         'is_draft_item',
+        'owner_user',
         'publication_status',
         'design_type',
         'created_by_admin',

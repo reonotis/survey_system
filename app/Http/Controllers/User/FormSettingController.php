@@ -76,6 +76,7 @@ class FormSettingController extends UserController
     {
         try {
             $param = $request->validated();
+            $param['owner_user'] = $this->my_user->id;
             $param['created_by_user'] = $this->my_user->id;
             $form_setting = $this->form_setting_service->create(
                 $param,
