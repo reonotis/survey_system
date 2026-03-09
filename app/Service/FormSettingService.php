@@ -73,6 +73,8 @@ class FormSettingService
             $query->whereIn('form_settings.publication_status', $publication_statuses);
         }
 
+        $query->groupBy('form_settings.id');
+
         return $query;
     }
 
