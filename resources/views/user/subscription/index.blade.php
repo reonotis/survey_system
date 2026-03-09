@@ -17,13 +17,13 @@
                 <div class="flex-center-center gap-4 my-4">
                     <form method="POST" action="{{ route('user_subscription_create') }}">
                         @csrf
-                        <input type="hidden" name="price_id" value="price_1T6CBR4jtTtelMpe0LtkEhP4">
+                        <input type="hidden" name="price_id" value="{{ config('services.stripe.plans.lite') }}">
                         <button type="submit" class="btn">{{ \App\Consts\PlanConst::LITE_PLAN }}プラン申込</button>
                     </form>
 
                     <form method="POST" action="{{ route('user_subscription_create') }}">
                         @csrf
-                        <input type="hidden" name="price_id" value="price_1T6CCV4jtTtelMpeblzVIlzH">
+                        <input type="hidden" name="price_id" value="{{ config('services.stripe.plans.full') }}">
                         <button type="submit" class="btn">{{ \App\Consts\PlanConst::FULL_PLAN }}プラン申込</button>
                     </form>
                 </div>
@@ -33,7 +33,7 @@
                 @if($plan == \App\Consts\PlanConst::LITE_PLAN )
                     <form method="POST" action="{{ route('user_subscription_change') }}">
                         @csrf
-                        <input type="hidden" name="price_id" value="price_1T6CCV4jtTtelMpeblzVIlzH">
+                        <input type="hidden" name="price_id" value="{{ config('services.stripe.plans.full') }}">
                         <button type="submit" class="btn">{{ \App\Consts\PlanConst::FULL_PLAN }}プランに変更</button>
                     </form>
                 @endif
@@ -41,7 +41,7 @@
                 @if($plan == \App\Consts\PlanConst::FULL_PLAN )
                     <form method="POST" action="{{ route('user_subscription_change') }}">
                         @csrf
-                        <input type="hidden" name="price_id" value="price_1T6CBR4jtTtelMpe0LtkEhP4">
+                        <input type="hidden" name="price_id" value="{{ config('services.stripe.plans.lite') }}">
                         <button type="submit" class="btn">{{ \App\Consts\PlanConst::LITE_PLAN }}プランに変更</button>
                     </form>
                 @endif

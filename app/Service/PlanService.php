@@ -17,7 +17,6 @@ class PlanService
         $this->user_repository = $user_repository;
     }
 
-
     /**
      * @param User $user
      * @return null
@@ -50,9 +49,9 @@ class PlanService
      */
     public function getPlan(string $stripe_price): string
     {
-        return match($stripe_price) {
-            'price_1T6CBR4jtTtelMpe0LtkEhP4' => PlanConst::LITE_PLAN,
-            'price_1T6CCV4jtTtelMpeblzVIlzH' => PlanConst::FULL_PLAN,
+        return match ($stripe_price) {
+            config('services.stripe.plans.lite') => PlanConst::LITE_PLAN,
+            config('services.stripe.plans.full') => PlanConst::FULL_PLAN,
             default => PlanConst::FREE_PLAN,
         };
     }

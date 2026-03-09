@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
+use App\Http\Requests\User\Plan\PlanStoreRequest;
 use App\Service\UserService;
 use Carbon\Carbon;
 use Exception;
@@ -47,11 +48,11 @@ class SubscriptionController extends UserController
 
     /**
      * サブスクの決済画面を表示する
-     * @param Request $request // TODO
+     * @param PlanStoreRequest $request
      * @return RedirectResponse|Checkout
      * @throws Exception
      */
-    public function create(Request $request)
+    public function create(PlanStoreRequest $request): Checkout|RedirectResponse
     {
         $subscription = $this->getSubscription();
         if ($subscription) {
@@ -80,12 +81,12 @@ class SubscriptionController extends UserController
 
     /**
      * プラン変更
-     * @param Request $request // TODO
+     * @param PlanStoreRequest $request
      * @return RedirectResponse
      * @throws IncompletePayment
      * @throws SubscriptionUpdateFailure
      */
-    public function change(Request $request): RedirectResponse
+    public function change(PlanStoreRequest $request): RedirectResponse
     {
         $subscription = $this->getSubscription();
         // まだサブスクのプランが登録されていなければ変更は出来ないので戻す
@@ -131,7 +132,6 @@ class SubscriptionController extends UserController
      */
     public function billing(): RedirectResponse
     {
-
         // 戻るボタンを押下した時の遷移先を指定
         return $this->my_user->redirectToBillingPortal(route('user_subscription_index'));
     }

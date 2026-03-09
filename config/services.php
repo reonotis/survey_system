@@ -41,6 +41,12 @@ return [
 
         // フォーム課金用の価格ID
         'form_price_id' => env('STRIPE_FORM_PRICE_ID'),
+
+        // プラン毎のサブスクリプション価格ID
+        'plans' => [
+            'lite' => env('STRIPE_LITE_PLAN_PRICE_ID'),
+            'full' => env('STRIPE_FULL_PLAN_PRICE_ID'),
+        ],
     ],
 
 ];
