@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\ItemSetting;
 
-use App\Models\FormSetting;
 use App\Http\Requests\ApiRequest;
+use App\Models\FormSetting;
 use App\Repositories\FormItemRepository;
 
 /**

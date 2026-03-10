@@ -103,7 +103,6 @@ export function draftFormItemSetting(initialItems = []) {
             return;
         }
 
-        console.log(value)
         // 現在の値を保存する
         try {
             const response = await fetch(window.draftItemSaveUrl, {

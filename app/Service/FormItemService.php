@@ -107,14 +107,14 @@ class FormItemService
     /**
      * @param int $form_item_drafts_id
      * @param int $sort
-     * @return bool
+     * @return int
      */
-    public function sortChangeDraft(int $form_item_drafts_id, int $sort): bool
+    public function sortChangeDraft(int $form_item_drafts_id, int $sort): int
     {
         return FormItemDraft::where('id', $form_item_drafts_id)
                 ->update([
                     'sort' => $sort,
-                ]) > 0;
+                ]);
     }
 
     /**

@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\ItemSetting;
 
 use App\Consts\PlanConst;
 use App\Models\FormSetting;
-use App\Models\User;
 use App\Service\PlanService;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 /**
  */

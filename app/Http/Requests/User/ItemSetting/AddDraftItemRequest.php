@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\ItemSetting;
 
 use App\Consts\PlanConst;
 use App\Http\Requests\ApiRequest;
@@ -10,7 +10,7 @@ use App\Models\FormSetting;
 use App\Service\PlanService;
 
 /**
- * @property int $item_id
+ * @property int|string $item_type
  */
 class AddDraftItemRequest extends ApiRequest
 {

@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\UserController;
-use App\Http\Requests\User\SaveFormItemsRequest;
-use App\Http\Requests\User\DraftItemDeleteRequest;
-use App\Http\Requests\User\AddDraftItemRequest;
+use App\Http\Requests\User\ItemSetting\AddDraftItemRequest;
+use App\Http\Requests\User\ItemSetting\DraftItemDeleteRequest;
+use App\Http\Requests\User\ItemSetting\DraftItemSaveRequest;
+use App\Http\Requests\User\ItemSetting\SaveFormItemsRequest;
+use App\Http\Requests\User\ItemSetting\SortChangeRequest;
 use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Service\FormItemService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 /**
  *
@@ -106,38 +107,8 @@ class FormItemSettingController extends UserController
     }
 
     /**
-     * 項目の並び順を更新
      * @param FormSetting $form_setting
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function updateItemOrder(FormSetting $form_setting, Request $request): JsonResponse
-    {
-        $request->validate([
-            'order' => 'required|array',
-            'order.*' => 'required|integer|exists:form_items,id',
-        ]);
-
-        $order = $request->input('order');
-
-        // 順序を更新 TODO
-        $sort = 1;
-        foreach ($order as $item_id) {
-            FormItem::where('id', $item_id)
-                ->where('form_setting_id', $form_setting->id)
-                ->update(['sort' => $sort]);
-            $sort++;
-        }
-
-        return response()->json([
-            'message' => '順序が更新されました',
-            'success' => true,
-        ]);
-    }
-
-    /**
-     * @param FormSetting $form_setting
-     * @param Request $request
+     * @param AddDraftItemRequest $request
      * @return JsonResponse
      */
     public function draftAddItem(FormSetting $form_setting, AddDraftItemRequest $request): JsonResponse
@@ -171,7 +142,12 @@ class FormItemSettingController extends UserController
         }
     }
 
-    public function draftSortChange(FormSetting $form_setting, Request $request): JsonResponse
+    /**
+     * @param FormSetting $form_setting
+     * @param SortChangeRequest $request
+     * @return JsonResponse
+     */
+    public function draftSortChange(FormSetting $form_setting, SortChangeRequest $request): JsonResponse
     {
         try {
             $sort = 1;
@@ -194,7 +170,12 @@ class FormItemSettingController extends UserController
         }
     }
 
-    public function draftItemSave(FormSetting $form_setting, Request $request): JsonResponse
+    /**
+     * @param FormSetting $form_setting
+     * @param DraftItemSaveRequest $request
+     * @return JsonResponse
+     */
+    public function draftItemSave(FormSetting $form_setting, DraftItemSaveRequest $request): JsonResponse
     {
         try {
             $this->form_item_service->updateByFormItem($request->item_id, $request->key, $request->value);
