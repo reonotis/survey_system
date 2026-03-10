@@ -39,6 +39,7 @@ class FormAnalyticsController extends UserController
     }
 
     /**
+     * 応募分析画面を表示する
      * @param FormSetting $form_setting
      * @return View
      */
@@ -121,8 +122,6 @@ class FormAnalyticsController extends UserController
      */
     public function addWidget(FormSetting $form_setting, Request $request): RedirectResponse
     {
-
-        Log::debug($request->all());
         try {
             DB::transaction(function () use ($form_setting, $request) {
                 // 行データを取得

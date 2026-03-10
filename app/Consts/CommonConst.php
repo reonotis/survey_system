@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Consts;
 
+use App\Enums\ItemType;
+
 class CommonConst
 {
     public const FLG_OFF = 0;
@@ -23,6 +25,42 @@ class CommonConst
         self::GRAPH_TYPE_RATE => '回答率',
         self::GRAPH_TYPE_CIRCLE => '円グラフ',
         self::GRAPH_TYPE_VERTICAL => '棒グラフ',
+    ];
+
+    /**
+     * 表示形式ごとに、紐づけ可能なフォーム項目の item_type を定義する。
+     * - 空配列: フォーム項目に依存しない表示形式（総件数など）
+     * - 配列あり: 指定した item_type のみ選択可能
+     */
+    public const GRAPH_TYPE_ITEM_TYPE_MAP = [
+        // 総件数: 項目に依存しないので空配列
+        self::GRAPH_TYPE_TOTAL => [],
+
+        // 回答率: 個人情報系の単一カラムに対して集計
+        self::GRAPH_TYPE_RATE => [
+            ItemType::NAME->value,
+            ItemType::KANA->value,
+            ItemType::EMAIL->value,
+            ItemType::TEL->value,
+            ItemType::GENDER->value,
+            ItemType::ADDRESS->value,
+        ],
+
+        // 円グラフ: 性別 or 選択肢系
+        self::GRAPH_TYPE_CIRCLE => [
+            ItemType::GENDER->value,
+            ItemType::CHECKBOX->value,
+            ItemType::RADIO->value,
+            ItemType::SELECT_BOX->value,
+        ],
+
+        // 棒グラフ: 円グラフと同じ前提で集計
+        self::GRAPH_TYPE_VERTICAL => [
+            ItemType::GENDER->value,
+            ItemType::CHECKBOX->value,
+            ItemType::RADIO->value,
+            ItemType::SELECT_BOX->value,
+        ],
     ];
 
     public const WIDGET_TYPE_1 = 1;

@@ -35,6 +35,8 @@
 
 <script>
     window.graphTypes = @json(\App\Consts\CommonConst::GRAPH_TYPE_LIST);
+    // 表示形式ごとに選択可能な item_type の一覧
+    window.graphTypeItemTypeMap = @json(\App\Consts\CommonConst::GRAPH_TYPE_ITEM_TYPE_MAP);
     window.urlWidgetRowDelete = @json(route('user_form_analytics_widget_row_delete', ['form_setting' => $form_setting->id]));
 </script>
 

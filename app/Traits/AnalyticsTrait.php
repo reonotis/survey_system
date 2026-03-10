@@ -30,7 +30,22 @@ trait AnalyticsTrait
             'title' => $this->getTitle($analytics_widget),
             'widget_setting' => $analytics_widget,
             'analytics_data' => $data,
+            'unit' => $this->getUnit($analytics_widget),
         ];
+    }
+
+    /**
+     * @param AnalyticsDashboardWidget $analytics_widget
+     * @return string
+     */
+    private function getUnit(AnalyticsDashboardWidget $analytics_widget): string
+    {
+        return match($analytics_widget->display_type) {
+            CommonConst::GRAPH_TYPE_TOTAL,
+            CommonConst::GRAPH_TYPE_CIRCLE,
+            CommonConst::GRAPH_TYPE_VERTICAL => '件',
+            CommonConst::GRAPH_TYPE_RATE => '%',
+        };
     }
 
     /**
@@ -66,7 +81,9 @@ trait AnalyticsTrait
             ItemType::TEL->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'tel'),
             ItemType::GENDER->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'gender'),
             ItemType::ADDRESS->value => $this->getInputRateByTargetItem($analytics_widget, $total_count, 'address'),
-            default => '調整中',
+            ItemType::CHECKBOX->value,
+            ItemType::RADIO->value,
+            ItemType::SELECT_BOX->value => $this->getRateByCheckbox($analytics_widget->form_item_id, $total_count),
         };
     }
 
@@ -146,8 +163,18 @@ trait AnalyticsTrait
      */
     private function getInputRateByTargetItem(AnalyticsDashboardWidget $analytics_widget, int $total_count, string $column_name): float
     {
-        $gender_count = $this->application_repository->getApplicationsCountByColumn($analytics_widget->form_setting_id, $column_name);
-        return round(($gender_count / $total_count) * 100, 2);
+        $input_count = $this->application_repository->getApplicationsCountByColumn($analytics_widget->form_setting_id, $column_name);
+        return round(($input_count / $total_count) * 100, 2);
+    }
 
+    /**
+     * @param int $form_item_id
+     * @param int $total_count
+     * @return float
+     */
+    private function getRateByCheckbox(int $form_item_id, int $total_count): float
+    {
+        $input_count = $this->application_sub_repository->countApplicationsByFormItem($form_item_id);
+        return round(($input_count / $total_count) * 100, 2);
     }
 }

@@ -118,10 +118,8 @@ class AnalyticsService
             return [
                 'id' => $item->id,
                 'item_type' => $item->item_type,
-                'field_required' => $item->field_required,
                 'item_title' => $item->item_title ?? $item->item_type->label(),
                 'value_list' => $item->value_list,
-                'details' => $item->details,
             ];
         })->toArray();
     }

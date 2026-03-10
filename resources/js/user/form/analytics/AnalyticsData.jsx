@@ -30,9 +30,9 @@ export function AnalyticsData({  widgetData, onClick }) {
     const renderGraph = () => {
         switch (widgetData.widget_setting.display_type) {
             case 1:
-                return <span className="counter">{widgetData.analytics_data}<span className="unit">件</span></span>;
+                return <span className="counter">{widgetData.analytics_data}<span className="unit">{widgetData.unit}</span></span>;
             case 2:
-                return <span className="counter">{widgetData.analytics_data}<span className="unit">%</span></span>;
+                return <span className="counter">{widgetData.analytics_data}<span className="unit">{widgetData.unit}</span></span>;
             case 3:
                 return <Pie data={chartData} />;
             case 4:

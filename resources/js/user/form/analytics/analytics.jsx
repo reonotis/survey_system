@@ -86,8 +86,9 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
                     onRowDelete={handleRowDelete}
                 />
             ))}
-            <div className="dashboard original-dashboard">
 
+            {/* 行を追加させる分割用選択技 */}
+            <div className="dashboard original-dashboard">
                 <div className="widget add-widget p-2" style={{gridColumn: `span 62` }}>
                     <div className="flex-center-center h-full w-full mb-2">追加する構造を選択してください</div>
                     <div className="flex-center-center flex-wrap gap-4 h-full w-full">

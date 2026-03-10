@@ -420,13 +420,13 @@ select.input-box {
         position: relative;
         width: 20px;
         height: 20px;
-        border: 1px solid #bf819b;
+        border: 1px solid var(--main-color);
         border-radius: 5px;
         cursor: pointer;
 
         &:checked {
             background-image: none !important;
-            background-color: #bf819b;
+            background-color:var(--main-color);
 
             &::after {
                 content: "";

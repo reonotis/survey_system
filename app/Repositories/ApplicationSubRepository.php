@@ -21,4 +21,12 @@ class ApplicationSubRepository
                 ->groupBy('answer_text')
                 ->get()->toArray();
     }
+
+    public function countApplicationsByFormItem(int $form_item_id)
+    {
+        return ApplicationSub::where('form_item_id', $form_item_id)
+            ->distinct()
+            ->count('application_id');
+    }
+
 }
