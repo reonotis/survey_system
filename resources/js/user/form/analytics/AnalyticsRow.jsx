@@ -1,8 +1,9 @@
 import React from 'react';
 import { AnalyticsData } from './AnalyticsData';
 
-export function AnalyticsRow({ analyticsData, openCreateWidgetSettingModal, onRowDelete }) {
+export function AnalyticsRow({ analyticsData, openCreateWidgetSettingModal, onRowDelete, onWidgetClear }) {
 
+    // 行を削除する時のメソッド
     const handleDeleteRow = async () => {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
         try {
@@ -39,7 +40,10 @@ export function AnalyticsRow({ analyticsData, openCreateWidgetSettingModal, onRo
                     return (
                         <div key={`${analyticsData.id}-${index}`} className="widget" style={{ gridColumn: `span ${value}` }}>
                             {hasWidget ? (
-                                <AnalyticsData widgetData={hasWidget} onClick={openCreateWidgetSettingModal} />
+                                <AnalyticsData
+                                    widgetData={hasWidget}
+                                    onClear={() => onWidgetClear?.(analyticsData.id, widget_number)}
+                                />
                             ) : (
                                 <button
                                     type="button"

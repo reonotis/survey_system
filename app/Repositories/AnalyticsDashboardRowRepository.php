@@ -10,15 +10,17 @@ use Illuminate\Database\Eloquent\Collection;
 class AnalyticsDashboardRowRepository
 {
     /**
+     * @param int $id
+     * @return AnalyticsDashboardRow|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?AnalyticsDashboardRow
     {
         return AnalyticsDashboardRow::find($id);
     }
 
     /**
      * @param int $form_setting_id
-     * @return Collection
+     * @return Collection<int, AnalyticsDashboardRow>
      */
     public function getByFormSettingId(int $form_setting_id): Collection
     {
@@ -28,9 +30,20 @@ class AnalyticsDashboardRowRepository
     }
 
     /**
-     * @param int $id
+     * @param AnalyticsDashboardRow $analytics_row
+     * @param array $param
+     * @return bool
      */
-    public function deleteById(int $id)
+    public function update(AnalyticsDashboardRow $analytics_row, array $param): bool
+    {
+        return $analytics_row->update($param);
+    }
+
+    /**
+     * @param int $id
+     * @return int
+     */
+    public function deleteById(int $id): int
     {
         return AnalyticsDashboardRow::destroy($id);
     }

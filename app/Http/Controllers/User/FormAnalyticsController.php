@@ -148,5 +148,29 @@ class FormAnalyticsController extends UserController
 
     }
 
+    /**
+     * ウィジェットをクリアする（行は残し、対象カラムのウィジェットのみ削除）
+     * @param FormSetting $form_setting
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function clearWidget(FormSetting $form_setting, Request $request): JsonResponse
+    {
+        try {
+            DB::transaction(function () use ($request) {
+                $this->analytics_service->clearWidget((int)$request->dashboard_row_id, (int)$request->column_id);
+            });
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
+            return response()->json([
+                'message' => $error->getMessage(),
+                'success' => false,
+            ], 500);
+        }
+    }
 
 }

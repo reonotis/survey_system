@@ -27,6 +27,7 @@
             data-widget-type-list='@json($widget_type_list)'
             data-url-add-widget-row='@json(route('user_form_analytics_add_widget_row', ['form_setting' => $form_setting->id]))'
             data-url-widget-add='@json(route('user_form_analytics_add_widget', ['form_setting' => $form_setting->id]))'
+            data-url-widget-clear='@json(route('user_form_analytics_widget_clear', ['form_setting' => $form_setting->id]))'
         ></div>
 
     </div>

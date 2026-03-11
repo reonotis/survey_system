@@ -21,7 +21,7 @@ ChartJS.register(
     Legend
 );
 
-function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlWidgetAdd, urlAddWidgetRow, widgetTypeList }) {
+function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlWidgetAdd, urlAddWidgetRow, urlWidgetClear, widgetTypeList }) {
     const [analyticsList, setAnalyticsList] = useState(initialAnalyticsList);
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
     const [rowId, setRowId] = useState(null);
@@ -41,6 +41,42 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
 
     const handleRowDelete = (deletedRowId) => {
         setAnalyticsList((prev) => prev.filter((row) => row.id !== deletedRowId));
+    };
+
+    const handleWidgetClear = async (rowId, columnId) => {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+        try {
+            const res = await fetch(urlWidgetClear, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    dashboard_row_id: rowId,
+                    column_id: columnId,
+                }),
+            });
+            if (!res.ok) throw new Error('API error');
+
+            const data = await res.json();
+            if (!data.success) throw new Error('API error');
+
+            setAnalyticsList((prev) =>
+                prev.map((row) => {
+                    if (row.id !== rowId) return row;
+                    const key = `analytics_dashboard_widget_id_${columnId}`;
+                    return {
+                        ...row,
+                        [key]: null,
+                    };
+                }),
+            );
+        } catch (e) {
+            alert('エラーが発生しました。画面をリロードします');
+            window.location.reload();
+        }
     };
 
     const registerWidgetRow = async (layout_type) => {
@@ -84,6 +120,7 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
                     analyticsData={item}
                     openCreateWidgetSettingModal={openCreateWidgetSettingModal}
                     onRowDelete={handleRowDelete}
+                    onWidgetClear={handleWidgetClear}
                 />
             ))}
 
@@ -136,6 +173,7 @@ if (container) {
             formItems={JSON.parse(container.dataset.formItems || '[]')}
             urlWidgetAdd={JSON.parse(container.dataset.urlWidgetAdd || '')}
             urlAddWidgetRow={JSON.parse(container.dataset.urlAddWidgetRow || '')}
+            urlWidgetClear={JSON.parse(container.dataset.urlWidgetClear || '')}
             widgetTypeList={JSON.parse(container.dataset.widgetTypeList || '{}')}
         />
     );

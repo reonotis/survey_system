@@ -7,7 +7,6 @@ namespace App\Service;
 use App\Consts\CommonConst;
 use App\Models\AnalyticsDashboardRow;
 use App\Models\AnalyticsDashboardWidget;
-use App\Models\FormItem;
 use App\Models\FormSetting;
 use App\Repositories\AnalyticsDashboardRowRepository;
 use App\Repositories\AnalyticsDashboardWidgetRepository;
@@ -131,7 +130,7 @@ class AnalyticsService
      */
     public function updateAnalyticsRow(AnalyticsDashboardRow $analytics_row, array $param): bool
     {
-        return $analytics_row->update($param);
+        return $this->analytics_dashboard_row_repository->update($analytics_row, $param);
     }
 
     /**
@@ -150,6 +149,7 @@ class AnalyticsService
             $analytics_dashboard_row->analytics_dashboard_widget_id_2,
             $analytics_dashboard_row->analytics_dashboard_widget_id_3,
             $analytics_dashboard_row->analytics_dashboard_widget_id_4,
+            $analytics_dashboard_row->analytics_dashboard_widget_id_5,
         ];
 
         // ウィジェットの削除
@@ -173,11 +173,37 @@ class AnalyticsService
 
         $index = 1;
         foreach ($analytics_row_list as $analytics_row) {
-            $this->updateAnalyticsRow($analytics_row, [
+            $this->analytics_dashboard_row_repository->update($analytics_row, [
                 'row_index' => $index,
             ]);
             $index++;
         }
+    }
+
+    /**
+     * 指定された行・カラムに紐づくウィジェットを削除し、行データの該当カラムをクリアする
+     * @param int $dashboard_row_id
+     * @param int $column_id
+     * @return void
+     */
+    public function clearWidget(int $dashboard_row_id, int $column_id): void
+    {
+        $analytics_row = $this->analytics_dashboard_row_repository->getById($dashboard_row_id);
+        if (!$analytics_row) {
+            return;
+        }
+
+        $column_key = 'analytics_dashboard_widget_id_' . $column_id;
+
+        $widget_id = $analytics_row->{$column_key};
+
+        if ($widget_id) {
+            $this->analytics_dashboard_widget_repository->deleteByIds([$widget_id]);
+        }
+
+        $this->analytics_dashboard_row_repository->update($analytics_row, [
+            $column_key => null,
+        ]);
     }
 
     /**

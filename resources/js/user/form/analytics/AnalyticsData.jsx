@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pie, Bar } from 'react-chartjs-2';
 
-export function AnalyticsData({  widgetData, onClick }) {
+export function AnalyticsData({ widgetData, onClear }) {
 
     const labels = widgetData?.analytics_data?.labels ?? [];
     const counts = widgetData?.analytics_data?.count ?? [];
@@ -59,8 +59,8 @@ export function AnalyticsData({  widgetData, onClick }) {
     return (
         <>
             <div className="widget-title flex-between-center">
-                <div>{widgetData.title?? '　'}</div>
-                <div className=" cursor-pointer" onClick={() => onClick(widgetData)}> 編集 </div>
+                <div>{widgetData.title ?? '　'}</div>
+                <div className=" cursor-pointer" onClick={onClear}>クリア</div>
             </div>
             <div className="widget-content">
                 {widgetData && renderGraph()}

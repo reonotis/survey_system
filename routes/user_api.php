@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\FormAnalyticsController;
 use App\Http\Controllers\User\FormItemSettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,8 @@ Route::prefix('user')->middleware('auth.api:user')->group(function () {
         Route::post('/{form_setting}/draft-sort-change', [FormItemSettingController::class, 'draftSortChange'])->name('user_form_draft_sort_change');
         Route::post('/{form_setting}/draft-item-save', [FormItemSettingController::class, 'draftItemSave'])->name('user_form_draft_item_save');
 
+        // 応募分析
+        Route::post('/{form_setting}/analytics/widget-clear', [FormAnalyticsController::class, 'clearWidget'])->name('user_form_analytics_widget_clear');
 
     });
 });

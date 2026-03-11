@@ -11,6 +11,11 @@ use Illuminate\Support\Collection;
 /**
  * @property int $id
  * @property int $row_index
+ * @property int $analytics_dashboard_widget_id_1
+ * @property int $analytics_dashboard_widget_id_2
+ * @property int $analytics_dashboard_widget_id_3
+ * @property int $analytics_dashboard_widget_id_4
+ * @property int $analytics_dashboard_widget_id_5
  *
  * @property Collection<int, FormItem> $formItems
  */
