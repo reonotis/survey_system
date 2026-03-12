@@ -1,7 +1,14 @@
 import React from 'react';
 import { AnalyticsData } from './AnalyticsData';
 
-export function AnalyticsRow({ analyticsData, openCreateWidgetSettingModal, onRowDelete, onWidgetClear }) {
+export function AnalyticsRow({
+    analyticsData,
+    openCreateWidgetSettingModal,
+    onRowDelete,
+    onWidgetClear,
+    dragHandleAttributes,
+    dragHandleListeners,
+}) {
 
     // 行を削除する時のメソッド
     const handleDeleteRow = async () => {
@@ -57,7 +64,11 @@ export function AnalyticsRow({ analyticsData, openCreateWidgetSettingModal, onRo
                 })}
                 <div className="widget" style={{ gridColumn: `span 1` }}>
                     <div className="flex-between-center flex-col h-full" >
-                        <div className="" >
+                        <div
+                            className="cursor-move select-none text-xl"
+                            {...dragHandleAttributes}
+                            {...dragHandleListeners}
+                        >
                             ☰
                         </div>
                         <div>

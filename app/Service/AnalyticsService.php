@@ -181,6 +181,34 @@ class AnalyticsService
     }
 
     /**
+     * 行ID配列に基づいて row_index を更新する
+     *
+     * @param int $form_setting_id
+     * @param array<int,int> $rowIds
+     * @return void
+     */
+    public function updateRowOrder(int $form_setting_id, array $rowIds): void
+    {
+        if (empty($rowIds)) {
+            return;
+        }
+
+        $rows = $this->analytics_dashboard_row_repository->getByFormSettingId($form_setting_id);
+        $rowsById = $rows->keyBy('id');
+
+        $index = 1;
+        foreach ($rowIds as $id) {
+            if (!$rowsById->has($id)) {
+                continue;
+            }
+            $this->analytics_dashboard_row_repository->update($rowsById[$id], [
+                'row_index' => $index,
+            ]);
+            $index++;
+        }
+    }
+
+    /**
      * 指定された行・カラムに紐づくウィジェットを削除し、行データの該当カラムをクリアする
      * @param int $dashboard_row_id
      * @param int $column_id

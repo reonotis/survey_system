@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { AnalyticsRow } from './AnalyticsRow';
+import { SortableAnalyticsRow } from './SortableAnalyticsRow';
 import { SettingModal } from './SettingModal';
+import { DndContext, closestCenter, DragOverlay } from '@dnd-kit/core';
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+    arrayMove,
+} from '@dnd-kit/sortable';
 import {
     Chart as ChartJS,
     ArcElement,
@@ -21,12 +27,21 @@ ChartJS.register(
     Legend
 );
 
-function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlWidgetAdd, urlAddWidgetRow, urlWidgetClear, widgetTypeList }) {
+// 縦方向のみに移動を制限するローカル modifier
+const restrictToVerticalAxis = ({ transform }) => {
+    return {
+        ...transform,
+        x: 0,
+    };
+};
+
+function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlWidgetAdd, urlAddWidgetRow, urlWidgetClear, urlUpdateRowOrder, widgetTypeList }) {
     const [analyticsList, setAnalyticsList] = useState(initialAnalyticsList);
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
     const [rowId, setRowId] = useState(null);
     const [columnId, setColumnId] = useState(null);
     const [selectWidget, setSelectWidget] = useState(null);
+    const [activeRowId, setActiveRowId] = useState(null);
 
     /**
      * モーダルを開く
@@ -43,6 +58,42 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
         setAnalyticsList((prev) => prev.filter((row) => row.id !== deletedRowId));
     };
 
+    const handleRowDragEnd = (event) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) {
+            setActiveRowId(null);
+            return;
+        }
+
+        setAnalyticsList((prev) => {
+            const oldIndex = prev.findIndex((row) => row.id === active.id);
+            const newIndex = prev.findIndex((row) => row.id === over.id);
+            if (oldIndex === -1 || newIndex === -1) return prev;
+
+            const sorted = arrayMove(prev, oldIndex, newIndex);
+
+            // 並び替え結果をサーバーに保存
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+            const rowIds = sorted.map((row) => row.id);
+            fetch(urlUpdateRowOrder, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ row_ids: rowIds }),
+            }).catch(() => {
+                // サーバーエラー時は画面リロードで整合性を保つ
+                alert('行の並び順の保存中にエラーが発生しました。画面をリロードします。');
+                window.location.reload();
+            });
+
+            return sorted;
+        });
+        setActiveRowId(null);
+    };
+
     const handleWidgetClear = async (rowId, columnId) => {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
         try {
@@ -54,7 +105,7 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
                     'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
-                    dashboard_row_id: rowId,
+                    row_id: rowId,
                     column_id: columnId,
                 }),
             });
@@ -114,15 +165,45 @@ function ItemSettingReact({ analyticsList: initialAnalyticsList, formItems, urlW
 
     return (
         <>
-            {analyticsList.map((item, index) => (
-                <AnalyticsRow
-                    key={item.id ?? index}
-                    analyticsData={item}
-                    openCreateWidgetSettingModal={openCreateWidgetSettingModal}
-                    onRowDelete={handleRowDelete}
-                    onWidgetClear={handleWidgetClear}
-                />
-            ))}
+            <DndContext
+                collisionDetection={closestCenter}
+                onDragStart={({ active }) => setActiveRowId(active.id)}
+                onDragEnd={handleRowDragEnd}
+                onDragCancel={() => setActiveRowId(null)}
+                modifiers={[restrictToVerticalAxis]}
+            >
+                <SortableContext
+                    items={analyticsList.map((row) => row.id)}
+                    strategy={verticalListSortingStrategy}
+                >
+                    {analyticsList.map((item, index) => (
+                        <SortableAnalyticsRow
+                            key={item.id ?? index}
+                            analyticsData={item}
+                            openCreateWidgetSettingModal={openCreateWidgetSettingModal}
+                            onRowDelete={handleRowDelete}
+                            onWidgetClear={handleWidgetClear}
+                        />
+                    ))}
+                </SortableContext>
+
+                <DragOverlay>
+                    {activeRowId != null && (() => {
+                        const row = analyticsList.find((r) => r.id === activeRowId);
+                        if (!row) return null;
+                        return (
+                            <div style={{ width: '100%' }}>
+                                <SortableAnalyticsRow
+                                    analyticsData={row}
+                                    openCreateWidgetSettingModal={openCreateWidgetSettingModal}
+                                    onRowDelete={handleRowDelete}
+                                    onWidgetClear={handleWidgetClear}
+                                />
+                            </div>
+                        );
+                    })()}
+                </DragOverlay>
+            </DndContext>
 
             {/* 行を追加させる分割用選択技 */}
             <div className="dashboard original-dashboard">
@@ -174,6 +255,7 @@ if (container) {
             urlWidgetAdd={JSON.parse(container.dataset.urlWidgetAdd || '')}
             urlAddWidgetRow={JSON.parse(container.dataset.urlAddWidgetRow || '')}
             urlWidgetClear={JSON.parse(container.dataset.urlWidgetClear || '')}
+            urlUpdateRowOrder={JSON.parse(container.dataset.urlUpdateRowOrder || '')}
             widgetTypeList={JSON.parse(container.dataset.widgetTypeList || '{}')}
         />
     );

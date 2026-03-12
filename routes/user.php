@@ -121,6 +121,7 @@ Route::prefix('user')->group(function () {
             Route::post('/{form_setting}/analytics/widget-row-register', [FormAnalyticsController::class, 'registerWidgetRow'])->name('user_form_analytics_add_widget_row');
             Route::post('/{form_setting}/analytics/widget-row-delete', [FormAnalyticsController::class, 'widgetRowDelete'])->name('user_form_analytics_widget_row_delete');
             Route::post('/{form_setting}/analytics/add-widget', [FormAnalyticsController::class, 'addWidget'])->name('user_form_analytics_add_widget');
+            Route::post('/{form_setting}/analytics/update-row-order', [FormAnalyticsController::class, 'updateRowOrder'])->name('user_form_analytics_update_row_order');
 
             // 当選設定
             Route::get('/{form_setting}/winning-setting', [FormWinningSettingController::class, 'index'])->name('user_form_winning_setting');

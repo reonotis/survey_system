@@ -173,4 +173,30 @@ class FormAnalyticsController extends UserController
         }
     }
 
+    /**
+     * 行の並び順を更新する
+     * @param FormSetting $form_setting
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateRowOrder(FormSetting $form_setting, Request $request): JsonResponse
+    {
+        try {
+            DB::transaction(function () use ($form_setting, $request) {
+                $rowIds = $request->input('row_ids', []);
+                $this->analytics_service->updateRowOrder($form_setting->id, $rowIds);
+            });
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (Exception $error) {
+            Log::error($error->getMessage());
+            return response()->json([
+                'message' => $error->getMessage(),
+                'success' => false,
+            ], 500);
+        }
+    }
+
 }

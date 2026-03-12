@@ -25,6 +25,7 @@ export default defineConfig({
                 'resources/js/user/form/form_list.js',
                 'resources/js/user/form/item_setting_react/ItemSettingReact.jsx',
                 'resources/js/user/form/mail_setting.js',
+                'resources/js/user/form/member_list.js',
                 'resources/js/user/form/message_setting.js',
                 'resources/js/user/form/register_item_setting.js',
                 'resources/js/user/mail_template/list.js',
