@@ -10,6 +10,7 @@ use App\Traits\FormReplaceTrait;
 use App\Mail\ContactMail;
 use App\Mail\InviteMemberFirstRegister;
 use App\Mail\InviteMember;
+use App\Mail\UserRegisterMail;
 use App\Models\FormSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -17,12 +18,38 @@ use Illuminate\Support\Facades\Mail;
 class MailService
 {
     use FormReplaceTrait;
+    private string $admin_address = 'fujisawa@reonotis.jp'; // TODO envにする事
+
+    /**
+     * @param int $type
+     * @param array $request
+     * @return void
+     */
+    public function sendMail(int $type, array $request): void
+    {
+        match ($type) {
+            1 => $this->sendUserRegisterMail($request),
+        };
+    }
+
+    /**
+     * @param array $request
+     * @return void
+     */
+    private function sendUserRegisterMail(array $request): void
+    {
+        Mail::to($this->admin_address)
+            ->send(new UserRegisterMail(
+                $request['name'],
+                $request['email'],
+            ));
+    }
 
     /**
      */
     public function sendContactMail(array $request): void
     {
-        Mail::to('fujisawa@reonotis.jp') // TODO envにする事
+        Mail::to($this->admin_address)
             ->send(new ContactMail(
                 Auth::guard('user')->user()->name,
                 Auth::guard('user')->user()->email,
