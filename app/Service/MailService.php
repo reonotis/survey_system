@@ -28,7 +28,8 @@ class MailService
     public function sendMail(int $type, array $request): void
     {
         match ($type) {
-            1 => $this->sendUserRegisterMail($request),
+            MailConst::USER_REGISTER => $this->sendUserRegisterMail($request),
+            MailConst::CONTACT => $this->sendContactMail($request),
         };
     }
 
@@ -47,7 +48,7 @@ class MailService
 
     /**
      */
-    public function sendContactMail(array $request): void
+    private function sendContactMail(array $request): void
     {
         Mail::to($this->admin_address)
             ->send(new ContactMail(

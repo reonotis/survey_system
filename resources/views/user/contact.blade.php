@@ -26,7 +26,8 @@
                     <div class="item-title">問い合わせ内容</div>
                     <div class="item-contents flex-start-center">
                         <textarea name="message" class="input-box h-36 w-full"
-                        placeholder="プランのアップグレードをするにはどうしたらいいですか？"></textarea>
+                        placeholder="プランのアップグレードをするにはどうしたらいいですか？">{{ old('message', '') }}</textarea>
+                        <x-input-error :messages="$errors->get('message')" class="mt-2" />
                     </div>
                 </div>
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User\Auth;
 
+use App\Consts\MailConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Auth\RegisteredUserStoreRequest;
 use App\Service\MailService;
@@ -44,7 +45,7 @@ class RegisteredUserController extends Controller
 
                 // 新しいユーザーが登録されたので通知メールを送る
                 $mail_service = app(MailService::class);
-                $mail_service->sendMail(1, $request->validated());
+                $mail_service->sendMail(MailConst::USER_REGISTER, $request->validated());
 
                 Auth::guard('user')->login($user);
 

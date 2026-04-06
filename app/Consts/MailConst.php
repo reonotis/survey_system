@@ -6,6 +6,8 @@ namespace App\Consts;
 
 class MailConst
 {
-    public const INVITE_MEMBER_FIRST_REGISTER = 1;
-    public const INVITE_MEMBER = 2;
+    public const USER_REGISTER = 1;
+    public const INVITE_MEMBER_FIRST_REGISTER = 2;
+    public const INVITE_MEMBER = 3;
+    public const CONTACT = 99;
 }
