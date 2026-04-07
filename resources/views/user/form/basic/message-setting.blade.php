@@ -22,13 +22,17 @@
                 @csrf
 
                 <div class="item-row">
-                    <div class="item-title">申込期間外メッセージ</div>
+                    <div class="item-title">申込期間外メッセージ
+                        <x-tooltip text="申込期間外の場合は申込画面が表示されないため、その際に表示するメッセージを設定できます。" class="ml-2"/>
+                    </div>
                     <div class="item-contents flex-start-center">
                         <textarea name="outside_period_message" class="input-box h-36 w-full">{{ $form_setting->message->outside_period_message?? '' }}</textarea>
                     </div>
                 </div>
                 <div class="item-row">
-                    <div class="item-title">申込完了後メッセージ</div>
+                    <div class="item-title">申込完了後メッセージ
+                        <x-tooltip text="申込完了時に表示するメッセージを設定できます。" class="ml-2"/>
+                    </div>
                     <div class="item-contents flex-start-center">
                         <textarea name="complete_message" class="input-box h-36 w-full ">{{ $form_setting->message->complete_message?? '' }}</textarea>
                     </div>

@@ -33,7 +33,9 @@
                     </div>
                     <div class="item-row" id="notification_mail_template"
                          @if(is_null($form_setting->mailSetting) ||  $form_setting->mailSetting->notification_mail_flg <> 1) style="display:none;" @endif>
-                        <div class="item-title">テンプレート選択</div>
+                        <div class="item-title">テンプレート選択
+                            <x-tooltip text="テンプレートを選択したら、下記内容がテンプレートの内容で書き換えられますが、更新ボタンを押下するまで上書きはされません。" class="ml-2"/>
+                        </div>
                         <div class="item-contents flex-start-center">
                             <x-input-select name="notification_mail_template"
                                             class="w-full"
@@ -85,7 +87,9 @@
                     </div>
                     <div class="item-row" id="auto_reply_mail_template"
                          @if(is_null($form_setting->mailSetting) || $form_setting->mailSetting->auto_reply_mail_flg == 0) style="display:none;" @endif>
-                        <div class="item-title">テンプレート選択</div>
+                        <div class="item-title">テンプレート選択
+                            <x-tooltip text="テンプレートを選択したら、下記内容がテンプレートの内容で書き換えられますが、更新ボタンを押下するまで上書きはされません。" class="ml-2"/>
+                        </div>
                         <div class="item-contents flex-start-center">
                             <x-input-select name="auto_reply_mail_template"
                                             class="w-full"

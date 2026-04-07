@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'テンプレート名',
             }, {
                 data: 'subject',
-                title: '題名',
+                title: '件名',
             }, {
                 data: 'id',
                 title: '設定/管理',

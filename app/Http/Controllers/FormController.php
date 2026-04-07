@@ -109,10 +109,10 @@ class FormController extends Controller
     {
         // 申込期間外の場合
         $now = Carbon::now();
-        if ($form_setting->start_date > $now) {
+        if (!is_null($form_setting->start_date) && $form_setting->start_date > $now) {
             return 1;
         }
-        if ($form_setting->end_date < $now) {
+        if (!is_null($form_setting->end_date) && $form_setting->end_date < $now) {
             return 1;
         }
 

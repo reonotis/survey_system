@@ -617,3 +617,91 @@ $size: 20px;
     color: #777;
 }
 
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+
+    &__trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.3rem;
+        height: 1.3rem;
+        padding: 0;
+        border: 1px solid var(--main-color);
+        border-radius: 9999px;
+        color: var(--main-color);
+        background: var(--main-color-5);
+        font-size: .78rem;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        user-select: none;
+        transition: background .2s ease, color .2s ease, border-color .2s ease;
+
+        &:hover,
+        &:focus {
+            background: var(--main-color-4);
+            color: #0f6971;
+            outline: none;
+        }
+    }
+
+    &__content {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+
+        width: max-content;
+        max-width: min(350px, calc(100vw - 16px));
+        padding: .6rem .75rem;
+        border-radius: .5rem;
+        background: #333a43;
+        box-shadow: 0 8px 20px rgb(0 0 0 / 0.38);
+
+        color: #fff;
+        font-size: .8rem;
+        font-weight: 500;
+        line-height: 1.5;
+        white-space: pre-line;
+        word-break: break-word;
+
+        transition: opacity .15s ease, visibility .15s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: var(--tooltip-arrow-left, 16px);
+            width: 10px;
+            height: 10px;
+            background: #333a43;
+            transform: rotate(45deg);
+        }
+    }
+
+    &.is-visible &__content {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    &.is-top &__content::before {
+        top: auto;
+        bottom: -5px;
+    }
+
+    &.is-bottom &__content::before {
+        top: -5px;
+        bottom: auto;
+    }
+}
+
+

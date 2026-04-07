@@ -5,7 +5,7 @@
     @endpush
 
     <div class="custom-container py-4">
-        <div class="contents-area mx-auto p-4" style="width: 1200px;">
+        <div class="contents-area mx-auto p-4" style="max-width: 1200px;">
 
             <div class="flex-end-center">
                 <a href="{{ route('user_mail_template_upsert') }}" class="btn">新しくテンプレートを作成</a>

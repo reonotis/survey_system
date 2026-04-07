@@ -31,7 +31,8 @@
                 </div>
 
                 <div class="item-row">
-                    <div class="item-title">申込期間</div>
+                    <div class="item-title">申込期間
+                        <x-tooltip text="申し込みが可能な期間を設定できます。" class="ml-2"/></div>
                     <div class="item-contents flex-start-center">
                         <div class="flex-start-center gap-2">
                             <x-input-text type="datetime-local" name="start_date"
@@ -48,7 +49,9 @@
                 </div>
 
                 <div class="item-row">
-                    <div class="item-title">状態</div>
+                    <div class="item-title">状態
+                        <x-tooltip text="状態を公開にしても、申込期間外の場合は公開されません。" class="ml-2"/>
+                    </div>
                     <div class="item-contents flex-start-center">
                         <x-input-radio
                             name="publication_status"
@@ -59,7 +62,9 @@
                 </div>
 
                 <div class="item-row">
-                    <div class="item-title">申込上限</div>
+                    <div class="item-title">申込上限
+                        <x-tooltip text="上限値を設定しない場合は値を入力しないでください。" class="ml-2"/>
+                    </div>
                     <div class="item-contents flex-start-center">
                         <x-input-text type="number" name="max_applications"
                                       :error="$errors->has('max_applications')"

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { DndContext, closestCenter } from '@dnd-kit/core';
+import { DndContext, closestCenter, DragOverlay } from '@dnd-kit/core';
 import {
     SortableContext,
     verticalListSortingStrategy,
     arrayMove,
 } from '@dnd-kit/sortable';
 
-import Item from './Item';
+import Item, { ItemDragPreview } from './Item';
+
+// analytics.jsx と同様: 横方向のズレを防ぐ
+const restrictToVerticalAxis = ({ transform }) => ({
+    ...transform,
+    x: 0,
+});
 
 function CurrentItemsList({ draftFormItems, onSortEnd, setEditingItemId, itemDelete, selectedItem }) {
     const [items, setItems] = useState([]);
+    const [activeItemId, setActiveItemId] = useState(null);
 
     // props → state 同期
     useEffect(() => {
@@ -18,6 +25,7 @@ function CurrentItemsList({ draftFormItems, onSortEnd, setEditingItemId, itemDel
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
+        setActiveItemId(null);
         if (!over || active.id === over.id) return;
 
         setItems((prev) => {
@@ -38,7 +46,10 @@ function CurrentItemsList({ draftFormItems, onSortEnd, setEditingItemId, itemDel
 
             <DndContext
                 collisionDetection={closestCenter}
+                onDragStart={({ active }) => setActiveItemId(active.id)}
                 onDragEnd={handleDragEnd}
+                onDragCancel={() => setActiveItemId(null)}
+                modifiers={[restrictToVerticalAxis]}
             >
                 <SortableContext
                     items={items.map(item => item.id)}
@@ -62,6 +73,18 @@ function CurrentItemsList({ draftFormItems, onSortEnd, setEditingItemId, itemDel
                         )}
                     </div>
                 </SortableContext>
+
+                <DragOverlay>
+                    {activeItemId != null && (() => {
+                        const row = items.find((i) => i.id === activeItemId);
+                        if (!row) return null;
+                        return (
+                            <div style={{ width: '100%' }}>
+                                <ItemDragPreview item={row} />
+                            </div>
+                        );
+                    })()}
+                </DragOverlay>
             </DndContext>
         </div>
     );

@@ -13,6 +13,77 @@ import ItemSelectBox from './view_items/ItemSelectBox.jsx';
 import ItemTel from './view_items/ItemTel.jsx';
 import ItemTerms from './view_items/ItemTerms.jsx';
 
+function renderDetailContent(item) {
+    switch (item.item_type) {
+        case 1:
+            return <ItemName item={item} />;
+        case 2:
+            return <ItemKana item={item} />;
+        case 3:
+            return <ItemEmail item={item} />;
+        case 4:
+            return <ItemTel item={item} />;
+        case 5:
+            return <ItemGender item={item} />;
+        case 6:
+            return <ItemAddress item={item} />;
+        case 34:
+            return <ItemCheckbox item={item} />;
+        case 35:
+            return <ItemRadio item={item} />;
+        case 36:
+            return <ItemSelectBox item={item} />;
+        case 51:
+            return <ItemTerms item={item} />;
+        case 52:
+            return <ItemPrecautions item={item} />;
+        default:
+            return '詳細が入ります';
+    }
+}
+
+/**
+ * DragOverlay 用（useSortable を使わない同一見た目）
+ */
+export function ItemDragPreview({ item }) {
+    const itemTypeList = window.itemTypeList;
+    const baseItemName = itemTypeList[item.item_type];
+    const itemTitle = item.item_title;
+
+    return (
+        <div
+            className={`border rounded bg-white cursor-pointer transition border-gray-300`}
+        >
+            <div className="flex justify-between w-full items-center bg-gray-200 px-2">
+                <div className="flex items-center">
+                    <div className="p-2 cursor-move select-none text-sm text-gray-600">
+                        ☰
+                    </div>
+
+                    <p className="text-sm font-medium text-gray-700">
+                        {itemTitle ?? baseItemName}<span className="pl-2 font-normal">({baseItemName})</span>
+                    </p>
+
+                    {item.field_required === 1 && (
+                        <span className="ml-2 px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-600">必須</span>
+                    )}
+                </div>
+                <span className="text-xs text-red-600 mr-2">消去する</span>
+            </div>
+
+            <div className="p-2">
+                <div className="text-xs text-gray-400 whitespace-pre-line">
+                    {item.annotation_text}
+                </div>
+
+                <div className="mt-1 text-sm text-gray-600">
+                    {renderDetailContent(item)}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function Item({ item, onClick, itemDelete, isSelected }) {
     const itemTypeList = window.itemTypeList;
 
@@ -25,40 +96,15 @@ function Item({ item, onClick, itemDelete, isSelected }) {
         setNodeRef,
         transform,
         transition,
+        isDragging,
     } = useSortable({ id: item.id });
 
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-    };
-
-    const renderDetailContent = () => {
-        switch (item.item_type) {
-            case 1:
-                return <ItemName item={item} />;
-            case 2:
-                return <ItemKana item={item} />;
-            case 3:
-                return <ItemEmail item={item} />;
-            case 4:
-                return <ItemTel item={item} />;
-            case 5:
-                return <ItemGender item={item} />;
-            case 6:
-                return <ItemAddress item={item} />;
-            case 34: // チェックボックス
-                return <ItemCheckbox item={item} />;
-            case 35: // ラジオボタン
-                return <ItemRadio item={item} />;
-            case 36: // セレクトボックス
-                return <ItemSelectBox item={item} />;
-            case 51: // 利用規約
-                return <ItemTerms item={item} />;
-            case 52: // 注意事項
-                return <ItemPrecautions item={item} />;
-            default:
-                return '詳細が入ります';
-        }
+        width: '100%',
+        zIndex: isDragging ? 10 : 0,
+        opacity: isDragging ? 0 : 1,
     };
 
     return (
@@ -114,7 +160,7 @@ function Item({ item, onClick, itemDelete, isSelected }) {
                 </div>
 
                 <div className="mt-1 text-sm text-gray-600">
-                    {renderDetailContent()}
+                    {renderDetailContent(item)}
                 </div>
             </div>
         </div>

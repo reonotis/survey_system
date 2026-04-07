@@ -8,17 +8,18 @@
 
         <title>管理者ダッシュボード - アンケートシステム</title>
 
-        <!-- Fonts -->
+        {{-- Fonts --}}
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <link rel="icon" type="image/png" href="/icon/favicon.svg">
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        <!-- Scripts -->
+        {{-- Scripts --}}
         @vite(['resources/css/app.css', 'resources/js/user/app.js'])
 
-        <!-- Page-specific scripts -->
+        {{-- Page-specific scripts --}}
         @stack('scripts')
 
     </head>
@@ -56,7 +57,7 @@
 
             @include('components.session-message')
 
-            <!-- Page Content -->
+            {{-- Page Content --}}
             <main>
                 {{ $slot }}
             </main>
